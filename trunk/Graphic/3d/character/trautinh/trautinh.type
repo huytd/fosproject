@@ -1,0 +1,14 @@
+type trautinh
+{
+	class = PlayerCharacter
+	allowEditorCreate = True
+	allowEmptyName = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = trautinh\trautinh.mesh
+			scale = 0.613875 0.613875 0.613875
+		}
+	}
+}
