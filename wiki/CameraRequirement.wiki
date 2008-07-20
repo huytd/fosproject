@@ -1,0 +1,16 @@
+#summary Trang này mô tả yêu cầu kỹ thuật với camera như trong mô tả của Game Design Document
+
+= Introduction =
+
+Trang này mô tả yêu cầu kỹ thuật với camera trong game Viet Heroes - Fight or Surrender. Mô tả bao gồm hành vi của camera và nhân vật chính khi di chuột, khi click các nút chuột phải và trái, khi kéo ra/vào nút chuột giữa. Và khi ấn bốn phím điều khiển chính là ASDW.
+
+
+= Details =
+
+* Di chuột
+
+* Click chuột
+
+* Sử dụng chuột giữa
+
+* Ấn 4 phím di chuyển
