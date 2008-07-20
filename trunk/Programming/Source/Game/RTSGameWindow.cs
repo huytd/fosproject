@@ -619,7 +619,7 @@ namespace Game
 
 			if( GetRealCameraType() == CameraType.Game && !EngineConsole.Instance.Active )
 			{
-				Vec2 distanceRange = new Vec2( 10, 300 );
+				Vec2 distanceRange = new Vec2( 10, 100 );
 				Vec2 angleRange = new Vec2( .001f, MathFunctions.PI / 2 - .001f );
 
 				if( EngineApp.Instance.IsKeyPressed( EKeys.PageUp ) )
