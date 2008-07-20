@@ -1,0 +1,7 @@
+0>40 : stand
+41 > 80: walk
+81 > 105 : attack ( xuat don fam 95)	
+106 > 165 : attack1 (xuat don fam 150)
+166 > 195 : spellattack (xuat don fam 180 )
+196 > 210 : hit	(bi danh fam 200 )
+211 > 240 : die
