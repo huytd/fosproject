@@ -1,0 +1,22 @@
+TestPointParticle
+{
+    	material        	TestPointParticle
+    	particle_width  	.6
+    	particle_height 	.6
+    	cull_each       	false
+    	quota           	100
+	renderer		billboard
+    
+    	// Area emitter
+    	emitter Point
+    	{
+		colour				1 1 1
+		angle               		0
+        	emission_rate       		1000
+        	time_to_live        		.01
+        	direction           		0 0 1
+        	velocity_min        		0
+		velocity_max        		0
+	}
+
+}

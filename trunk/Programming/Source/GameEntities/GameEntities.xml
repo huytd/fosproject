@@ -1192,5 +1192,12 @@
         <member name="M:GameEntities.Firework.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
         </member>
+        <member name="M:GameEntities.Inventory.AddItem(GameEntities.Item)">
+            <summary>
+            This returns true if it can be taken into inventory, false if full.
+            </summary>
+            <param name="theItem"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

@@ -1,0 +1,6 @@
+// Copyright (C) 2006-2008 NeoAxis Group
+
+#ifdef VERTEX_BODY_END
+	//change zbuffer depth
+	oPosition.z /= 100;
+#endif

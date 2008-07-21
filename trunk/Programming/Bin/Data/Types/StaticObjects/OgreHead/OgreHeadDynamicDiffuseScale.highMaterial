@@ -1,0 +1,20 @@
+highLevelMaterial OgreHeadDynamicDiffuseScale
+{
+	template = ShaderBaseMaterial
+	diffuseScale = 0.4980392 0.4980392 0.4980392
+	diffuseScaleDynamic = True
+	specularScale = 0.6666667 0.6666667 0.6666667
+	heightFromNormalMapAlpha = True
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\OgreHead\OgreHead.jpg
+	}
+	specularMap
+	{
+		texture = Types\StaticObjects\OgreHead\OgreHead_Specular.jpg
+	}
+	normalMap
+	{
+		texture = Types\StaticObjects\OgreHead\OgreHead_NormalHeight.png
+	}
+}

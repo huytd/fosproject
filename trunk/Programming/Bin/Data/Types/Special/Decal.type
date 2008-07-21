@@ -1,0 +1,6 @@
+type Decal
+{
+	class = Decal
+	allowEditorCreate = False
+	allowEmptyName = True
+}

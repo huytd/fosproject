@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3F0C9CE6-824F-4B8F-A4F3-68A70F7CF63A}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -81,6 +81,7 @@
     <Compile Include="DecalCreator.cs" />
     <Compile Include="Influences.cs" />
     <Compile Include="GameEngineInitialization.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="TankGame Specific\Minefield.cs" />
     <Compile Include="TankGame Specific\TankGameExtendedProperties.cs" />
     <Compile Include="TankGame Specific\TankGameUnitAI.cs" />

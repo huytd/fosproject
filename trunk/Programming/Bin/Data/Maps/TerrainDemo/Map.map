@@ -1,0 +1,3972 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+relationships = 5
+gameType = Action
+ambientLight = 0.2666667 0.2666667 0.2666667
+nodeSize = 100 100 100
+nodeBoundsIndents = 100 100 100
+soundDistanceFactor = 10
+editorCameraPosition = 125.0648 -66.96104 76.20132
+editorCameraDirection = 5.405847 -0.8874495
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawNodes = False
+drawRegions = False
+drawMapObjectBounds = False
+drawSceneNodeBounds = False
+drawStaticMeshObjectBounds = False
+drawZonesPortalsOccluders = False
+drawLights = False
+drawStaticGeometry = True
+drawModels = True
+drawEffects = True
+drawGui = True
+drawWireframe = False
+drawGameSpecificDebugGeometry = False
+shadowTechnique = ShadowmapHigh
+shadowColor = 0.6 0.6 0.6 0.6
+shadowFarDistance = 30
+shadow2DTextureSize = 1024
+shadow2DTextureCount = 2
+shadowCubicTextureSize = 512
+shadowCubicTextureCount = 1
+frustumTest = False
+fov = 80
+nearFarClipDistance = 0.25 5000
+logicSystemManager = 3
+logicClass = 5
+rootEditorLayer
+{
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 3
+	mapClassManager = 4
+	entity
+	{
+		type = LogicClassManager
+		uin = 4
+		entity
+		{
+			type = LogicEntityClass
+			uin = 5
+			relationships = 2
+			entityClassName = GameMap
+			className = GameMap
+			customScriptCodeCreated = False
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 6
+				code = "\r\n\r\n//!!!!!!!no render\r\nreturn;\r\n\r\nUnit playerUnit = null;\r\nif(PlayerIntellect.Instance != null)\r\n\tplayerUnit = PlayerIntellect.Instance.ControlledObject;\r\n\r\n//render information about terrain layers\r\nif(playerUnit != null && terrain != null && camera == RendererWorld.Instance.DefaultCamera &&\r\n\tEntitySystemWorld.Instance.Simulation && PlayerIntellect.Instance.FPSCamera)\r\n{\r\n\tHeightmapTerrain.LayerPointInfo[] infos = terrain.GetLayersInfoByPosition(\r\n\t\tplayerUnit.Position.ToVec2() );\r\n\r\n\tList<string> lines = new List<string>();\r\n\tlines.Add(\"Layers:\");\r\n\r\n\tGuiRenderer renderer = EngineApp.Instance.ScreenGuiRenderer;\r\n\tFont font = renderer.DefaultFont;\r\n\r\n\tfloat width = 0;\r\n\r\n\tforeach( HeightmapTerrain.LayerPointInfo info in infos )\r\n\t{\r\n\t\tstring text = info.Layer.Name + \" \" + info.Value.ToString( \"F2\" );\r\n\t\tlines.Add( text );\r\n\t\twidth = Math.Max(width, font.GetTextLength(text));\r\n\t}\r\n\r\n\tVec2 screenPos = new Vec2(.05f, .3f);\r\n\r\n\tfloat height = renderer.DefaultFont.Height * lines.Count;\r\n\r\n\tRect rect = new Rect(screenPos, screenPos + new Vec2(width, height));\r\n\trect.Expand(new Vec2(.01f, .01f));\r\n\r\n\trenderer.AddQuad(rect, new ColorValue(0,0,0,.3f));\r\n\trenderer.AddRectangle(rect, new ColorValue(1,1,0));\r\n\r\n\trenderer.AddTextLines( lines.ToArray(), screenPos, \r\n\t\tnew Vec2( 0, renderer.DefaultFont.Height ), HorizontalAlign.Left, \r\n\t\tVerticalAlign.Top, new ColorValue( 1, 1, 1 ) );\r\n}\r\n"
+				methodName = Render
+				returnType = System.Void
+				parameters = 7
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 7
+					parameterType = Engine.Renderer.Camera
+					parameterName = camera
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 8
+				code = "foreach( Entity entity in Map.Instance.Children )\r\n{\r\n\tterrain = entity as HeightmapTerrain;\r\n\tif( terrain != null )\r\n\t\tbreak;\r\n}\r\n"
+				methodName = PostCreated
+				returnType = System.Void
+				parameters = 9
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 9
+					parameterType = System.Boolean
+					parameterName = loaded
+				}
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 10
+				variableType = Engine.MapSystem.HeightmapTerrain
+				variableName = terrain
+			}
+		}
+		entity
+		{
+			type = LogicEntityClass
+			uin = 11
+			relationships = 101
+			entityClassName = Region
+			className = Region_TowerCutScene
+			customScriptCodeCreated = False
+			entity
+			{
+				type = LogicVariable
+				uin = 12
+				variableType = System.Boolean
+				variableName = visited
+			}
+			entity
+			{
+				type = LogicDesignerMethod
+				uin = 13
+				actions = 15 22 28 39 36 44 46 25 41 33
+				methodName = ObjectIn
+				returnType = System.Void
+				parameters = 14
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 14
+					parameterType = Engine.MapSystem.MapObject
+					parameterName = obj
+				}
+				entity
+				{
+					type = LogicIfThenElseAction
+					uin = 15
+					conditionAction = 16
+					trueActions = 21
+					falseActions = 
+					entity
+					{
+						type = LogicCallStaticSystemMethodAction
+						uin = 16
+						className = BooleanUtils
+						methodName = Or
+						parameterActions = 18 17
+						parameterTypeNames
+						{
+							item
+							{
+								value = Boolean
+							}
+							item
+							{
+								value = Boolean
+							}
+						}
+						entity
+						{
+							type = LogicGetVariableAction
+							uin = 17
+							variableName = visited
+						}
+						entity
+						{
+							type = LogicCallStaticSystemMethodAction
+							uin = 18
+							className = BooleanUtils
+							methodName = Negation
+							parameterActions = 19
+							parameterTypeNames
+							{
+								item
+								{
+									value = Boolean
+								}
+							}
+							entity
+							{
+								type = LogicGetVariableAction
+								uin = 19
+								variableName = obj
+								dotPathAction = 20
+								entity
+								{
+									type = LogicCallAsIsMethodAction
+									uin = 20
+									asCast = False
+									castTypeName = PlayerCharacter
+								}
+							}
+						}
+					}
+					entity
+					{
+						type = LogicReturnAction
+						uin = 21
+					}
+				}
+				entity
+				{
+					type = LogicGetVariableAction
+					uin = 22
+					variableName = visited
+					dotPathAction = 23
+					entity
+					{
+						type = LogicAssignVariableAction
+						uin = 23
+						valueAction = 24
+						entity
+						{
+							type = LogicGetConstantValueAction
+							uin = 24
+							valueType = System.Boolean
+							value = True
+						}
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 25
+					className = CutSceneManager
+					methodName = FadeInOut
+					parameterActions = 26 27
+					parameterTypeNames
+					{
+						item
+						{
+							value = Single
+						}
+						item
+						{
+							value = Single
+						}
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 26
+						valueType = System.Single
+						value = 1
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 27
+						valueType = System.Single
+						value = 1
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 28
+					className = CutSceneManager
+					methodName = FadeInOut
+					parameterActions = 31 32
+					parameterTypeNames
+					{
+						item
+						{
+							value = Single
+						}
+						item
+						{
+							value = Single
+						}
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 29
+						valueType = System.Single
+						value = 1
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 30
+						valueType = System.Single
+						value = 1
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 31
+						valueType = System.Single
+						value = 1
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 32
+						valueType = System.Single
+						value = 1
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 33
+					className = CutSceneManager
+					propertyName = CutSceneEnable
+					dotPathAction = 34
+					entity
+					{
+						type = LogicAssignPropertyAction
+						uin = 34
+						valueAction = 35
+						entity
+						{
+							type = LogicGetConstantValueAction
+							uin = 35
+							valueType = System.Boolean
+							value = False
+						}
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 36
+					className = CutSceneManager
+					propertyName = CutSceneEnable
+					dotPathAction = 37
+					entity
+					{
+						type = LogicAssignPropertyAction
+						uin = 37
+						valueAction = 38
+						entity
+						{
+							type = LogicGetConstantValueAction
+							uin = 38
+							valueType = System.Boolean
+							value = True
+						}
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 39
+					className = LogicUtils
+					methodName = Wait
+					parameterActions = 40
+					parameterTypeNames
+					{
+						item
+						{
+							value = Single
+						}
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 40
+						valueType = System.Single
+						value = 1
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 41
+					className = LogicUtils
+					methodName = Wait
+					parameterActions = 43
+					parameterTypeNames
+					{
+						item
+						{
+							value = Single
+						}
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 42
+						valueType = System.Single
+						value = 1
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 43
+						valueType = System.Single
+						value = 1
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 44
+					className = CutSceneManager
+					methodName = SetCamera
+					parameterActions = 45
+					parameterTypeNames
+					{
+						item
+						{
+							value = MapObject
+						}
+					}
+					entity
+					{
+						type = LogicCallGetEntityMethodAction
+						uin = 45
+						relationships = 102
+						entity = 102
+					}
+				}
+				entity
+				{
+					type = LogicCallStaticSystemMethodAction
+					uin = 46
+					className = LogicUtils
+					methodName = Wait
+					parameterActions = 47
+					parameterTypeNames
+					{
+						item
+						{
+							value = Single
+						}
+					}
+					entity
+					{
+						type = LogicGetConstantValueAction
+						uin = 47
+						valueType = System.Single
+						value = 65
+					}
+				}
+			}
+		}
+	}
+}
+entity
+{
+	type = Collision
+	uin = 48
+	classPrompt = Collision
+}
+entity
+{
+	type = HeightmapTerrain
+	uin = 49
+	classPrompt = HeightmapTerrain
+	position = 0 0 0
+	horizontalSize = 1000
+	verticalSize = 100
+	dataDirectory = HeightmapTerrain
+	masksSize = 1024
+	lodMethod = None
+	maxPixelError = 7
+	maxLODLevel = 7
+	lodOffDistance = 50
+	detailMapsDistance = 50
+	renderQueueGroup = WorldGeometry1
+	collisionMaterialName = Default
+	bottomClipHeight = 6
+	castDynamicShadows = False
+	tileSize = 16
+	layers
+	{
+		item
+		{
+			name = base
+			baseMap = Defaults\HeightmapTerrain\Layer0Base.jpg
+			baseScale = 10
+			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = second
+			baseMap = Defaults\HeightmapTerrain\Layer1Base.jpg
+			baseScale = 5
+			detailMap = Defaults\HeightmapTerrain\Layer1Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = rockX
+			baseMap = Materials\Game\Terrain\RockBase.jpg
+			baseScale = 20
+			detailMap = Materials\Game\Terrain\RockDetail.jpg
+			detailScale = 2
+			projectionAxis = XAxis
+		}
+		item
+		{
+			name = rockY
+			baseMap = Materials\Game\Terrain\RockBase.jpg
+			baseScale = 20
+			detailMap = Materials\Game\Terrain\RockDetail.jpg
+			detailScale = 2
+			projectionAxis = YAxis
+		}
+	}
+	staticLighting
+	{
+		item
+		{
+			tileIndex = 0 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.1884766
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.2255859
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.2626953
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.2998047
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.3369141
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.3740234
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.4111328
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.4482422
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.4853516
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 0
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.5224609
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 0
+			textureNumber = 0
+			texCoordScroll = 0.5966797 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.5595703
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.5966797
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.6337891
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.6708984
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.7080078
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.7451172
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.7822266
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.8193359
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.8564453
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.8935547
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 1
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.9306641
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 1
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 1
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 1
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 1
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 1
+			textureNumber = 0
+			texCoordScroll = 0.9677734 0.1142578
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 2
+			textureNumber = 0
+			texCoordScroll = 0.1884766 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 2
+			textureNumber = 0
+			texCoordScroll = 0.2255859 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 2
+			textureNumber = 0
+			texCoordScroll = 0.2626953 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 2
+			textureNumber = 0
+			texCoordScroll = 0.2998047 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 2
+			textureNumber = 0
+			texCoordScroll = 0.3369141 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 2
+			textureNumber = 0
+			texCoordScroll = 0.3740234 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 2
+			textureNumber = 0
+			texCoordScroll = 0.4111328 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 2
+			textureNumber = 0
+			texCoordScroll = 0.4482422 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 2
+			textureNumber = 0
+			texCoordScroll = 0.4853516 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 2
+			textureNumber = 0
+			texCoordScroll = 0.5224609 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 2
+			textureNumber = 0
+			texCoordScroll = 0.5595703 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 2
+			textureNumber = 0
+			texCoordScroll = 0.5966797 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 2
+			textureNumber = 0
+			texCoordScroll = 0.6337891 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 2
+			textureNumber = 0
+			texCoordScroll = 0.6708984 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 2
+			textureNumber = 0
+			texCoordScroll = 0.7080078 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 2
+			textureNumber = 0
+			texCoordScroll = 0.7373047 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 3
+			textureNumber = 0
+			texCoordScroll = 0.7451172 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 3
+			textureNumber = 0
+			texCoordScroll = 0.7822266 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 3
+			textureNumber = 0
+			texCoordScroll = 0.8193359 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 3
+			textureNumber = 0
+			texCoordScroll = 0.8564453 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 3
+			textureNumber = 0
+			texCoordScroll = 0.8935547 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 3
+			textureNumber = 0
+			texCoordScroll = 0.9306641 0.002929688
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.1884766
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.2255859
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.2626953
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.2998047
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 3
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.3369141
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 3
+			textureNumber = 0
+			texCoordScroll = 0.9677734 0.07714844
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.3740234
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.4111328
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.4482422
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.4853516
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.5224609
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.5595703
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.5966797
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.6337891
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.6708984
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.7080078
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.7451172
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.7822266
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.8193359
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.8564453
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 4
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.8935547
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 4
+			textureNumber = 0
+			texCoordScroll = 0.9130859 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 5
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.9306641
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 5
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 5
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 5
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 5
+			textureNumber = 0
+			texCoordScroll = 0.1884766 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 5
+			textureNumber = 0
+			texCoordScroll = 0.2255859 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 5
+			textureNumber = 0
+			texCoordScroll = 0.2626953 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 5
+			textureNumber = 0
+			texCoordScroll = 0.2998047 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 5
+			textureNumber = 0
+			texCoordScroll = 0.3369141 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 5
+			textureNumber = 0
+			texCoordScroll = 0.3740234 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 5
+			textureNumber = 0
+			texCoordScroll = 0.4111328 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 5
+			textureNumber = 0
+			texCoordScroll = 0.4482422 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 5
+			textureNumber = 0
+			texCoordScroll = 0.4853516 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 5
+			textureNumber = 0
+			texCoordScroll = 0.5224609 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 5
+			textureNumber = 0
+			texCoordScroll = 0.5595703 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 5
+			textureNumber = 0
+			texCoordScroll = 0.9677734 0.04003906
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 6
+			textureNumber = 0
+			texCoordScroll = 0.5966797 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 6
+			textureNumber = 0
+			texCoordScroll = 0.6337891 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 6
+			textureNumber = 0
+			texCoordScroll = 0.6708984 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 6
+			textureNumber = 0
+			texCoordScroll = 0.7080078 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 6
+			textureNumber = 0
+			texCoordScroll = 0.7451172 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 6
+			textureNumber = 0
+			texCoordScroll = 0.7822266 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 6
+			textureNumber = 0
+			texCoordScroll = 0.8193359 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 6
+			textureNumber = 0
+			texCoordScroll = 0.8564453 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 6
+			textureNumber = 0
+			texCoordScroll = 0.8935547 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 6
+			textureNumber = 0
+			texCoordScroll = 0.9306641 0.04003906
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 6
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 6
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 6
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 6
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.1884766
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 6
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.2255859
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 6
+			textureNumber = 0
+			texCoordScroll = 0.7021484 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.2626953
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.2998047
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.3369141
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.3740234
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.4111328
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.4482422
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.4853516
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.5224609
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.5595703
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.5966797
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.6337891
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.6708984
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.7080078
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.7451172
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 7
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.7822266
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 7
+			textureNumber = 0
+			texCoordScroll = 0.8427734 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 8
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.8193359
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 8
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.8564453
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 8
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.8935547
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 8
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.9306641
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 8
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 8
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 8
+			textureNumber = 0
+			texCoordScroll = 0.1884766 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 8
+			textureNumber = 0
+			texCoordScroll = 0.2255859 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 8
+			textureNumber = 0
+			texCoordScroll = 0.2626953 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 8
+			textureNumber = 0
+			texCoordScroll = 0.2998047 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 8
+			textureNumber = 0
+			texCoordScroll = 0.3369141 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 8
+			textureNumber = 0
+			texCoordScroll = 0.3740234 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 8
+			textureNumber = 0
+			texCoordScroll = 0.4111328 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 8
+			textureNumber = 0
+			texCoordScroll = 0.4482422 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 8
+			textureNumber = 0
+			texCoordScroll = 0.4853516 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 8
+			textureNumber = 0
+			texCoordScroll = 0.8076172 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 9
+			textureNumber = 0
+			texCoordScroll = 0.5224609 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 9
+			textureNumber = 0
+			texCoordScroll = 0.5595703 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 9
+			textureNumber = 0
+			texCoordScroll = 0.5966797 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 9
+			textureNumber = 0
+			texCoordScroll = 0.6337891 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 9
+			textureNumber = 0
+			texCoordScroll = 0.6708984 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 9
+			textureNumber = 0
+			texCoordScroll = 0.7080078 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 9
+			textureNumber = 0
+			texCoordScroll = 0.7451172 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 9
+			textureNumber = 0
+			texCoordScroll = 0.7822266 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 9
+			textureNumber = 0
+			texCoordScroll = 0.8193359 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 9
+			textureNumber = 0
+			texCoordScroll = 0.8564453 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 9
+			textureNumber = 0
+			texCoordScroll = 0.8935547 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 9
+			textureNumber = 0
+			texCoordScroll = 0.9306641 0.07714844
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 9
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 9
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 9
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.1884766
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 9
+			textureNumber = 0
+			texCoordScroll = 0.6669922 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.2255859
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.2626953
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.2998047
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.3369141
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.3740234
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.4111328
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.4482422
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.4853516
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.5224609
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.5595703
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.5966797
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.6337891
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.6708984
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.7080078
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 10
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.7451172
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 10
+			textureNumber = 0
+			texCoordScroll = 0.9677734 0.002929688
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 11
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.7822266
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 11
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.8193359
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 11
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.8564453
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 11
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.8935547
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 11
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.9306641
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 11
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 11
+			textureNumber = 0
+			texCoordScroll = 0.1884766 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 11
+			textureNumber = 0
+			texCoordScroll = 0.2255859 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 11
+			textureNumber = 0
+			texCoordScroll = 0.2626953 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 11
+			textureNumber = 0
+			texCoordScroll = 0.2998047 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 11
+			textureNumber = 0
+			texCoordScroll = 0.3369141 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 11
+			textureNumber = 0
+			texCoordScroll = 0.3740234 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 11
+			textureNumber = 0
+			texCoordScroll = 0.4111328 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 11
+			textureNumber = 0
+			texCoordScroll = 0.4482422 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 11
+			textureNumber = 0
+			texCoordScroll = 0.4853516 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 11
+			textureNumber = 0
+			texCoordScroll = 0.6318359 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 12
+			textureNumber = 0
+			texCoordScroll = 0.5224609 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 12
+			textureNumber = 0
+			texCoordScroll = 0.5595703 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 12
+			textureNumber = 0
+			texCoordScroll = 0.5966797 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 12
+			textureNumber = 0
+			texCoordScroll = 0.6337891 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 12
+			textureNumber = 0
+			texCoordScroll = 0.6708984 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 12
+			textureNumber = 0
+			texCoordScroll = 0.7080078 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 12
+			textureNumber = 0
+			texCoordScroll = 0.7451172 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 12
+			textureNumber = 0
+			texCoordScroll = 0.7822266 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 12
+			textureNumber = 0
+			texCoordScroll = 0.8193359 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 12
+			textureNumber = 0
+			texCoordScroll = 0.8564453 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 12
+			textureNumber = 0
+			texCoordScroll = 0.8935547 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 12
+			textureNumber = 0
+			texCoordScroll = 0.9306641 0.1142578
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 12
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 12
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.1884766
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 12
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.2255859
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 12
+			textureNumber = 0
+			texCoordScroll = 0.7724609 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.2626953
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.2998047
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.3369141
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.3740234
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.4111328
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.4482422
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.4853516
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.5224609
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.5595703
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.5966797
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.6337891
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.6708984
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.7080078
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.7451172
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 13
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.7822266
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 13
+			textureNumber = 0
+			texCoordScroll = 0.8779297 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 14
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.8193359
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 1 14
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.8564453
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 2 14
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.8935547
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 3 14
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.9306641
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 4 14
+			textureNumber = 0
+			texCoordScroll = 0.1884766 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 5 14
+			textureNumber = 0
+			texCoordScroll = 0.2255859 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 6 14
+			textureNumber = 0
+			texCoordScroll = 0.2626953 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 7 14
+			textureNumber = 0
+			texCoordScroll = 0.2998047 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 8 14
+			textureNumber = 0
+			texCoordScroll = 0.3369141 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 9 14
+			textureNumber = 0
+			texCoordScroll = 0.3740234 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 10 14
+			textureNumber = 0
+			texCoordScroll = 0.4111328 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 11 14
+			textureNumber = 0
+			texCoordScroll = 0.4482422 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 12 14
+			textureNumber = 0
+			texCoordScroll = 0.4853516 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 13 14
+			textureNumber = 0
+			texCoordScroll = 0.5224609 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 14 14
+			textureNumber = 0
+			texCoordScroll = 0.5595703 0.1513672
+			texCoordScale = 0.03125 0.03125
+		}
+		item
+		{
+			tileIndex = 15 14
+			textureNumber = 0
+			texCoordScroll = 0.9482422 0.1513672
+			texCoordScale = 0.02929688 0.03125
+		}
+		item
+		{
+			tileIndex = 0 15
+			textureNumber = 0
+			texCoordScroll = 0.002929688 0.9677734
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 1 15
+			textureNumber = 0
+			texCoordScroll = 0.04003906 0.9677734
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 2 15
+			textureNumber = 0
+			texCoordScroll = 0.07714844 0.9677734
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 3 15
+			textureNumber = 0
+			texCoordScroll = 0.1142578 0.9677734
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 4 15
+			textureNumber = 0
+			texCoordScroll = 0.1513672 0.9677734
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 5 15
+			textureNumber = 0
+			texCoordScroll = 0.1884766 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 6 15
+			textureNumber = 0
+			texCoordScroll = 0.2255859 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 7 15
+			textureNumber = 0
+			texCoordScroll = 0.2626953 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 8 15
+			textureNumber = 0
+			texCoordScroll = 0.2998047 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 9 15
+			textureNumber = 0
+			texCoordScroll = 0.3369141 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 10 15
+			textureNumber = 0
+			texCoordScroll = 0.3740234 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 11 15
+			textureNumber = 0
+			texCoordScroll = 0.4111328 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 12 15
+			textureNumber = 0
+			texCoordScroll = 0.4482422 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 13 15
+			textureNumber = 0
+			texCoordScroll = 0.4853516 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 14 15
+			textureNumber = 0
+			texCoordScroll = 0.5224609 0.1884766
+			texCoordScale = 0.03125 0.02929688
+		}
+		item
+		{
+			tileIndex = 15 15
+			textureNumber = 0
+			texCoordScroll = 0.5595703 0.1884766
+			texCoordScale = 0.02929688 0.02929688
+		}
+	}
+}
+entity
+{
+	type = Light
+	uin = 50
+	classPrompt = Light
+	lightType = Directional
+	diffuseColor = 1 1 1
+	specularColor = 1 1 1
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 50.19473 -21.19502 120.4295
+	rotation = -0.8146688 0.1720048 0.2424292 0.4979534
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_0
+}
+entity
+{
+	type = SkyBox
+	uin = 51
+	classPrompt = SkyBox
+	textureName = Materials\Game\EarlyMorningSkyBox\EarlyMorning.jpg
+	colorScale = 1 1 1
+}
+entity
+{
+	type = VolcanoSmoke
+	uin = 52
+	classPrompt = MapObject
+	position = -273.9149 222.431 97.13441
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = VolcanoSmoke_0
+}
+entity
+{
+	type = MapChangeRegion
+	uin = 53
+	classPrompt = MapChangeRegion
+	mapName = Maps\MainDemo\Map.map
+	spawnPointName = SpawnPoint_FromTerrainDemo
+	shapeType = Box
+	filter = OnlyDynamicBodies
+	position = -3.950167 -102.0618 24.71828
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 3 5.405561 3
+	editorAlignmentMethod = None
+	name = MapChangeRegion_0
+	checkType = Bounds
+}
+entity
+{
+	type = SpawnPoint
+	uin = 54
+	classPrompt = SpawnPoint
+	defaultPoint = True
+	position = -3.984377 -93.7075 24.84103
+	rotation = 0 0 -0.7071068 -0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_0
+}
+entity
+{
+	type = Door
+	uin = 55
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = False
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -4.072268 -89.55941 24.80241
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_0
+}
+entity
+{
+	type = Door
+	uin = 56
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = True
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -4.063875 -105.8194 24.81148
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_2
+}
+entity
+{
+	type = Stone
+	uin = 57
+	classPrompt = MapObject
+	position = 172.3786 55.01925 15.436
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_0
+}
+entity
+{
+	type = Stone
+	uin = 58
+	classPrompt = MapObject
+	position = 175.9994 52.06925 21.28857
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_1
+}
+entity
+{
+	type = Stone
+	uin = 59
+	classPrompt = MapObject
+	position = 172.9118 55.04903 17.96782
+	rotation = 0.5783059 0 0 0.81582
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_2
+}
+entity
+{
+	type = Stone
+	uin = 60
+	classPrompt = MapObject
+	position = 173.5509 53.92459 20.27202
+	rotation = 0 0 -0.9060401 0.4231919
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_3
+}
+entity
+{
+	type = Stone
+	uin = 61
+	classPrompt = MapObject
+	position = 177.3153 49.83341 19.91711
+	rotation = 0.03701831 0.1514679 -0.2345058 0.9595281
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_4
+}
+entity
+{
+	type = Stone
+	uin = 62
+	classPrompt = MapObject
+	position = 178.5587 48.83532 17.69337
+	rotation = 0.261414 0 0 0.9652268
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_5
+}
+entity
+{
+	type = Stone
+	uin = 63
+	classPrompt = MapObject
+	position = 179.2085 48.34104 15.71373
+	rotation = -0.3161237 -0.3343012 -0.1201321 0.8797027
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_6
+}
+entity
+{
+	type = StopSign
+	uin = 64
+	classPrompt = MapObject
+	position = 174.3116 47.40584 17.4002
+	rotation = 0 0 -0.4625281 0.8866047
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = StopSign_0
+}
+entity
+{
+	type = Stone
+	uin = 65
+	classPrompt = MapObject
+	position = 196.8314 134.5025 95.54908
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_7
+}
+entity
+{
+	type = Stone
+	uin = 66
+	classPrompt = MapObject
+	position = 194.2536 128.3424 95.54908
+	rotation = 0 0 -0.2171822 -0.9761311
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_8
+}
+entity
+{
+	type = Stone
+	uin = 67
+	classPrompt = MapObject
+	position = 195.1617 122.1168 95.54908
+	rotation = 0 0 0.8375649 0.5463379
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_9
+}
+entity
+{
+	type = Stone
+	uin = 68
+	classPrompt = MapObject
+	position = 199.9851 117.0658 95.54908
+	rotation = 0 0 -0.0477748 0.9988582
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_10
+}
+entity
+{
+	type = Stone
+	uin = 69
+	classPrompt = MapObject
+	position = 205.7275 116.4931 95.54908
+	rotation = 0 0 0.3613833 0.9324174
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_11
+}
+entity
+{
+	type = Stone
+	uin = 70
+	classPrompt = MapObject
+	position = 215.1795 124.5939 95.54908
+	rotation = 0 0 0.6239831 0.7814379
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_12
+}
+entity
+{
+	type = Stone
+	uin = 71
+	classPrompt = MapObject
+	position = 214.4437 130.8081 95.54908
+	rotation = 0 0 -0.6771022 0.735889
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_13
+}
+entity
+{
+	type = Stone
+	uin = 72
+	classPrompt = MapObject
+	position = 210.6764 136.7719 95.54908
+	rotation = 0 0 0.6871809 0.7264864
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_14
+}
+entity
+{
+	type = Stone
+	uin = 73
+	classPrompt = MapObject
+	position = 203.5534 138.0741 95.54908
+	rotation = 0 0 0.6507186 -0.759319
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_15
+}
+entity
+{
+	type = Stone
+	uin = 74
+	classPrompt = MapObject
+	position = 211.5186 118.9157 95.54908
+	rotation = 0 0 -0.9558256 -0.2939343
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_16
+}
+entity
+{
+	type = ZombieStatue
+	uin = 75
+	classPrompt = MapObject
+	position = 201.5473 132.8367 95.3548
+	rotation = 0 0 -0.3382337 0.9410622
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ZombieStatue_0
+}
+entity
+{
+	type = ZombieStatue
+	uin = 76
+	classPrompt = MapObject
+	position = 211.0862 122.515 95.39835
+	rotation = 0 0 0.9350029 0.3546401
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ZombieStatue_1
+}
+entity
+{
+	type = ZombieStatue
+	uin = 77
+	classPrompt = MapObject
+	position = 210.8824 131.7792 95.38449
+	rotation = 0 0 0.9134717 -0.4069023
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ZombieStatue_2
+}
+entity
+{
+	type = ZombieStatue
+	uin = 78
+	classPrompt = MapObject
+	position = 201.7511 121.4601 95.26147
+	rotation = 0 0 0.4228157 0.9062157
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ZombieStatue_3
+}
+entity
+{
+	type = WindMill
+	uin = 79
+	classPrompt = MapObject
+	position = 153.0751 -93.82777 33.88951
+	rotation = 0 0 -0.9402355 -0.3405249
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WindMill_0
+}
+entity
+{
+	type = TestLamp
+	uin = 80
+	classPrompt = MapObject
+	position = 206.0732 133.2157 95.58913
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_0
+}
+entity
+{
+	type = TestLamp
+	uin = 81
+	classPrompt = MapObject
+	position = 199.1385 126.4958 95.60522
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_1
+}
+entity
+{
+	type = TestLamp
+	uin = 82
+	classPrompt = MapObject
+	position = 206.7034 121.2616 95.61373
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_2
+}
+entity
+{
+	type = TestLamp
+	uin = 83
+	classPrompt = MapObject
+	position = 212.3262 127.1327 95.59632
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_3
+}
+entity
+{
+	type = RabbitHead
+	uin = 84
+	classPrompt = MapObject
+	position = 205.7738 127.7787 97.16929
+	rotation = 0 0 0 1
+	scale = 0.3571429 0.3571429 0.3571429
+	editorAlignmentMethod = None
+	name = RabbitHead_0
+}
+entity
+{
+	type = ZombieStatue
+	uin = 85
+	classPrompt = MapObject
+	position = 265.3326 148.0351 35.37507
+	rotation = 0 0 0.8720663 -0.4893878
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ZombieStatue_4
+}
+entity
+{
+	type = Stone
+	uin = 86
+	classPrompt = MapObject
+	position = 172.7067 151.9925 58.2179
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_17
+}
+entity
+{
+	type = Stone
+	uin = 87
+	classPrompt = MapObject
+	position = 170.6873 149.8609 59.50317
+	rotation = 0.2930495 0.01249538 0.9551478 0.0407267
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_18
+}
+entity
+{
+	type = Fir
+	uin = 88
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 208.9907 173.967 43.03609
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_0
+}
+entity
+{
+	type = Fir
+	uin = 89
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 216.6451 174.462 42.51709
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_1
+}
+entity
+{
+	type = Fir
+	uin = 90
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 202.7626 172.224 43.38917
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_2
+}
+entity
+{
+	type = StopSign
+	uin = 91
+	classPrompt = MapObject
+	position = 172.9355 102.1956 82.50132
+	rotation = 0 0 0.9894003 -0.1452144
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = StopSign_1
+}
+entity
+{
+	type = Fir
+	uin = 92
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 184.5596 62.10123 17.92385
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_4
+}
+entity
+{
+	type = Fir
+	uin = 93
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 191.5146 51.45784 18.07872
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_6
+}
+entity
+{
+	type = Fir
+	uin = 94
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 168.3204 40.3185 15.31001
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_7
+}
+entity
+{
+	type = Fir
+	uin = 95
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 163.5017 45.919 15.26369
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_8
+}
+entity
+{
+	type = Fir
+	uin = 96
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 155.758 38.18862 15.12971
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_9
+}
+entity
+{
+	type = Fir
+	uin = 97
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 160.2659 33.13779 15.01563
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_10
+}
+entity
+{
+	type = Fan
+	uin = 98
+	classPrompt = Fan
+	forceMaximum = 5500
+	throttle = 1
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 190.5122 107.3545 92.52306
+	rotation = 0.3090129 -0.9006029 0.03381666 0.3037798
+	scale = 50 3 3
+	editorAlignmentMethod = None
+	name = Fan_0
+}
+entity
+{
+	type = Stone
+	uin = 99
+	classPrompt = MapObject
+	position = 205.2839 127.5939 95.23774
+	rotation = 0 0 0.6507186 -0.759319
+	scale = 1.516654 1.516654 0.6559812
+	editorAlignmentMethod = None
+	name = Stone_19
+}
+entity
+{
+	type = CutSceneManager
+	uin = 100
+	classPrompt = CutSceneManager
+}
+entity
+{
+	type = Region
+	uin = 101
+	classPrompt = Region
+	relationships = 11
+	shapeType = Box
+	filter = OnlyDynamicBodies
+	position = 213.873 104.6186 91.51229
+	rotation = 0 0 0.3829876 0.9237535
+	scale = 4.083335 14.26013 4.0096
+	editorAlignmentMethod = None
+	logicClass = 11
+	name = Region_TowerCutScene
+	checkType = Bounds
+}
+entity
+{
+	type = MapCameraCurve
+	uin = 102
+	classPrompt = MapCameraCurve
+	relationships = 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 45
+	fov = 0
+	curveType = UniformCubicSpline
+	points = 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124
+	automaticTimeStep = 3
+	owner = 102
+	time = 0
+	position = 217.3734 105.7812 94.62359
+	rotation = -0.05046919 0.09094407 0.4826049 0.8696406
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = MapCameraCurve_Tower
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 103
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 3
+	position = 222.0616 115.9172 96.41611
+	rotation = 0 0 0.4686572 0.8833801
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 104
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 6
+	position = 222.9954 125.8396 96.41611
+	rotation = 0 0 0.6812995 0.7320048
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 105
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 9
+	position = 215.386 138.4171 96.41611
+	rotation = 0 0 0.929567 0.3686532
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 106
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 12
+	position = 201.5191 142.4714 96.41611
+	rotation = 0 0 0.977762 -0.2097177
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 107
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 15
+	position = 190.4876 132.6321 96.41611
+	rotation = 0 0 0.7530841 -0.6579242
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 108
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 18
+	position = 189.8066 116.8456 96.41611
+	rotation = 0 0 0.365146 -0.9309503
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 109
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 21
+	position = 195.2173 106.6643 97.90751
+	rotation = 0 0 0.3248256 -0.9457741
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 110
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 24
+	position = 204.5027 99.91873 101.521
+	rotation = 0 0 0.1020163 0.994783
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 111
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 27
+	position = 217.1816 102.8847 102.708
+	rotation = 0 0 0.4162489 0.909251
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 112
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 30
+	position = 231.4089 113.3142 106.4579
+	rotation = -0.1064532 0.06730134 0.8385161 0.5301225
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 113
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 33
+	position = 230.9435 133.3082 101.7454
+	rotation = -0.02960502 -0.01663839 0.9944212 -0.09987042
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 114
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 36
+	position = 215.7348 152.6923 101.4245
+	rotation = -0.0176022 -0.02904231 0.8168857 -0.5757998
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 115
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 39
+	position = 180.6443 157.4546 106.583
+	rotation = -0.001124022 -0.03394157 0.4302354 -0.9020783
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 116
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 42
+	position = 159.2525 142.2625 117.6103
+	rotation = -0.01020619 -0.1512805 0.155679 -0.9761021
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 117
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 45
+	position = 156.3142 108.2423 117.0412
+	rotation = -0.03326536 0.1479303 0.1285248 0.9800472
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 118
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 48
+	position = 169.5416 81.96103 127.0112
+	rotation = -0.07403678 0.1717918 0.3494809 0.9180797
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 119
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 51
+	position = 190.4597 71.58309 127.0112
+	rotation = -0.1446908 0.1935831 0.5679053 0.7868133
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 120
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 54
+	position = 209.6273 72.57076 127.0112
+	rotation = -0.1794477 0.1900153 0.6760643 0.6889349
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 121
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 57
+	position = 232.024 86.00118 127.0112
+	rotation = -0.2315765 0.1211595 0.8636774 0.4309935
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 122
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 60
+	position = 262.17 130.8046 127.0112
+	rotation = -0.2595594 -0.03059787 0.9562635 -0.131355
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 123
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 63
+	position = 288.0757 184.6208 127.9573
+	rotation = -0.2453206 -0.09013932 0.8994722 -0.3502055
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCameraCurvePoint
+	uin = 124
+	classPrompt = MapCameraCurvePoint
+	relationships = 102
+	fov = 0
+	owner = 102
+	time = 66
+	position = 306.164 210.0119 135.7227
+	rotation = -0.1885826 -0.06805917 0.9130551 -0.3551578
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = Fir
+	uin = 125
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 299.2471 -49.17562 14.629
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_11
+}
+entity
+{
+	type = Fir
+	uin = 126
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 139.6132 -91.7924 32.76566
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_3
+}
+entity
+{
+	type = Fir
+	uin = 127
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 151.1526 -80.29556 29.92555
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_5
+}
+entity
+{
+	type = Fir
+	uin = 128
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 144.4743 -79.42406 29.49071
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_12
+}
+entity
+{
+	type = Fir
+	uin = 129
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 135.773 -83.98599 30.43362
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_13
+}
+entity
+{
+	type = Fir
+	uin = 130
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 133.2725 -96.47948 31.04058
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_14
+}
+entity
+{
+	type = Fir
+	uin = 131
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 140.6471 -104.9087 30.69923
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_15
+}
+entity
+{
+	type = Fir
+	uin = 132
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 134.4139 -111.0851 27.3548
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_16
+}
+entity
+{
+	type = Fir
+	uin = 133
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 126.2622 -102.5491 28.71551
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_17
+}
+entity
+{
+	type = Fir
+	uin = 134
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 125.6023 -93.70395 29.34851
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_18
+}
+entity
+{
+	type = Fir
+	uin = 135
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 154.7747 -65.17567 26.31261
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_19
+}
+entity
+{
+	type = Fir
+	uin = 136
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 144.4671 -67.25244 26.31989
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_20
+}
+entity
+{
+	type = Fir
+	uin = 137
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 137.1011 -56.46958 21.70133
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_21
+}
+entity
+{
+	type = Box
+	uin = 138
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 144.4179 -94.17149 35.16895
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_0
+}
+entity
+{
+	type = Box
+	uin = 139
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 144.3107 -95.94192 35.0835
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_1
+}
+entity
+{
+	type = Box
+	uin = 140
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 142.8772 -96.01908 34.66824
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_2
+}
+entity
+{
+	type = Box
+	uin = 141
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 142.6614 -94.24138 34.7009
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_3
+}
+entity
+{
+	type = Fir
+	uin = 142
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 145.7469 -9.262037 15.81942
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_22
+}
+entity
+{
+	type = SubmachineGunItem
+	uin = 143
+	classPrompt = WeaponItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -3.851856 -82.33729 24.39795
+	rotation = 0 0 0.9248362 -0.3803657
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = Fir
+	uin = 144
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -5.48497 10.06557 8.474701
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_23
+}
+entity
+{
+	type = Fir
+	uin = 145
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 3.307836 20.55352 9.183022
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_24
+}
+entity
+{
+	type = Fir
+	uin = 146
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -4.468139 26.55273 9.093473
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_25
+}
+entity
+{
+	type = Fir
+	uin = 147
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -15.79945 21.65048 8.222078
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_26
+}
+entity
+{
+	type = Fir
+	uin = 148
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -18.00647 14.33246 8.63435
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_27
+}
+entity
+{
+	type = Fir
+	uin = 149
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -12.82249 2.585066 10.09453
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_28
+}
+entity
+{
+	type = Fir
+	uin = 150
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -11.53491 15.91403 7.72593
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_29
+}
+entity
+{
+	type = Fir
+	uin = 151
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 3.916288 26.72587 9.215139
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_30
+}
+entity
+{
+	type = Fir
+	uin = 152
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 0.9006183 15.93773 9.073559
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_31
+}
+entity
+{
+	type = Fir
+	uin = 153
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -11.3111 27.92357 8.731956
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_32
+}
+entity
+{
+	type = Fir
+	uin = 154
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -20.04851 6.15915 8.793054
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_34
+}
+entity
+{
+	type = Fir
+	uin = 155
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -5.607452 36.53726 10.43731
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_35
+}
+entity
+{
+	type = Fir
+	uin = 156
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 0.1993316 44.81236 10.95767
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_36
+}
+entity
+{
+	type = Fir
+	uin = 157
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 14.13028 29.28512 9.626222
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_37
+}
+entity
+{
+	type = Fir
+	uin = 158
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 18.69451 33.39623 10.91212
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_38
+}
+entity
+{
+	type = Fir
+	uin = 159
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 2.140035 30.78253 9.762524
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_39
+}
+entity
+{
+	type = Fir
+	uin = 160
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -23.2205 -3.626888 9.634977
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_40
+}
+entity
+{
+	type = Stone
+	uin = 161
+	classPrompt = MapObject
+	position = -10.61969 22.53223 8.190331
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_20
+}
+entity
+{
+	type = ZombieStatue
+	uin = 162
+	classPrompt = MapObject
+	position = -6.272193 24.5207 8.887875
+	rotation = 0 0 -0.6456628 0.7636226
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ZombieStatue_5
+}
+entity
+{
+	type = Stone
+	uin = 163
+	classPrompt = MapObject
+	position = -1.459056 23.98454 9.035711
+	rotation = 0 0 -0.4866554 0.873594
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_21
+}
+entity
+{
+	type = WaterPlane
+	uin = 164
+	classPrompt = WaterPlane
+	size = 10000 10000
+	position = 0 0 6
+	segments = 20 20
+	renderQueueGroup = Queue3
+	reflectionLevel = OnlyModels
+	physicsHeight = 10
+	deepColor = 0 0.3 0.5
+	shallowColor = 0 1 1
+}
+entity
+{
+	type = Box
+	uin = 165
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 44.37492 -18.13112 12.71342
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_4
+}
+entity
+{
+	type = Box
+	uin = 166
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 45.64149 -22.07791 12.54498
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_5
+}
+entity
+{
+	type = Box
+	uin = 167
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 53.32344 -1.545373 13.10871
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_6
+}
+entity
+{
+	type = Box
+	uin = 168
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 58.68441 -9.573839 12.29834
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_7
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 169
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = 61.85351 -16.22516 6.233816
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_0
+}
+entity
+{
+	type = Fir
+	uin = 170
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 233.2777 -274.9905 23.95351
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_33
+}
+entity
+{
+	type = Fir
+	uin = 171
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 222.9821 -280.4842 19.81033
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_41
+}
+entity
+{
+	type = Fir
+	uin = 172
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 100.3562 -323.6844 30.38828
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_42
+}
+entity
+{
+	type = Fir
+	uin = 173
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 95.1218 -325.294 28.38728
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_43
+}
+entity
+{
+	type = Fir
+	uin = 174
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 87.29636 -326.1935 26.66253
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Fir_44
+}
+entity
+{
+	type = Stone
+	uin = 175
+	classPrompt = MapObject
+	position = 226.0137 -278.3105 20.57124
+	rotation = -0.9393028 0 0 0.3430893
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_22
+}
+entity
+{
+	type = StaticMesh
+	uin = 176
+	classPrompt = StaticMesh
+	position = -4.082197 -97.2947 24.87519
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	meshName = Models\CorridorExit\CorridorExit.mesh
+	allowDecals = All
+}

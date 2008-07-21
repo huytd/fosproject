@@ -1,0 +1,18 @@
+type VolcanoSmoke
+{
+	class = MapObject
+	allowEditorCreate = True
+	allowEmptyName = False
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Models\\DefaultBox\\DefaultBox.mesh"
+			onlyForEditor = True
+		}
+		particle
+		{
+			particleName = VolcanoSmokeParticle
+		}
+	}
+}

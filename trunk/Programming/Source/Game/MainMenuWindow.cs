@@ -42,7 +42,7 @@ namespace Game
 			//Run button handler
 			( (EButton)window.Controls[ "Run" ] ).Click += delegate( EButton sender )
 			{
-				GameEngineApp.Instance.SetNeedMapLoad( "Maps\\MainDemo\\Map.map" );
+				GameEngineApp.Instance.SetNeedMapLoad( "Maps\\Vietheroes\\Map.map" );
 			};
 
 			//add version info control
@@ -183,7 +183,7 @@ namespace Game
 					worldTypeName, EntityTypes.Instance.GetClassInfoByEntityClassName( "World" ) );
 			}
 
-			if( !GameEngineApp.Instance.MapLoad( "Maps\\MainMenu\\Map.map", worldType, true ) )
+			if( !GameEngineApp.Instance.MapLoad( "Maps\\Vietheroes\\Map.map", worldType, true ) )
 				return;
 
 			mapInstance = Map.Instance;

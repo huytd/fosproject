@@ -1,0 +1,14 @@
+type DestructibleHouseRuins
+{
+	class = MapObject
+	allowEditorCreate = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\Dynamic\DestructibleHouse\DestructibleHouseRuins.mesh
+			castShadows = True
+			toCollision = True
+		}
+	}
+}

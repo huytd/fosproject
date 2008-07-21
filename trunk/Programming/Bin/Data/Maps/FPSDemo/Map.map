@@ -1,0 +1,1623 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+gameType = Action
+ambientLight = 0.3921569 0.3921569 0.3921569
+soundDistanceFactor = 10
+editorCameraPosition = 43.5733 -13.51879 14.93373
+editorCameraDirection = 2.657077 -0.3393522
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawSceneGraphInfo = False
+drawRegions = False
+drawMapObjectBounds = False
+drawSceneNodeBounds = False
+drawStaticMeshObjectBounds = False
+drawZonesPortalsOccluders = False
+drawLights = False
+drawStaticGeometry = True
+drawModels = True
+drawEffects = True
+drawGui = True
+drawWireframe = False
+drawGameSpecificDebugGeometry = False
+shadowTechnique = ShadowmapHigh
+shadowColor = 0.6 0.6 0.6 0.6
+shadowFarDistance = 60
+shadow2DTextureSize = 1024
+shadow2DTextureCount = 2
+shadowCubicTextureSize = 512
+shadowCubicTextureCount = 1
+frustumTest = False
+fov = 80
+nearFarClipDistance = 0 0
+logicSystemManager = 3
+sceneGraphDynamicTree = False
+sceneGraphType = Quadtree
+rootEditorLayer
+{
+	layer
+	{
+		name = ZonesAndPortals
+		allowEdit = False
+	}
+	layer
+	{
+		name = StaticGeometry
+		allowEdit = False
+	}
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 3
+	mapClassManager = 4
+	entity
+	{
+		type = LogicClassManager
+		uin = 4
+	}
+}
+entity
+{
+	type = Collision
+	uin = 5
+	classPrompt = Collision
+}
+entity
+{
+	type = SkyBox
+	uin = 6
+	classPrompt = SkyBox
+	textureName = Defaults\SkyBox\Sky.jpg
+	colorScale = 1 1 1
+}
+entity
+{
+	type = SpawnPoint
+	uin = 7
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = 45.13498 -13.83307 1.174875
+	rotation = 0 0 -0.9627673 -0.2703313
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_0
+}
+entity
+{
+	type = Eyes
+	uin = 8
+	classPrompt = MapObject
+	position = -10.29897 0.3963017 1.942144
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 2.460675 1.824692
+	editorAlignmentMethod = None
+	name = Eyes_0
+}
+entity
+{
+	type = Palette
+	uin = 9
+	classPrompt = MapObject
+	position = -4.296133 -0.9006577 0.1273079
+	rotation = 0.5000001 -0.5000001 0.5000001 -0.5000001
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palette_0
+}
+entity
+{
+	type = Palm
+	uin = 10
+	classPrompt = MapObject
+	position = 36.60527 34.96164 0.171217
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_0
+}
+entity
+{
+	type = Palm
+	uin = 11
+	classPrompt = MapObject
+	position = 30.37452 41.87502 -0.2278614
+	rotation = 0 0 -1 -4.371139E-08
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_1
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 12
+	classPrompt = MapObject
+	position = -17.2545 -3.257999 0.1421055
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_0
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 13
+	classPrompt = MapObject
+	position = -16.24545 -2.887888 0.1341679
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_1
+}
+entity
+{
+	type = Stone
+	uin = 14
+	classPrompt = MapObject
+	position = -1.940632 -29.22477 -0.4751949
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_0
+}
+entity
+{
+	type = StopSign
+	uin = 15
+	classPrompt = MapObject
+	position = 31.65776 0.01127911 1.925655
+	rotation = 0 0 -0.380996 -0.9245769
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = StopSign_0
+}
+entity
+{
+	type = SwitchBox
+	uin = 16
+	classPrompt = MapObject
+	position = -6.507986 -14.83786 1.121012
+	rotation = 0 0 -1 0
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_0
+}
+entity
+{
+	type = SwitchBox
+	uin = 17
+	classPrompt = MapObject
+	position = -7.741426 -14.83786 1.121012
+	rotation = 0 0 -1 0
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_1
+}
+entity
+{
+	type = SwitchBox
+	uin = 18
+	classPrompt = MapObject
+	position = -8.983166 -14.83786 1.121012
+	rotation = 0 0 -1 0
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_2
+}
+entity
+{
+	type = Palette
+	uin = 19
+	classPrompt = MapObject
+	position = -3.700593 -0.9006581 1.247716
+	rotation = 0.1830128 -0.1830128 0.683013 -0.683013
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palette_1
+}
+entity
+{
+	type = SubmachineGunItem
+	uin = 20
+	classPrompt = WeaponItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 30.64974 -7.84846 0.7963609
+	rotation = 0 0 0.07564536 -0.9971348
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = ShotgunItem
+	uin = 21
+	classPrompt = WeaponItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 33.14214 -2.55924 0.7124949
+	rotation = 0 0 0.9167324 -0.3995019
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 22
+	classPrompt = MapObject
+	position = -17.09438 -8.722921 0.1421055
+	rotation = 0 0 -0.5000001 0.8660256
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_2
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 23
+	classPrompt = MapObject
+	position = -16.36995 -7.835264 0.5005059
+	rotation = -0.09763555 -0.02465671 -0.8629576 0.4951405
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_3
+}
+entity
+{
+	type = Box
+	uin = 24
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -13.24837 -4.334537 0.4553456
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_0
+}
+entity
+{
+	type = Box
+	uin = 25
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -13.2991 -3.16756 0.4595362
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_1
+}
+entity
+{
+	type = Box
+	uin = 26
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -11.63633 -3.297852 0.4624262
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_2
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 27
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -12.95221 -0.4522676 0.7609283
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_0
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 28
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -9.991734 -0.8063755 0.5251358
+	rotation = -0.7016613 0 0 0.7125106
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_1
+}
+entity
+{
+	type = Box
+	uin = 29
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -13.24837 -4.334537 1.574441
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_3
+}
+entity
+{
+	type = Box
+	uin = 30
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -13.2991 -3.16756 1.578631
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_4
+}
+entity
+{
+	type = Box
+	uin = 31
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -11.63633 -3.297852 1.581522
+	rotation = 0 0 -0.3666582 0.9303557
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_5
+}
+entity
+{
+	type = Stone
+	uin = 32
+	classPrompt = MapObject
+	position = -9.065682 -16.53822 -0.04013157
+	rotation = 0.5912928 0 0 0.806457
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_1
+}
+entity
+{
+	type = Stone
+	uin = 33
+	classPrompt = MapObject
+	position = -9.065682 -18.60723 -0.1999836
+	rotation = 0.9995679 0 0 -0.02939418
+	scale = 0.6666667 0.6666667 0.9724978
+	editorAlignmentMethod = None
+	name = Stone_2
+}
+entity
+{
+	type = SwitchBox
+	uin = 34
+	classPrompt = MapObject
+	position = -3.196938 7.367639 1.28135
+	rotation = 0 0 -1 2.980232E-08
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_3
+}
+entity
+{
+	type = SwitchBox
+	uin = 35
+	classPrompt = MapObject
+	position = -7.245618 7.367639 1.28135
+	rotation = 0 0 -1 2.980232E-08
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_4
+}
+entity
+{
+	type = SwitchBox
+	uin = 36
+	classPrompt = MapObject
+	position = -8.642047 7.367639 1.28135
+	rotation = 0 0 -1 2.980232E-08
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_5
+}
+entity
+{
+	type = WallLamp
+	uin = 37
+	classPrompt = MapObject
+	position = -8.106097 14.66323 2.357644
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WallLamp_0
+}
+entity
+{
+	type = WallLamp
+	uin = 38
+	classPrompt = MapObject
+	position = -3.840026 14.66323 2.357644
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WallLamp_1
+}
+entity
+{
+	type = WallLamp
+	uin = 39
+	classPrompt = MapObject
+	position = -12.44837 23.03601 2.357644
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WallLamp_2
+}
+entity
+{
+	type = WallLamp
+	uin = 40
+	classPrompt = MapObject
+	position = -5.726729 23.03601 2.357644
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WallLamp_3
+}
+entity
+{
+	type = SwitchBox
+	uin = 41
+	classPrompt = MapObject
+	position = -8.176216 23.03735 1.291467
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_6
+}
+entity
+{
+	type = SwitchBox
+	uin = 42
+	classPrompt = MapObject
+	position = -4.139689 22.83811 1.286743
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_7
+}
+entity
+{
+	type = SwitchBox
+	uin = 43
+	classPrompt = MapObject
+	position = -2.432864 15.99929 1.294807
+	rotation = 0 0 -0.8660254 0.5000001
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_8
+}
+entity
+{
+	type = Eyes
+	uin = 44
+	classPrompt = MapObject
+	position = -12.57928 19.93194 7.479098
+	rotation = 0 0 0 1
+	scale = 1 1.704553 1.345102
+	editorAlignmentMethod = None
+	name = Eyes_1
+}
+entity
+{
+	type = RabbitHead
+	uin = 45
+	classPrompt = MapObject
+	position = -2.778204 7.887488 3.607267
+	rotation = 0 0 0.9659259 0.258819
+	scale = 0.2357019 0.2357019 0.2357019
+	editorAlignmentMethod = None
+	name = RabbitHead_0
+}
+entity
+{
+	type = Palette
+	uin = 46
+	classPrompt = MapObject
+	position = -16.21495 8.782469 0.2664554
+	rotation = -0.7014694 0.08911106 -0.08911106 0.7014694
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palette_2
+}
+entity
+{
+	type = Palette
+	uin = 47
+	classPrompt = MapObject
+	position = -16.21495 8.782469 0.6075191
+	rotation = -0.7071068 0 0 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palette_3
+}
+entity
+{
+	type = Palette
+	uin = 48
+	classPrompt = MapObject
+	position = -16.21495 8.782469 0.9276464
+	rotation = -0.7071068 0 0 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palette_4
+}
+entity
+{
+	type = Palette
+	uin = 49
+	classPrompt = MapObject
+	position = -16.21495 8.782469 1.261804
+	rotation = -0.7024047 -0.08141031 0.08141031 0.7024047
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palette_5
+}
+entity
+{
+	type = WallLamp
+	uin = 50
+	classPrompt = MapObject
+	position = -17.78124 13.47829 2.332714
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WallLamp_4
+}
+entity
+{
+	type = StopSign
+	uin = 51
+	classPrompt = MapObject
+	position = -8.974881 23.41794 7.895647
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = StopSign_1
+}
+entity
+{
+	type = Box
+	uin = 52
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -3.960501 14.09476 3.577534
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_6
+}
+entity
+{
+	type = Box
+	uin = 53
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -3.009545 12.35149 3.56996
+	rotation = 0 0 -0.5 0.8660254
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_7
+}
+entity
+{
+	type = Box
+	uin = 54
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -6.724451 14.30395 3.573968
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_8
+}
+entity
+{
+	type = Box
+	uin = 55
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -3.665134 10.11799 3.592046
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_9
+}
+entity
+{
+	type = SubmachineGunItem
+	uin = 56
+	classPrompt = WeaponItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -8.071564 14.92118 6.558399
+	rotation = 0 0 0.9189532 -0.3943665
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 57
+	classPrompt = HealthItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -6.496827 19.24627 3.377977
+	rotation = 0 0 0.09727424 0.9952576
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = Box
+	uin = 58
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -15.90937 8.014799 6.548808
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_10
+}
+entity
+{
+	type = Box
+	uin = 59
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -15.95483 9.184337 6.555974
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_11
+}
+entity
+{
+	type = Box
+	uin = 60
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -16.05807 10.26722 6.557777
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_12
+}
+entity
+{
+	type = Box
+	uin = 61
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -16.07123 11.37635 6.559635
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_13
+}
+entity
+{
+	type = SwitchBox
+	uin = 62
+	classPrompt = MapObject
+	position = -4.263691 15.76455 4.283456
+	rotation = 0 0 -1 1.216796E-08
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_9
+}
+entity
+{
+	type = SwitchBox
+	uin = 63
+	classPrompt = MapObject
+	position = -2.635254 15.93611 4.279576
+	rotation = 0 0 -1 1.216796E-08
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_10
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 64
+	classPrompt = MapObject
+	position = 2.039387 25.36446 -0.01078845
+	rotation = 0 0 0.1663966 0.9860589
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_4
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 65
+	classPrompt = MapObject
+	position = 16.31335 37.09817 0.2590302
+	rotation = 0 0 -0.9848078 0.1736482
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_5
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 66
+	classPrompt = MapObject
+	position = 14.71165 39.87342 0.2393698
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_6
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 67
+	classPrompt = MapObject
+	position = 15.97165 38.53846 0.247093
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_7
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 68
+	classPrompt = MapObject
+	position = 12.63808 37.60411 0.2633091
+	rotation = 0 0 -0.3420202 0.9396927
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_8
+}
+entity
+{
+	type = SwitchBox
+	uin = 69
+	classPrompt = MapObject
+	position = 6.951544 26.6822 1.254562
+	rotation = 0 0 0.797882 0.6028137
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_11
+}
+entity
+{
+	type = SwitchBox
+	uin = 70
+	classPrompt = MapObject
+	position = 6.616368 27.86223 1.254562
+	rotation = 0 0 0.797882 0.6028137
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_12
+}
+entity
+{
+	type = SwitchBox
+	uin = 71
+	classPrompt = MapObject
+	position = 6.280868 29.04341 1.254562
+	rotation = 0 0 0.797882 0.6028137
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_13
+}
+entity
+{
+	type = SwitchBox
+	uin = 72
+	classPrompt = MapObject
+	position = 5.937745 30.25142 1.254562
+	rotation = 0 0 0.797882 0.6028137
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SwitchBox_14
+}
+entity
+{
+	type = Palm
+	uin = 73
+	classPrompt = MapObject
+	position = 43.81366 31.45601 0.171217
+	rotation = 0 0 0.9005151 0.4348248
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_2
+}
+entity
+{
+	type = Palm
+	uin = 74
+	classPrompt = MapObject
+	position = 0.2827148 -33.02744 0.2723751
+	rotation = 0 0 0.9005151 0.4348248
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_3
+}
+entity
+{
+	type = Palm
+	uin = 75
+	classPrompt = MapObject
+	position = 8.607487 -34.38021 0.2723751
+	rotation = 0 0 -0.8757395 0.482784
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_4
+}
+entity
+{
+	type = Stone
+	uin = 76
+	classPrompt = MapObject
+	position = -10.30718 -27.81528 -0.4751949
+	rotation = 0 0 0.9921495 -0.125057
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_3
+}
+entity
+{
+	type = Stone
+	uin = 77
+	classPrompt = MapObject
+	position = 4.35193 -33.12759 -0.4751949
+	rotation = 0 0 0.03484181 0.9993929
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Stone_4
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 78
+	classPrompt = HealthItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 13.89411 31.67377 0.1498375
+	rotation = 0 0 0.9502838 0.311385
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 79
+	classPrompt = MapObject
+	position = -14.5039 3.286608 -0.05304587
+	rotation = 0 0 0.7102931 0.7039061
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_9
+}
+entity
+{
+	type = PipeDirect4
+	uin = 80
+	classPrompt = MapObject
+	position = 53.18926 19.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_1
+}
+entity
+{
+	type = PipeDirect4
+	uin = 81
+	classPrompt = MapObject
+	position = 49.72516 21.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_2
+}
+entity
+{
+	type = PipeDirect4
+	uin = 82
+	classPrompt = MapObject
+	position = 46.26106 23.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_3
+}
+entity
+{
+	type = PipeDirect4
+	uin = 83
+	classPrompt = MapObject
+	position = 35.86875 29.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_4
+}
+entity
+{
+	type = PipeDirect4
+	uin = 84
+	classPrompt = MapObject
+	position = 42.79696 25.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_5
+}
+entity
+{
+	type = PipeDirect4
+	uin = 85
+	classPrompt = MapObject
+	position = 39.33285 27.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_6
+}
+entity
+{
+	type = PipeDirect4
+	uin = 86
+	classPrompt = MapObject
+	position = 25.47645 35.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_7
+}
+entity
+{
+	type = PipeDirect4
+	uin = 87
+	classPrompt = MapObject
+	position = 32.40465 31.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_8
+}
+entity
+{
+	type = PipeDirect4
+	uin = 88
+	classPrompt = MapObject
+	position = 28.94055 33.57397 -0.2496872
+	rotation = 0 0 -0.965926 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_9
+}
+entity
+{
+	type = PipeCorner
+	uin = 89
+	classPrompt = MapObject
+	position = 23.31139 36.82396 -0.2496872
+	rotation = 0 0 0.2588191 -0.965926
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeCorner_1
+}
+entity
+{
+	type = Zone
+	uin = 90
+	classPrompt = Zone
+	position = -10.71662 -7.409879 1.422793
+	rotation = 0 0 0 1
+	scale = 15.78596 15.73983 3.567531
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 91
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -2.827468 -7.373513 1.39234
+	rotation = 0 0 0 1
+	scale = 0.2 10.07887 3.000419
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 92
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -14.64556 -15.26757 1.106294
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 0.2 1.614137 2.357568
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Zone
+	uin = 93
+	classPrompt = Zone
+	position = 12.7512 32.71149 1.527694
+	rotation = 0 0 -0.6087614 0.7933534
+	scale = 15.78596 15.73983 3.567531
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 94
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = 4.141939 34.47218 1.211195
+	rotation = 0 0 -0.991445 0.1305262
+	scale = 0.2 1.614137 2.451837
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 95
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = 14.87679 25.11359 1.497241
+	rotation = 0 0 -0.6087614 0.7933534
+	scale = 0.2 10.17965 3.000419
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Zone
+	uin = 96
+	classPrompt = Zone
+	position = -5.774143 10.99437 4.466713
+	rotation = 0 0 0 1
+	scale = 8.309924 8.462192 2.96263
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Zone
+	uin = 97
+	classPrompt = Zone
+	position = -5.774143 19.43918 4.466713
+	rotation = 0 0 0 1
+	scale = 8.309924 8.462192 2.96263
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Zone
+	uin = 98
+	classPrompt = Zone
+	position = -14.07178 15.25962 4.466713
+	rotation = 0 0 0 1
+	scale = 8.309924 16.76114 2.96263
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 99
+	classPrompt = Portal
+	outdoor = False
+	active = True
+	position = -9.925115 19.26266 4.234972
+	rotation = 0 0 0 1
+	scale = 0 1.610206 2.443895
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 100
+	classPrompt = Portal
+	outdoor = False
+	active = True
+	position = -9.925115 11.09645 4.234972
+	rotation = 0 0 0 1
+	scale = 0 1.610206 2.443895
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 101
+	classPrompt = Portal
+	outdoor = False
+	active = True
+	position = -10.04811 19.44436 1.277861
+	rotation = 0 0 0 1
+	scale = 0 1.610206 2.443895
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 102
+	classPrompt = Portal
+	outdoor = False
+	active = True
+	position = -10.02704 11.13655 1.26997
+	rotation = 0 0 0 1
+	scale = 0 3.751773 2.443895
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 103
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -1.623692 10.34997 4.602817
+	rotation = 0 0 0 1
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 104
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -1.623692 20.12469 4.602817
+	rotation = 0 0 0 1
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 105
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -1.637608 20.09345 1.61859
+	rotation = 0 0 0 1
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 106
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -14.31374 23.58332 4.602817
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 107
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -14.31374 23.58332 1.606996
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 0.2 1.626308 1.683495
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 108
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -18.22538 10.35543 4.632504
+	rotation = 0 0 1 0
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 109
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -18.30363 10.35543 1.567289
+	rotation = 0 0 1 0
+	scale = 0.2 1.626308 1.784578
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 110
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -5.647327 6.831394 4.602817
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 111
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -14.16991 6.910918 4.641763
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 112
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -14.16991 6.910918 1.625616
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 113
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -5.651145 6.805761 1.625616
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 0.2 1.626308 1.634461
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 114
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -1.624479 12.80655 1.275902
+	rotation = 0 0 0 1
+	scale = 0.2 1.610206 2.443895
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 115
+	classPrompt = Portal
+	outdoor = False
+	active = True
+	position = -6.197113 15.17255 1.235632
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 0 1.610206 2.443895
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 116
+	classPrompt = Portal
+	outdoor = False
+	active = True
+	position = -16.97177 19.83377 3.00504
+	rotation = 0 -0.7071068 0 0.7071068
+	scale = 0 6.637568 2.194566
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 117
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = -14.22663 18.88405 5.942815
+	rotation = 0 -0.7071068 0 0.7071068
+	scale = 0.2 4.967433 3.127755
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Zone
+	uin = 118
+	classPrompt = Zone
+	position = -14.17339 15.25962 1.527616
+	rotation = 0 0 0 1
+	scale = 8.309924 16.76114 2.96263
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Zone
+	uin = 119
+	classPrompt = Zone
+	position = -5.822392 19.35166 1.464664
+	rotation = 0 0 0 1
+	scale = 8.476122 8.462192 2.96263
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Zone
+	uin = 120
+	classPrompt = Zone
+	position = -5.838025 10.95635 1.464664
+	rotation = 0 0 0 1
+	scale = 8.43059 8.462192 2.96263
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Door
+	uin = 121
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = False
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 40.49981 -11.42116 1.065263
+	rotation = 0 0 0.5 0.8660254
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_0
+}
+entity
+{
+	type = Door
+	uin = 122
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = True
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 54.57415 -19.547 1.065263
+	rotation = 0 0 0.5 0.8660254
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_1
+}
+entity
+{
+	type = Zone
+	uin = 123
+	classPrompt = Zone
+	position = 47.44224 -15.38492 3.088722
+	rotation = 0 0 0.5 0.8660254
+	scale = 5.76151 16.26564 4.18916
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = Portal
+	uin = 124
+	classPrompt = Portal
+	outdoor = True
+	active = True
+	position = 40.47208 -11.3991 2.564672
+	rotation = 0 0 -0.9659259 -0.2588191
+	scale = 0.2 2.590795 2.837975
+	editorAlignmentMethod = None
+	editorLayer = Root\ZonesAndPortals
+}
+entity
+{
+	type = MapChangeRegion
+	uin = 125
+	classPrompt = MapChangeRegion
+	mapName = Maps\MainDemo\Map.map
+	spawnPointName = SpawnPoint_FromFPSDemo
+	shapeType = Box
+	filter = OnlyDynamicBodies
+	position = 51.14046 -17.6017 1.072338
+	rotation = 0 0 -0.2588191 0.9659259
+	scale = 3.758474 5.432537 3.739524
+	editorAlignmentMethod = None
+	name = MapChangeRegion_0
+	checkType = Bounds
+}
+entity
+{
+	type = Light
+	uin = 126
+	classPrompt = Light
+	lightType = Directional
+	diffuseColor = 1 1 1
+	specularColor = 1 1 1
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = -1.873143 -3.048527 25.65666
+	rotation = 0.4354245 0.7421081 -0.1198912 0.495285
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_0
+}
+entity
+{
+	type = Placard
+	uin = 127
+	classPrompt = GameGuiObject
+	initialControl = Gui\NotImplementedPlacard.gui
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 35.4124 1.738111 2.687554
+	rotation = 0 0 -0.5618873 0.8272139
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Placard_0
+}
+entity
+{
+	type = StaticMesh
+	uin = 128
+	classPrompt = StaticMesh
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Maps\FPSDemo\StaticGeometry\Terrain.mesh
+	splitGeometryPieceSize = 30 30 30
+	allowDecals = All
+}
+entity
+{
+	type = StaticMesh
+	uin = 129
+	classPrompt = StaticMesh
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Maps\FPSDemo\StaticGeometry\Garage1.mesh
+	splitGeometryPieceSize = 30 30 30
+	allowDecals = All
+}
+entity
+{
+	type = StaticMesh
+	uin = 130
+	classPrompt = StaticMesh
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Maps\FPSDemo\StaticGeometry\Garage2.mesh
+	splitGeometryPieceSize = 30 30 30
+	allowDecals = All
+}
+entity
+{
+	type = StaticMesh
+	uin = 131
+	classPrompt = StaticMesh
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Maps\FPSDemo\StaticGeometry\House.mesh
+	splitGeometryPieceSize = 30 30 30
+	allowDecals = All
+}
+entity
+{
+	type = StaticMesh
+	uin = 132
+	classPrompt = StaticMesh
+	position = 47.21379 -15.32124 1.126466
+	rotation = 0 0 -0.258819 0.9659258
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Models\CorridorExit\CorridorExit.mesh
+	splitGeometryPieceSize = 30 30 30
+	allowDecals = All
+}

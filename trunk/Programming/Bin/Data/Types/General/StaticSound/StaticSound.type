@@ -1,0 +1,13 @@
+type StaticSound
+{
+	class = StaticSound
+	allowEditorCreate = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\General\StaticSound\StaticSound.mesh
+			onlyForEditor = True
+		}
+	}
+}

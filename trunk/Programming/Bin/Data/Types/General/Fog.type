@@ -1,0 +1,5 @@
+type Fog
+{
+	class = Fog
+	allowEditorCreate = true
+}

@@ -21,6 +21,7 @@ namespace GameEntities
 		float defaultRespawnTime;
 		[FieldSerialize]
 		string soundTake;
+        string inventoryIcon;
 
 		[DefaultValue( 0.0f )]
 		public float DefaultRespawnTime
@@ -35,6 +36,13 @@ namespace GameEntities
 			get { return soundTake; }
 			set { soundTake = value; }
 		}
+
+        [DefaultValue(@"Gui\HUD\GameMessageTitleBorder.png")]
+        public string InventoryIcon
+        {
+            get { return inventoryIcon; }
+            set { inventoryIcon = value; }
+        }
 
 		public ItemType()
 		{

@@ -1,0 +1,1078 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+gameType = RTS
+ambientLight = 0.3 0.3 0.3
+nodeSize = 30 30 30
+nodeBoundsIndents = 100 100 100
+soundDistanceFactor = 30
+editorCameraPosition = 57.39691 -118.1803 22.1694
+editorCameraDirection = 0.8011834 -0.846609
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawNodes = False
+drawRegions = False
+drawMapObjectBounds = False
+drawSceneNodeBounds = False
+drawStaticMeshObjectBounds = False
+drawZonesPortalsOccluders = False
+drawLights = False
+drawStaticGeometry = True
+drawModels = True
+drawEffects = True
+drawGui = True
+drawWireframe = False
+drawGameSpecificDebugGeometry = False
+shadowTechnique = ShadowmapHigh
+shadowColor = 0.6 0.6 0.6 0.6
+shadowFarDistance = 90
+shadow2DTextureSize = 1024
+shadow2DTextureCount = 2
+shadowCubicTextureSize = 512
+shadowCubicTextureCount = 1
+frustumTest = False
+fov = 80
+nearFarClipDistance = 0 0
+logicSystemManager = 5
+name = GameMap_0
+rootEditorLayer
+{
+	layer
+	{
+		name = StaticGeometry
+		allowEdit = False
+	}
+}
+entity
+{
+	type = Light
+	uin = 3
+	classPrompt = Light
+	lightType = Directional
+	diffuseColor = 1 1 1
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 0.3874392 -1.393759 70.58782
+	rotation = -0.8137977 1.85528E-10 0.4698463 0.3420202
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_0
+}
+entity
+{
+	type = Collision
+	uin = 4
+	classPrompt = Collision
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 5
+	mapClassManager = 6
+	entity
+	{
+		type = LogicClassManager
+		uin = 6
+	}
+}
+entity
+{
+	type = RTSFactionManager
+	uin = 7
+	classPrompt = RTSFactionManager
+	factions
+	{
+		item
+		{
+			factionType = GoodFaction
+			money = 1000
+		}
+		item
+		{
+			factionType = BadFaction
+			money = 500
+		}
+	}
+}
+entity
+{
+	type = RTSGridPathFindSystem
+	uin = 8
+	classPrompt = RTSGridPathFindSystem
+	debugDraw = False
+}
+entity
+{
+	type = SpawnPoint
+	uin = 9
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = 57.82206 -114.8043 0.3311539
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_0
+}
+entity
+{
+	type = RTSHeadquaters
+	uin = 10
+	classPrompt = RTSBuilding
+	buildedProgress = 1
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 400
+	lifeTime = 0
+	position = 109.7634 -89.31107 1.923834
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSHeadquaters_0
+}
+entity
+{
+	type = RTSGeyser
+	uin = 11
+	classPrompt = MapObject
+	position = 108.8313 -108.9058 0.1480978
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSGeyser_0
+}
+entity
+{
+	type = RTSGeyser
+	uin = 12
+	classPrompt = MapObject
+	position = 69.35328 -104.1973 0.02050638
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSGeyser_1
+}
+entity
+{
+	type = RTSFactory
+	uin = 13
+	classPrompt = RTSBuilding
+	buildedProgress = 1
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 300
+	lifeTime = 0
+	position = 95.76819 -94.09462 0.07735252
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSFactory_0
+}
+entity
+{
+	type = RTSGeyser
+	uin = 14
+	classPrompt = MapObject
+	position = 88.51537 -108.2367 0.03711684
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSGeyser_2
+}
+entity
+{
+	type = RTSGeyser
+	uin = 15
+	classPrompt = MapObject
+	position = 84.41077 -46.48654 0.06896874
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSGeyser_3
+}
+entity
+{
+	type = RTSRobot
+	uin = 16
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 87.49442 -93.38666 1.524403
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_0
+}
+entity
+{
+	type = RTSRobot
+	uin = 17
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 83.49078 -108.2402 1.592371
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_1
+}
+entity
+{
+	type = RTSRobot
+	uin = 18
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 82.689 -96.24736 1.517768
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_2
+}
+entity
+{
+	type = RTSRobot
+	uin = 19
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 81.8381 -102.4588 1.542947
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_3
+}
+entity
+{
+	type = RTSRobot
+	uin = 20
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 80.44377 -113.071 2.715563
+	rotation = 0 0 -0.9659258 -0.2588191
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_4
+}
+entity
+{
+	type = RTSRobot
+	uin = 21
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 85.79154 -113.5789 2.642702
+	rotation = 0 0 0.5 0.8660254
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_6
+}
+entity
+{
+	type = RTSConstructor
+	uin = 22
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 86.18843 -97.01734 1.494557
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_0
+}
+entity
+{
+	type = RTSConstructor
+	uin = 23
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 86.14861 -103.0386 1.502882
+	rotation = 0 0 0.258819 0.9659258
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_1
+}
+entity
+{
+	type = RTSConstructor
+	uin = 24
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 76.36246 -113.1858 2.554471
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_2
+}
+entity
+{
+	type = RTSRobot
+	uin = 25
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 34.10894 -85.08016 1.356807
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_7
+}
+entity
+{
+	type = RTSRobot
+	uin = 26
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 18.74053 -98.10292 1.37414
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_8
+}
+entity
+{
+	type = RTSConstructor
+	uin = 27
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 31.27467 -97.66859 1.471206
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_3
+}
+entity
+{
+	type = RTSRobot
+	uin = 28
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 26.00985 -90.26025 2.077838
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_10
+}
+entity
+{
+	type = RTSRobot
+	uin = 29
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 23.6033 -98.10292 1.37414
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_11
+}
+entity
+{
+	type = RTSRobot
+	uin = 30
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 29.97667 -109.7588 1.473135
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_12
+}
+entity
+{
+	type = RTSRobot
+	uin = 31
+	classPrompt = RTSCharacter
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 92.48038 -105.7938 1.500968
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_13
+}
+entity
+{
+	type = RTSConstructor
+	uin = 32
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 31.27467 -90.00484 1.471206
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_4
+}
+entity
+{
+	type = RTSMine
+	uin = 33
+	classPrompt = RTSMine
+	buildedProgress = 1
+	initialFaction = GoodFaction
+	createLifeCoefficient = 1
+	life = 200
+	lifeTime = 0
+	position = 108.8313 -108.9058 0.1480978
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSMine_0
+}
+entity
+{
+	type = Palm
+	uin = 34
+	classPrompt = MapObject
+	position = 56.20373 -87.8172 2.295723
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_2
+}
+entity
+{
+	type = Palm
+	uin = 35
+	classPrompt = MapObject
+	position = 67.4503 -87.8172 0.7466097
+	rotation = 0 0 -0.5 0.8660254
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_3
+}
+entity
+{
+	type = Palm
+	uin = 36
+	classPrompt = MapObject
+	position = 93.34623 -77.51776 1.246207
+	rotation = 0 0 -0.5 0.8660254
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_4
+}
+entity
+{
+	type = Palm
+	uin = 37
+	classPrompt = MapObject
+	position = 115.2363 -93.20181 0.2810488
+	rotation = 0 0 -0.8660254 -0.5
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_5
+}
+entity
+{
+	type = Palm
+	uin = 38
+	classPrompt = MapObject
+	position = 55.4639 -122.3505 1.082322
+	rotation = 0 0 -0.9659258 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_6
+}
+entity
+{
+	type = Palm
+	uin = 39
+	classPrompt = MapObject
+	position = 30.41675 -75.9973 1.66328
+	rotation = 0 0 -0.9659258 0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_7
+}
+entity
+{
+	type = Palm
+	uin = 40
+	classPrompt = MapObject
+	position = 20.67694 -81.62059 0.1141667
+	rotation = 0 0 -0.9659258 -0.258819
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_8
+}
+entity
+{
+	type = Palm
+	uin = 41
+	classPrompt = MapObject
+	position = 64.30889 -122.3505 -0.8824759
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_9
+}
+entity
+{
+	type = Palm
+	uin = 42
+	classPrompt = MapObject
+	position = 44.29249 -122.1975 4.5077
+	rotation = 0 0 -0.5 -0.8660253
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_10
+}
+entity
+{
+	type = PipeDirect4
+	uin = 43
+	classPrompt = MapObject
+	position = 96 -86 0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_4
+}
+entity
+{
+	type = PipeDirect4
+	uin = 44
+	classPrompt = MapObject
+	position = 100 -86 0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_5
+}
+entity
+{
+	type = PipeCorner
+	uin = 45
+	classPrompt = MapObject
+	position = 93.5 -86 0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeCorner_0
+}
+entity
+{
+	type = PipeDirect4
+	uin = 46
+	classPrompt = MapObject
+	position = 117.75 -95.43301 0.5
+	rotation = 0 0 -0.8660254 -0.5
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_6
+}
+entity
+{
+	type = PipeCorner
+	uin = 47
+	classPrompt = MapObject
+	position = 119 -97.59808 0.5
+	rotation = 0 0 -0.8660254 -0.5
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeCorner_1
+}
+entity
+{
+	type = PipeDirect4
+	uin = 48
+	classPrompt = MapObject
+	position = 115.75 -91.96891 0.5
+	rotation = 0 0 -0.8660254 -0.5
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_7
+}
+entity
+{
+	type = RTSHeadquaters
+	uin = 49
+	classPrompt = RTSBuilding
+	buildedProgress = 1
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 400
+	lifeTime = 0
+	position = 88.5 10.80181 0.2828693
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSHeadquaters_1
+}
+entity
+{
+	type = RTSFactory
+	uin = 50
+	classPrompt = RTSBuilding
+	buildedProgress = 1
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 300
+	lifeTime = 0
+	position = 72 4.801805 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSFactory_3
+}
+entity
+{
+	type = RTSGeyser
+	uin = 51
+	classPrompt = MapObject
+	position = 82 -7.698195 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSGeyser_5
+}
+entity
+{
+	type = RTSMine
+	uin = 52
+	classPrompt = RTSMine
+	buildedProgress = 1
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 200
+	lifeTime = 0
+	position = 82 -7.698195 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSMine_1
+}
+entity
+{
+	type = RTSRobot
+	uin = 53
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 86 0.3018055 1.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_15
+}
+entity
+{
+	type = RTSRobot
+	uin = 54
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 93.5 3.801805 1.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_16
+}
+entity
+{
+	type = RTSRobot
+	uin = 55
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 93.5 -8.698195 1.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_18
+}
+entity
+{
+	type = RTSRobot
+	uin = 56
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 91 -4.698195 1.5
+	rotation = 0 0 0.5 0.8660254
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_19
+}
+entity
+{
+	type = RTSRobot
+	uin = 57
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 71.5 -5.198195 1.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_20
+}
+entity
+{
+	type = RTSConstructor
+	uin = 58
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 81.5 2.301805 1.5
+	rotation = 0 0 0.258819 0.9659258
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_5
+}
+entity
+{
+	type = RTSConstructor
+	uin = 59
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 75 -10.69819 1.5
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_6
+}
+entity
+{
+	type = RTSConstructor
+	uin = 60
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 90.5 0.8018055 1.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSConstructor_7
+}
+entity
+{
+	type = Palm
+	uin = 61
+	classPrompt = MapObject
+	position = 65.5 -45 0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_0
+}
+entity
+{
+	type = Palm
+	uin = 62
+	classPrompt = MapObject
+	position = 57 -24.5 -0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_1
+}
+entity
+{
+	type = Palm
+	uin = 63
+	classPrompt = MapObject
+	position = 63 -6.857459 -0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_11
+}
+entity
+{
+	type = Palm
+	uin = 64
+	classPrompt = MapObject
+	position = 114 -1.5 0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_12
+}
+entity
+{
+	type = Palm
+	uin = 65
+	classPrompt = MapObject
+	position = 124 -27 -0.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_13
+}
+entity
+{
+	type = Palm
+	uin = 66
+	classPrompt = MapObject
+	position = 111 -53 2.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_14
+}
+entity
+{
+	type = RTSRobot
+	uin = 67
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 82.5 -14.6982 1.5
+	rotation = 0 0 0.9659258 0.2588191
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_22
+}
+entity
+{
+	type = RTSRobot
+	uin = 68
+	classPrompt = RTSCharacter
+	initialFaction = BadFaction
+	createLifeCoefficient = 1
+	life = 150
+	lifeTime = 0
+	position = 92 -13.6982 1.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = RTSRobot_23
+}
+entity
+{
+	type = PipeDirect4
+	uin = 69
+	classPrompt = MapObject
+	position = 76.5 -70 6.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_0
+}
+entity
+{
+	type = PipeDirect4
+	uin = 70
+	classPrompt = MapObject
+	position = 80.5 -70 6.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_1
+}
+entity
+{
+	type = PipeDirect4
+	uin = 71
+	classPrompt = MapObject
+	position = 84.5 -70 6.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_2
+}
+entity
+{
+	type = PipeDirect4
+	uin = 72
+	classPrompt = MapObject
+	position = 70 -70 4
+	rotation = 0 -0.7071068 0 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_3
+}
+entity
+{
+	type = PipeDirect4
+	uin = 73
+	classPrompt = MapObject
+	position = 95 -70 4
+	rotation = 0 -0.7071068 0 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_8
+}
+entity
+{
+	type = PipeDirect4
+	uin = 74
+	classPrompt = MapObject
+	position = 72.5 -70 6.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_9
+}
+entity
+{
+	type = PipeDirect4
+	uin = 75
+	classPrompt = MapObject
+	position = 70 -70 0
+	rotation = 0 -0.7071068 0 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_10
+}
+entity
+{
+	type = PipeDirect4
+	uin = 76
+	classPrompt = MapObject
+	position = 88.5 -70 6.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_11
+}
+entity
+{
+	type = PipeDirect4
+	uin = 77
+	classPrompt = MapObject
+	position = 92.5 -70 6.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_12
+}
+entity
+{
+	type = PipeCorner
+	uin = 78
+	classPrompt = MapObject
+	position = 70 -70 6.5
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeCorner_2
+}
+entity
+{
+	type = PipeCorner
+	uin = 79
+	classPrompt = MapObject
+	position = 95 -70 6.5
+	rotation = 0 0 -1 1.216796E-08
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeCorner_3
+}
+entity
+{
+	type = PipeDirect4
+	uin = 80
+	classPrompt = MapObject
+	position = 95 -70 0
+	rotation = 0 -0.7071068 0 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = PipeDirect4_13
+}
+entity
+{
+	type = Stone
+	uin = 81
+	classPrompt = MapObject
+	position = 103.0405 -87.2358 0.05208397
+	rotation = 0 0 0 1
+	scale = 1.4 1.4 1.4
+	editorAlignmentMethod = None
+	name = Stone_0
+}
+entity
+{
+	type = Stone
+	uin = 82
+	classPrompt = MapObject
+	position = 40.85007 -76.71317 -0.3951454
+	rotation = 0 0 0 1
+	scale = 1.4 1.4 1.4
+	editorAlignmentMethod = None
+	name = Stone_1
+}
+entity
+{
+	type = StaticMesh
+	uin = 83
+	classPrompt = StaticMesh
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Maps\RTSDemo\StaticGeometry\Data.mesh
+	allowDecals = All
+}

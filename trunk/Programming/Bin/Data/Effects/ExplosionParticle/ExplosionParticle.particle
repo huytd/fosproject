@@ -1,0 +1,34 @@
+ExplosionParticle
+{
+    	material        	ExplosionParticle
+    	particle_width  	10
+    	particle_height 	10
+    	cull_each       	false
+    	quota           	100
+	renderer		billboard
+
+    	emitter Point
+    	{
+		duration 	.1
+
+		colour 		0.803 0.435 0.058 1
+		angle           11
+        	emission_rate   60
+        	time_to_live    1
+		velocity	0
+	}
+
+	affector ColourFader
+	{
+		red -.7
+		green -.7
+		blue -.7
+		alpha -.7
+	}
+
+   	affector Scaler
+   	{
+	       	rate 	4
+   	}
+
+}

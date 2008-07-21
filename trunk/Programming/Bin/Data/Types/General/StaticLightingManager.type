@@ -1,0 +1,5 @@
+type StaticLightingManager
+{
+	class = StaticLightingManager
+	allowEditorCreate = true
+}

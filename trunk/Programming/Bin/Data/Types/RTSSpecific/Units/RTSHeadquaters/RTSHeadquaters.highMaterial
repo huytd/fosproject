@@ -1,0 +1,8 @@
+highLevelMaterial RTSHeadquaters
+{
+	template = ShaderBaseMaterial
+	diffuse1Map
+	{
+		texture = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquaters.jpg
+	}
+}

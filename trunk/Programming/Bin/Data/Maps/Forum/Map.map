@@ -1,0 +1,224 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+gameType = Action
+ambientLight = 0.4862745 0.4862745 0.4862745
+nodeSize = 50 50 50
+nodeBoundsIndents = 100 100 100
+soundDistanceFactor = 10
+editorCameraPosition = 198.5013 -205.2184 130.714
+editorCameraDirection = 1.618648 -0.1267444
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawNodes = False
+drawRegions = False
+drawMapObjectBounds = False
+drawSceneNodeBounds = False
+drawStaticMeshObjectBounds = False
+drawZonesPortalsOccluders = False
+drawLights = False
+drawStaticGeometry = True
+drawModels = True
+drawEffects = True
+drawGui = True
+drawWireframe = False
+drawGameSpecificDebugGeometry = False
+shadowTechnique = ShadowmapHigh
+shadowColor = 0.75 0.75 0.75
+shadowFarDistance = 30
+shadow2DTextureSize = 1024
+shadow2DTextureCount = 2
+shadowCubicTextureSize = 512
+shadowCubicTextureCount = 1
+frustumTest = False
+fov = 80
+nearFarClipDistance = 0 0
+logicSystemManager = 3
+rootEditorLayer
+{
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 3
+	mapClassManager = 4
+	entity
+	{
+		type = LogicClassManager
+		uin = 4
+	}
+}
+entity
+{
+	type = Collision
+	uin = 5
+	classPrompt = Collision
+}
+entity
+{
+	type = HeightmapTerrain
+	uin = 6
+	classPrompt = HeightmapTerrain
+	position = 0 -100 0
+	horizontalSize = 1000
+	verticalSize = 100
+	dataDirectory = HeightmapTerrain
+	masksSize = 1024
+	lodMethod = None
+	maxPixelError = 5
+	maxLODLevel = 7
+	lodOffDistance = 0
+	detailMapsDistance = 50
+	renderQueueGroup = WorldGeometry1
+	collisionMaterialName = Default
+	bottomClipHeight = -10000
+	castDynamicShadows = True
+	tileSize = 16
+	layers
+	{
+		item
+		{
+			name = base
+			baseMap = Defaults\HeightmapTerrain\Layer0Base.jpg
+			baseScale = 10
+			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = second
+			baseMap = Defaults\HeightmapTerrain\Layer1Base.jpg
+			baseScale = 10
+			detailMap = Defaults\HeightmapTerrain\Layer1Detail.jpg
+			detailScale = 2
+		}
+	}
+}
+entity
+{
+	type = Light
+	uin = 7
+	classPrompt = Light
+	lightType = Point
+	diffuseColor = 1 1 1
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = -21.29057 4.646529 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_0
+}
+entity
+{
+	type = Light
+	uin = 8
+	classPrompt = Light
+	lightType = Point
+	diffuseColor = 1 1 1
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = -13.11364 7.80815 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_1
+}
+entity
+{
+	type = Light
+	uin = 9
+	classPrompt = Light
+	lightType = Point
+	diffuseColor = 1 1 1
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 158.4653 93.42668 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_2
+}
+entity
+{
+	type = Light
+	uin = 10
+	classPrompt = Light
+	lightType = Point
+	diffuseColor = 1 1 1
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 161.7998 92.30074 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_3
+}
+entity
+{
+	type = SpawnPoint
+	uin = 11
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = 64.58014 -37.44806 32.98856
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_5
+}
+entity
+{
+	type = SkyBox
+	uin = 12
+	classPrompt = SkyBox
+	textureName = Defaults\SkyBox\Sky.jpg
+	colorScale = 1 1 1
+}
+entity
+{
+	type = SpawnPoint
+	uin = 13
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = 128.5068 -68.19258 42.00131
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_10
+}

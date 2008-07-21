@@ -47,8 +47,10 @@ namespace Game
 		//For management of pressing of the player on switches and management ingame GUI
 		const float playerUseDistance = 3;
 		const float playerUseDistanceTPS = 10;
+
 		//Current ingame GUI which with which the player can cooperate
 		MapObjectAttachedGui currentAttachedGuiObject;
+
 		//Which player can switch the current switch
 		GameEntities.Switch currentSwitch;
 
@@ -57,6 +59,10 @@ namespace Game
 
 		//HUD screen
 		EControl hudControl;
+
+        //Minimap
+        bool minimapChangeCameraPosition;
+        EControl minimapControl;
 
 		//Data for an opportunity of the player to control other objects. (for Example: Turret control)
 		Unit currentSeeUnitAllowPlayerControl;
@@ -113,12 +119,26 @@ namespace Game
 
 			//accept commands of the player
 			GameControlsManager.Instance.GameControlsEvent += GameControlsManager_GameControlsEvent;
+
+            //minimap
+            minimapControl = hudControl.Controls["Game/Minimap"];
+            //string textureName = Map.Instance.GetVirtualFileDirectory() + "\\Minimap\\Minimap";
+            //Texture minimapTexture = TextureManager.Instance.Load(textureName, Texture.Type.Type2D, 0);
+            //minimapControl.BackTexture = minimapTexture;
+            minimapControl.RenderUI += new RenderUIDelegate(Minimap_RenderUI);
 		}
 
 		protected override void OnDetach()
 		{
 			//accept commands of the player
 			GameControlsManager.Instance.GameControlsEvent -= GameControlsManager_GameControlsEvent;
+
+            //minimap
+            if (minimapControl.BackTexture != null)
+            {
+                minimapControl.BackTexture.Dispose();
+                minimapControl.BackTexture = null;
+            }
 
 			base.OnDetach();
 		}
@@ -972,6 +992,101 @@ namespace Game
 		//      posy += .025f;
 		//   }
 		//}
+
+        //Draw minimap
+        void Minimap_RenderUI(EControl sender, GuiRenderer renderer)
+        {
+            Rect screenMapRect = sender.GetScreenRectangle();
+            //Map.Instance.PhysicsBounds
+            Rect mapRect = new Rect(PhysicsWorld.Instance.InitialBounds.Minimum.ToVec2(),
+                PhysicsWorld.Instance.InitialBounds.Maximum.ToVec2());
+
+            Vec2 mapSizeInv = new Vec2(1, 1) / mapRect.Size;
+
+            //draw units
+            Vec2 screenPixel = new Vec2(1, 1) / new Vec2(EngineApp.Instance.VideoMode.Size.ToVec2());
+
+            foreach (Entity entity in Map.Instance.Children)
+            {
+                //RTSUnit unit = entity as RTSUnit;
+                //if (unit == null)
+                //    continue;
+
+                //Rect rect = new Rect(unit.MapBounds.Minimum.ToVec2(), unit.MapBounds.Maximum.ToVec2());
+
+                //rect -= mapRect.Minimum;
+                //rect.Minimum *= mapSizeInv;
+                //rect.Maximum *= mapSizeInv;
+                //rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
+                //rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
+                //rect.Minimum *= screenMapRect.Size;
+                //rect.Maximum *= screenMapRect.Size;
+                //rect += screenMapRect.Minimum;
+
+                ////increase 1 pixel
+                //rect.Maximum += new Vec2(screenPixel.X, -screenPixel.Y);
+
+                //ColorValue color;
+
+                //if (playerFaction == null || unit.Intellect == null || unit.Intellect.Faction == null)
+                //    color = new ColorValue(1, 1, 0);
+                //else if (playerFaction == unit.Intellect.Faction)
+                //    color = new ColorValue(0, 1, 0);
+                //else
+                //    color = new ColorValue(1, 0, 0);
+
+                //renderer.AddQuad(rect, color);
+            }
+
+            //Draw camera borders
+            {
+            //    Camera camera = RendererWorld.Instance.DefaultCamera;
+
+            //    if (camera.Position.Z > 0)
+            //    {
+
+            //        Plane groundPlane = new Plane(0, 0, 1, 0);
+
+            //        Vec2[] points = new Vec2[4];
+
+            //        for (int n = 0; n < 4; n++)
+            //        {
+            //            Vec2 p = Vec2.Zero;
+
+            //            switch (n)
+            //            {
+            //                case 0: p = new Vec2(0, 0); break;
+            //                case 1: p = new Vec2(1, 0); break;
+            //                case 2: p = new Vec2(1, 1); break;
+            //                case 3: p = new Vec2(0, 1); break;
+            //            }
+
+            //            Ray ray = camera.GetCameraToViewportRay(p);
+
+            //            float scale;
+            //            groundPlane.RayIntersection(ray, out scale);
+
+            //            Vec3 pos = ray.GetPointOnRay(scale);
+            //            if (ray.Direction.Z > 0)
+            //                pos = ray.Origin + ray.Direction.GetNormalize() * 10000;
+
+            //            Vec2 point = pos.ToVec2();
+
+            //            point -= mapRect.Minimum;
+            //            point *= mapSizeInv;
+            //            point = new Vec2(point.X, 1.0f - point.Y);
+            //            point *= screenMapRect.Size;
+            //            point += screenMapRect.Minimum;
+
+            //            points[n] = point;
+            //        }
+
+            //        for (int n = 0; n < 4; n++)
+            //            renderer.AddLine(points[n], points[(n + 1) % 4], new ColorValue(1, 1, 1),
+            //                screenMapRect);
+            //    }
+            }
+        }
 
 		protected override void OnRenderUI( GuiRenderer renderer )
 		{

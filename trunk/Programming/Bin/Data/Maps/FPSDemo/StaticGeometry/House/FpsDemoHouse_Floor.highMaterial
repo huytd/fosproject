@@ -1,0 +1,8 @@
+highLevelMaterial FpsDemoHouse/Floor
+{
+	template = ShaderBaseMaterial
+	diffuse1Map
+	{
+		texture = Maps\FPSDemo\StaticGeometry\House\Floor.jpg
+	}
+}

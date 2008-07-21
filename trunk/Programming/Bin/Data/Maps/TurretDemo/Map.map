@@ -1,0 +1,1740 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+relationships = 12
+gameType = Action
+ambientLight = 0.2 0.2 0.2
+soundDistanceFactor = 10
+editorCameraPosition = -180.1754 -178.4487 19.01466
+editorCameraDirection = 0.7258937 -0.6048427
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawSceneGraphInfo = False
+drawRegions = False
+drawMapObjectBounds = False
+drawSceneNodeBounds = False
+drawStaticMeshObjectBounds = False
+drawZonesPortalsOccluders = False
+drawLights = False
+drawStaticGeometry = True
+drawModels = True
+drawEffects = True
+drawGui = True
+drawWireframe = False
+drawGameSpecificDebugGeometry = False
+shadowTechnique = ShadowmapHigh
+shadowColor = 0.6 0.6 0.6 0.6
+shadowFarDistance = 30
+shadow2DTextureSize = 1024
+shadow2DTextureCount = 2
+shadowCubicTextureSize = 512
+shadowCubicTextureCount = 1
+frustumTest = False
+fov = 80
+nearFarClipDistance = 0 0
+logicSystemManager = 10
+sceneGraphDynamicTree = False
+sceneGraphType = Quadtree
+logicClass = 12
+name = GameMap_0
+rootEditorLayer
+{
+	layer
+	{
+		name = StaticGeometry
+		allowEdit = False
+	}
+}
+entity
+{
+	type = SubmachineGunItem
+	uin = 3
+	classPrompt = WeaponItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -180.2658 -184.0368 2.418807
+	rotation = 0 0 0.9652736 -0.261241
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = Light
+	uin = 4
+	classPrompt = Light
+	lightType = Directional
+	diffuseColor = 1 1 1
+	specularColor = 1 1 1
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 0.3874392 -1.393759 9.906029
+	rotation = 0.8137978 -4.367437E-07 -0.4698464 -0.3420197
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_0
+}
+entity
+{
+	type = Collision
+	uin = 5
+	classPrompt = Collision
+}
+entity
+{
+	type = MapChangeRegion
+	uin = 6
+	classPrompt = MapChangeRegion
+	mapName = Maps\MainDemo\Map.map
+	spawnPointName = SpawnPoint_FromTurretDemo
+	shapeType = Box
+	filter = OnlyDynamicBodies
+	position = -179.6791 -206.2581 1.760882
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 3 6 6.361047
+	editorAlignmentMethod = None
+	name = MapChangeRegion_0
+	checkType = Bounds
+}
+entity
+{
+	type = SpawnPoint
+	uin = 7
+	classPrompt = SpawnPoint
+	defaultPoint = True
+	position = -179.7133 -197.9038 1.883622
+	rotation = 0 0 -0.7071068 -0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_0
+}
+entity
+{
+	type = Door
+	uin = 8
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = False
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -179.8012 -193.7557 1.844998
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_0
+}
+entity
+{
+	type = Door
+	uin = 9
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = True
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -179.7928 -210.0157 1.854069
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_2
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 10
+	mapClassManager = 11
+	entity
+	{
+		type = LogicClassManager
+		uin = 11
+		entity
+		{
+			type = LogicEntityClass
+			uin = 12
+			relationships = 2
+			entityClassName = GameMap
+			className = GameMap_Class
+			customScriptCodeCreated = True
+			customScriptCode = "//!!!!!!!!temp. need create as variable. no List support\r\nList<MapObject> enemyPoints = new List<MapObject>();"
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 13
+				code = "foreach( Entity entity in Map.Instance.Children )\r\n{\r\n\tMapObject point = entity as MapObject;\r\n\r\n\tif(string.IsNullOrEmpty(entity.TextUserData))\r\n\t\tcontinue;\r\n\r\n\tif(point != null && point.Type.Name == \"HelperPoint\")\r\n\t\tenemyPoints.Add(point);\r\n}\r\n\r\nscreenFont = FontManager.Instance.LoadFont(\"Default\", .05f);\r\n\r\nlevel = 1;\r\n\r\nTurret turret = ((Turret)Entities.Instance.GetByName(\"Turret_Game\"));\r\nturretCreatePosition = turret.Position;\r\nturretCreateRotation = turret.Rotation;\r\n\r\nOwner.AddTimer();\r\n\r\nUpdateVictoryObjects(false);\r\n"
+				methodName = PostCreated
+				returnType = System.Void
+				parameters = 14
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 14
+					parameterType = System.Boolean
+					parameterName = loaded
+				}
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 15
+				variableType = System.Single
+				variableName = remainingTimeForCreateEnemy
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 16
+				code = "//Turret turret = (Turret)Entities.Instance.GetByName(\"Turret_0\");\r\n\r\n//bool playerInTurret = PlayerIntellect.Instance != null && PlayerIntellect.Instance.ControlledObject == turret;\r\n\r\n//Game tick\r\nif(/*playerInTurret && */gameTime != 0)\r\n{\r\n\tgameTime += Entity.TickDelta;\r\n\r\n\t//Pre start\r\n\tif(gameTime >= 2 && gameTime < 2 + Entity.TickDelta * 1.5)\r\n\t\tScreenControlManager.Instance.PlaySound(\"Sounds/Feedback/Three.ogg\");\r\n\tif(gameTime >= 4 && gameTime < 4 + Entity.TickDelta * 1.5)\r\n\t\tScreenControlManager.Instance.PlaySound(\"Sounds/Feedback/Two.ogg\");\r\n\tif(gameTime >= 6 && gameTime < 6 + Entity.TickDelta * 1.5)\r\n\t\tScreenControlManager.Instance.PlaySound(\"Sounds/Feedback/One.ogg\");\r\n\tif(gameTime >= 8 && gameTime < 8 + Entity.TickDelta * 1.5)\r\n\t{\r\n\t\tScreenControlManager.Instance.PlaySound(\"Sounds/Feedback/Fight.ogg\");\r\n\t\tGameMusic.MusicPlay(\"Sounds/Music/Action.ogg\", true);\r\n\t}\r\n\r\n\t//Create enemies\r\n\tif(gameTime > 10 && remainingCreateCount != 0)\r\n\t{\r\n\t\tremainingTimeForCreateEnemy -= Entity.TickDelta;\r\n\t\r\n\t\tif(remainingTimeForCreateEnemy <= 0)\r\n\t\t{\r\n\t\t\tremainingTimeForCreateEnemy = createInterval;\r\n\t\t\tif(CreateEnemy())\r\n\t\t\t\tremainingCreateCount--;\r\n\t\t}\r\n\t}\r\n}\r\n\r\n//Update placard text\r\n{\r\n\tstring mainText = \"\";\r\n\tstring downText = \"\";\r\n\t\r\n\tif(gameTime < 8)\r\n\t{\r\n\t\tif(gameTime == 0)\r\n\t\t{\r\n\t\t\tif(level <= 7)\r\n\t\t\t{\r\n\t\t\t\tmainText = string.Format(\"Level {0}\", level);\r\n\t\t\t\tdownText = \"Fire here to start\";\r\n\t\t\t}\r\n\t\t\telse\r\n\t\t\t{\r\n\t\t\t\tmainText = \"Victory\";\r\n\t\t\t\tdownText = \"Congratulations :)\";\r\n\t\t\t}\r\n\t\t}\r\n\t\telse\r\n\t\t{\r\n\t\t\tmainText = \"Prepare\";\r\n\t\t\tdownText = \"for battle\";\r\n\t\t}\r\n\t}\r\n\telse\r\n\t{\r\n\t\tmainText = remainingCount.ToString();\r\n\t\tdownText = string.Format(\"Level {0}\", level);\r\n\t}\r\n\t\r\n\tGameGuiObject placard = (GameGuiObject)Entities.Instance.GetByName(\"Placard_Game\");\r\n\tplacard.MainControl.Controls[\"MainText\"].Text = mainText;\r\n\tplacard.MainControl.Controls[\"DownText\"].Text = downText;\r\n}\r\n\r\n//Recreate Turret\r\nif(Entities.Instance.GetByName(\"Turret_Game\") == null && gameTime == 0)\r\n{\r\n\tTurret turret = (Turret)Entities.Instance.Create(\"Turret\", Map.Instance);\r\n\tturret.Name = \"Turret_Game\";\r\n\tturret.Position = turretCreatePosition;\r\n\tturret.Rotation = turretCreateRotation;\r\n\tturret.PostCreate();\r\n}\r\n\r\n"
+				methodName = Tick
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = True
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 17
+				code = "//Get need enemy type\r\nstring typeName = GetCreateEnemyTypeName();\r\n\r\n//Get point\r\nMapObject point = null;\r\nif(typeName == \"Helicopter\")\r\n{\r\n\tforeach(MapObject p in enemyPoints)\r\n\t{\r\n\t\tif(p.TextUserData == \"Helicopter\")\r\n\t\t{\r\n\t\t\tpoint = p;\r\n\t\t\tbreak;\r\n\t\t}\r\n\t}\r\n}\r\nelse\r\n{\r\n\tint safeCounter = 1;\r\n\twhile(point == null)\r\n\t{\r\n\t\tpoint = enemyPoints[World.Instance.Random.Next(enemyPoints.Count)];\r\n\t\tif(point.TextUserData == \"Helicopter\")\r\n\t\t\tpoint = null;\r\n\t\tsafeCounter++;\r\n\t\tif(safeCounter > 1000)\r\n\t\t\tbreak;\r\n\t}\r\n}\r\n\r\nif(point == null)\r\n\treturn false;\r\n\r\n//check for free position\r\nbool freePoint;\r\n{\r\n\tBounds volume = new Bounds(point.Position);\r\n\tvolume.Expand(new Vec3(2,2,2));\r\n\tBody[] bodies = PhysicsWorld.Instance.VolumeCast(volume, (int)ContactGroup.CastOnlyDynamic);\r\n\r\n\tfreePoint = bodies.Length == 0;\r\n}\r\nif(!freePoint)\r\n\treturn false;\r\n\r\n//Create object\r\nMapObject newObj = (MapObject)Entities.Instance.Create(typeName, Map.Instance);\r\nnewObj.Position = point.Position + new Vec3(0,0,1);\r\nif(typeName == \"Robot\" || typeName == \"Helicopter\")\r\n\tnewObj.Position += new Vec3(0,0,1);\r\nnewObj.PostCreate();\r\n\r\nif(newObj is Unit)\r\n\t((Unit)newObj).ViewRadius = 300;\r\n\r\n\r\nnewObj.Destroying += delegate(Entity entity)\r\n{\r\n\tif(gameTime != 0)\r\n\t{\r\n\t\tremainingCount--;\r\n\t\tif(remainingCount == 0)\r\n\t\t\tGameStop(true);\r\n\t}\r\n};\r\n\r\nnewObj.Tick += delegate(Entity entity)\r\n{\r\n\tDynamic obj = (Dynamic)entity;\r\n\r\n\tUnit playerUnit = null;\r\n\tif(PlayerIntellect.Instance != null)\r\n\t\tplayerUnit = PlayerIntellect.Instance.ControlledObject;\r\n\r\n\tif(playerUnit != null)\r\n\t{\r\n\t\tfloat playerDistance = (obj.Position - playerUnit.Position).Length();\r\n\r\n\t\tif(playerDistance < 1000)\r\n\t\t{\r\n\t\t\tVec3 diff = playerUnit.Position - obj.Position;\r\n\t\t\tfloat angle = MathFunctions.ATan(diff.Y, diff.X);\r\n\r\n\t\t\t//Change rotation\r\n\t\t\t//!!!!!temp. fake\r\n\t\t\tAircraft aircraft = entity as Aircraft;\r\n\t\t\tif(aircraft != null)\r\n\t\t\t{\r\n\t\t\t\tobj.PhysicsModel.Bodies[0].Rotation = new Angles(0,0, -MathFunctions.RadToDeg(angle)).ToQuat();\r\n\t\t\t\t//obj.Rotation = new Angles(0,0, -MathFunctions.RadToDeg(angle)).ToQuat();\r\n\r\n\t\t\t\taircraft.FlyHeight = 10;\r\n\t\r\n\t\t\t\tif(playerDistance < 20)\r\n\t\t\t\t\taircraft.FlyHeight = playerUnit.Position.Z;\r\n\t\t\t}\r\n\r\n\t\t\t//Suicide\r\n\t\t\tbool allowSuicide = false;\r\n\t\t\tfloat suicideDistance = 3;\r\n\r\n\t\t\tif(playerUnit is Turret)\r\n\t\t\t\tallowSuicide = true;\r\n\r\n\t\t\tif(aircraft != null)\r\n\t\t\t{\r\n\t\t\t\tallowSuicide = true;\r\n\r\n\t\t\t\tif(obj.Type.Name == \"Helicopter\")\r\n\t\t\t\t\tsuicideDistance = 5;\r\n\t\t\t}\r\n\t\r\n\t\t\tif(allowSuicide && playerDistance < suicideDistance)\r\n\t\t\t{\r\n\t\t\t\tobj.Die();\r\n\t\r\n\t\t\t\tDynamic dieObject = (Dynamic)Entities.Instance.Create(\"MonsterSuicideObject\", Map.Instance);\r\n\t\t\t\tdieObject.Position = obj.Position;\r\n\t\t\t\tdieObject.PostCreate();\r\n\t\r\n\t\t\t\tdieObject.Die();\r\n\t\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\r\n\t//Check outside map\r\n\tBounds bounds = PhysicsWorld.Instance.InitialBounds;//Map.Instance.PhysicsBounds;\r\n\tbounds.Expand(new Vec3(50, 50, 300));\r\n\t\r\n\tif(!bounds.IsContainsPoint(((MapObject)entity).Position))\r\n\t\tentity.SetDeleted();\r\n};\r\n\r\nreturn true;"
+				methodName = CreateEnemy
+				returnType = System.Boolean
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 18
+				code = "if(EntitySystemWorld.Instance.Simulation)\r\n{\r\n\tstring text = \"\";\r\n\tfloat alpha = 0;\r\n\t\r\n\tif(gameTime >= 2 && gameTime < 4)\r\n\t\ttext = \">     3     <\";\r\n\telse if(gameTime >= 4 && gameTime < 6)\r\n\t\ttext = \">   2   <\";\r\n\telse if(gameTime >= 6 && gameTime < 8)\r\n\t{\r\n\t\ttext = \"> 1 <\";\r\n\t\talpha = (gameTime - 6) / 2;\r\n\t}\r\n\telse if(gameTime >= 8 && gameTime < 10)\r\n\t\ttext = \"FIGHT\";\r\n\t\r\n\t\r\n\t\r\n\tif(alpha != 0)\r\n\t\tEngineApp.Instance.ScreenGuiRenderer.AddQuad(new Rect(0,0,1,1), new ColorValue(0,0,0, alpha));\r\n\t\r\n\tif(text != \"\")\r\n\t\tEngineApp.Instance.ScreenGuiRenderer.AddText(screenFont, text, new Vec2(.5f, .4f), \r\n\t\t\tHorizontalAlign.Center, VerticalAlign.Center, new ColorValue(1,0,0));\r\n}"
+				methodName = Render
+				returnType = System.Void
+				parameters = 19
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 19
+					parameterType = Engine.Renderer.Camera
+					parameterName = camera
+				}
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 20
+				variableType = Engine.Renderer.Font
+				variableName = screenFont
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 21
+				variableType = System.Single
+				variableName = gameTime
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 22
+				variableType = System.Int32
+				variableName = level
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 23
+				code = "if(level > 7)\r\n\tlevel = 1;\r\n\r\nremainingCount = 20 + level * 3;//2;\r\ncreateInterval = 20.0f / (level + 15);\r\n\r\ngameTime = .001f;\r\nremainingCreateCount = remainingCount;\r\nScreenControlManager.Instance.PlaySound(\"Sounds/Feedback/Accept.ogg\");\r\n\r\n\r\nPlayerCharacter mainPlayerUnit = null;\r\nforeach( Entity entity in Map.Instance.Children )\r\n{\r\n\tmainPlayerUnit = entity as PlayerCharacter;\r\n\tif(mainPlayerUnit != null)\r\n\t\tbreak;\r\n}\r\n\r\nif(mainPlayerUnit != null)\r\n{\r\n\tmainPlayerUnit.Destroying += delegate(Entity entity)\r\n\t{\r\n\t\tGameStop(false);\r\n\t};\r\n}\r\n\r\nTurret turret = Entities.Instance.GetByName(\"Turret_Game\") as Turret;\r\nif(turret != null)\r\n\tturret.Life = turret.Type.LifeMax;\r\n//turret.Position = turretCreatePosition;\r\n//turret.Rotation = turretCreateRotation;\r\n\r\n\r\nUpdateVictoryObjects(false);\r\n"
+				methodName = GameStart
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 24
+				variableType = System.Int32
+				variableName = remainingCount
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 25
+				code = "if(gameTime == 0)\r\n\treturn;\r\n\r\ngameTime = 0;\r\n\r\nif(complete)\r\n{\r\n\tScreenControlManager.Instance.PlaySound(\"Sounds/Feedback/Complete.ogg\");\r\n\tlevel++;\r\n}\r\n\r\n//Destroy all alive enemies\r\nttt:;\r\nforeach( Entity entity in Map.Instance.Children )\r\n{\r\n\tif(entity.IsSetDeleted)\r\n\t\tcontinue;\r\n\r\n\tUnit unit = entity as Unit;\r\n\tif(unit == null)\r\n\t\tcontinue;\r\n\r\n\tif((unit.Intellect as AI) != null || unit is Aircraft)\r\n\t{\r\n\t\tunit.Die();\r\n\t\tgoto ttt;\r\n\t}\r\n}\r\n\r\n\r\nGameMusic.MusicPlay(\"Sounds/Music/Game.ogg\", true);\r\n\r\nif(complete && level > 7)\r\n\tUpdateVictoryObjects(true);"
+				methodName = GameStop
+				returnType = System.Void
+				parameters = 26
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 26
+					parameterType = System.Boolean
+					parameterName = complete
+				}
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 27
+				variableType = System.Int32
+				variableName = remainingCreateCount
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 28
+				code = "GameStop(false);\r\n"
+				methodName = Destroying
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = True
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 29
+				variableType = Engine.MathEx.Vec3
+				variableName = turretCreatePosition
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 30
+				variableType = Engine.MathEx.Quat
+				variableName = turretCreateRotation
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 31
+				variableType = System.Single
+				variableName = createInterval
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 32
+				code = "foreach( Entity entity in Map.Instance.Children )\r\n{\r\n\tif(entity.TextUserData != \"Victory\")\r\n\t\tcontinue;\r\n\r\n\tMapObject obj = entity as MapObject;\r\n\tif(obj != null)\r\n\t\tobj.Visible = visible;\r\n}\r\n"
+				methodName = UpdateVictoryObjects
+				returnType = System.Void
+				parameters = 33
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 33
+					parameterType = System.Boolean
+					parameterName = visible
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 34
+				code = "float bug = 0;\r\nfloat zombie = 0;\r\nfloat robot = 0;\r\nfloat bird = 0;\r\n\r\nswitch(level)\r\n{\r\ncase 1:\r\n\tzombie = 1;\r\n\tbreak;\r\n\r\ncase 2:\r\n\tbug = .5f;\r\n\tzombie = .5f;\r\n\tbreak;\r\n\r\ncase 3:\r\n\tzombie = .2f;\r\n\tbird = .4f;\r\n\tbug = .4f;\r\n\tbreak;\r\n\r\ncase 4:\r\n\tbug = .5f;\r\n\trobot = .3f;\r\n\t//if(remainingCreateCount == 10)\r\n\t//\treturn \"Helicopter\";\r\n\tbreak;\r\n\r\ncase 5:\r\n\tbug = .8f;\r\n\trobot = .2f;\r\n\tif(/*remainingCreateCount == 20 || */remainingCreateCount == 10)\r\n\t\treturn \"Helicopter\";\r\n\tbreak;\r\n\r\ncase 6:\r\n\trobot = .5f;\r\n\tbird = .5f;\r\n\tif(remainingCreateCount == 20 || remainingCreateCount == 10)\r\n\t\treturn \"Helicopter\";\r\n\tbreak;\r\n\r\ncase 7:\r\n\tbug = .5f;\r\n\tbird = .2f;\r\n\trobot = .3f;\r\n\tif(remainingCreateCount == 30 || remainingCreateCount == 1 )\r\n\t\treturn \"Helicopter\";\r\n\tbreak;\r\n\r\ndefault:\r\n\tzombie = 1;\r\n\tbreak;\r\n}\r\n\r\nfloat value = World.Instance.Random.NextFloat();\r\nif(value >= 0 && value < bug)\r\n\treturn \"Bug\";\r\nif(value >= bug && value < bug + zombie)\r\n\treturn \"Zombie\";\r\nif(value >= bug + zombie && value < bug + zombie + robot)\r\n\treturn \"Robot\";\r\nreturn \"Bird\";\r\n"
+				methodName = GetCreateEnemyTypeName
+				returnType = System.String
+				parameters = 
+				isEntityEventMethod = False
+			}
+		}
+		entity
+		{
+			type = LogicEntityClass
+			uin = 35
+			relationships = 75
+			entityClassName = GameGuiObject
+			className = Placard_Game
+			customScriptCodeCreated = False
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 36
+				code = "GameMap_Class mapClass = (GameMap_Class)GameMap.Instance.LogicObject;\r\n\r\nif(mapClass.gameTime == 0)\r\n\tmapClass.GameStart();\r\n"
+				methodName = Damage
+				returnType = System.Void
+				parameters = 37 38 39
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 37
+					parameterType = Engine.MapSystem.MapObject
+					parameterName = prejudicial
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 38
+					parameterType = Engine.MathEx.Vec3
+					parameterName = pos
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 39
+					parameterType = System.Single
+					parameterName = damage
+				}
+			}
+		}
+	}
+}
+entity
+{
+	type = Palm
+	uin = 40
+	classPrompt = MapObject
+	position = -188.3141 -166.357 -2.132812
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_0
+}
+entity
+{
+	type = Palm
+	uin = 41
+	classPrompt = MapObject
+	position = -180.4881 -165.2455 -0.03190947
+	rotation = 0 0 -0.7109765 0.7032157
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_1
+}
+entity
+{
+	type = Palm
+	uin = 42
+	classPrompt = MapObject
+	position = -190.1745 -155.674 -0.0484972
+	rotation = 0 0 0.9149947 0.403466
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_2
+}
+entity
+{
+	type = Palm
+	uin = 43
+	classPrompt = MapObject
+	position = -151.2814 -194.3127 -1.771008
+	rotation = 0 0 0.01504588 -0.9998868
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_3
+}
+entity
+{
+	type = Palm
+	uin = 44
+	classPrompt = MapObject
+	position = -156.987 -183.7173 -0.8688354
+	rotation = 0 0 0.5649749 0.8251081
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_4
+}
+entity
+{
+	type = Palm
+	uin = 45
+	classPrompt = MapObject
+	position = -143.5414 -192.5445 -0.7842522
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_5
+}
+entity
+{
+	type = Palm
+	uin = 46
+	classPrompt = MapObject
+	position = -176.6795 -153.4477 0.1509552
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_10
+}
+entity
+{
+	type = SkyBox
+	uin = 47
+	classPrompt = SkyBox
+	textureName = Materials\Game\EarlyMorningSkyBox\EarlyMorning.jpg
+	colorScale = 1 1 1
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 48
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -186.8079 -150.136 0.4933276
+	rotation = 0.6978993 0 0 0.7161959
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_0
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 49
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -181.3834 -148.7335 -0.06358504
+	rotation = -0.6836023 0 0 0.7298546
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_1
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 50
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -183.5159 -154.4931 1.398966
+	rotation = 0.7604936 0 0 0.6493454
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_2
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 51
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -186.7717 -153.3796 0.9247704
+	rotation = 0.6871954 0 0 0.7264727
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_3
+}
+entity
+{
+	type = Box
+	uin = 52
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -183.0665 -146.1657 -0.0096035
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_0
+}
+entity
+{
+	type = Box
+	uin = 53
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -180.5145 -145.8723 -0.2268102
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_1
+}
+entity
+{
+	type = Box
+	uin = 54
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -178.9808 -152.2785 1.46228
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_2
+}
+entity
+{
+	type = Box
+	uin = 55
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -181.3132 -154.3052 1.705921
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_3
+}
+entity
+{
+	type = Box
+	uin = 56
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -184.4608 -151.9369 0.4363337
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_4
+}
+entity
+{
+	type = Box
+	uin = 57
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -187.7589 -151.8384 0.9675641
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_5
+}
+entity
+{
+	type = Box
+	uin = 58
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -188.0388 -148.6822 0.9269483
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_6
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 59
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -186.0287 -155.1088 1.021739
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_4
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 60
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -183.9167 -149.2074 0.5526047
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_5
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 61
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -182.3101 -151.9728 0.6659617
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_6
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 62
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -184.7342 -154.2508 1.130151
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_7
+}
+entity
+{
+	type = TestLamp
+	uin = 63
+	classPrompt = MapObject
+	position = -170.0762 -180.194 1.893548
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_0
+}
+entity
+{
+	type = TestLamp
+	uin = 64
+	classPrompt = MapObject
+	position = -170.0889 -173.59 1.882588
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_1
+}
+entity
+{
+	type = TestLamp
+	uin = 65
+	classPrompt = MapObject
+	position = -175.8974 -173.6886 1.903871
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_2
+}
+entity
+{
+	type = Palm
+	uin = 66
+	classPrompt = MapObject
+	position = -178.669 -170.5319 1.171149
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_11
+}
+entity
+{
+	type = Palm
+	uin = 67
+	classPrompt = MapObject
+	position = -168.0036 -182.089 1.540122
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_12
+}
+entity
+{
+	type = Turret
+	uin = 68
+	classPrompt = Turret
+	createLifeCoefficient = 1
+	life = 1000
+	lifeTime = 0
+	position = -172.6775 -176.4334 3.055718
+	rotation = 0 0 0.3918217 0.9200411
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Turret_Game
+}
+entity
+{
+	type = HelperPoint
+	uin = 69
+	classPrompt = MapObject
+	position = -106.8229 -106.5661 -1.361069
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = HelperPoint_0
+	textUserData = Enemy
+}
+entity
+{
+	type = HelperPoint
+	uin = 70
+	classPrompt = MapObject
+	position = -142.4352 -94.28304 -2.16602
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = HelperPoint_1
+	textUserData = Enemy
+}
+entity
+{
+	type = HelperPoint
+	uin = 71
+	classPrompt = MapObject
+	position = -88.98975 -129.9466 1.869221
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = HelperPoint_2
+	textUserData = Enemy
+}
+entity
+{
+	type = HelperPoint
+	uin = 72
+	classPrompt = MapObject
+	position = -134.7582 -103.2859 -0.2763367
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = HelperPoint_3
+	textUserData = Enemy
+}
+entity
+{
+	type = HelperPoint
+	uin = 73
+	classPrompt = MapObject
+	position = -122.401 -112.9437 1.10349
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = HelperPoint_4
+	textUserData = Enemy
+}
+entity
+{
+	type = HelperPoint
+	uin = 74
+	classPrompt = MapObject
+	position = -75.3362 -140.9977 -0.3453627
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = HelperPoint_5
+	textUserData = Enemy
+}
+entity
+{
+	type = Placard
+	uin = 75
+	classPrompt = GameGuiObject
+	relationships = 35
+	initialControl = Gui/TurretDemoPlacard.gui
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -158.049 -161.4072 13.79228
+	rotation = 0 0 0.9183186 -0.3958418
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	logicClass = 35
+	name = Placard_Game
+}
+entity
+{
+	type = HelperPoint
+	uin = 76
+	classPrompt = MapObject
+	position = -70.75768 -45.40631 -2.22281
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = HelperPoint_6
+	textUserData = Helicopter
+}
+entity
+{
+	type = GreenyNimbus
+	uin = 77
+	classPrompt = MapObject
+	position = -188.6207 -174.5695 1.868161
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = GreenyNimbus_1
+	textUserData = Victory
+}
+entity
+{
+	type = GreenyNimbus
+	uin = 78
+	classPrompt = MapObject
+	position = -165.1241 -175.4039 1.550246
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = GreenyNimbus_2
+	textUserData = Victory
+}
+entity
+{
+	type = GreenyNimbus
+	uin = 79
+	classPrompt = MapObject
+	position = -171.6724 -192.1426 1.884843
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = GreenyNimbus_3
+	textUserData = Victory
+}
+entity
+{
+	type = GreenyNimbus
+	uin = 80
+	classPrompt = MapObject
+	position = -170.6466 -148.6451 0.217226
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = GreenyNimbus_4
+	textUserData = Victory
+}
+entity
+{
+	type = GreenyNimbus
+	uin = 81
+	classPrompt = MapObject
+	position = -146.5679 -172.759 0.5741725
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = GreenyNimbus_5
+	textUserData = Victory
+}
+entity
+{
+	type = GreenyNimbus
+	uin = 82
+	classPrompt = MapObject
+	position = -172.4345 -168.9401 1.703837
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = GreenyNimbus_6
+	textUserData = Victory
+}
+entity
+{
+	type = Firework
+	uin = 83
+	classPrompt = Firework
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -143.001 -145.6455 -0.3671348
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Firework_0
+	textUserData = Victory
+}
+entity
+{
+	type = Palm
+	uin = 84
+	classPrompt = MapObject
+	position = -167.4581 -128.4451 -1.293851
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_6
+}
+entity
+{
+	type = Palm
+	uin = 85
+	classPrompt = MapObject
+	position = -183.5953 -123.7436 0.08674955
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_7
+}
+entity
+{
+	type = Palm
+	uin = 86
+	classPrompt = MapObject
+	position = -179.2914 -93.42739 1.815143
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_8
+}
+entity
+{
+	type = Palm
+	uin = 87
+	classPrompt = MapObject
+	position = -154.9777 -90.60578 0.2754841
+	rotation = 0 0 0 1
+	scale = 0.7272727 0.7272727 0.7272727
+	editorAlignmentMethod = None
+	name = Palm_9
+}
+entity
+{
+	type = Palm
+	uin = 88
+	classPrompt = MapObject
+	position = -132.8239 -49.24521 0.1710372
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_13
+}
+entity
+{
+	type = Palm
+	uin = 89
+	classPrompt = MapObject
+	position = -163.5929 -60.05596 0.04136419
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_14
+}
+entity
+{
+	type = Palm
+	uin = 90
+	classPrompt = MapObject
+	position = -125.4023 -174.0284 0.8822765
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_15
+}
+entity
+{
+	type = Palm
+	uin = 91
+	classPrompt = MapObject
+	position = -97.89989 -185.325 -1.046298
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_16
+}
+entity
+{
+	type = Palm
+	uin = 92
+	classPrompt = MapObject
+	position = -76.07507 -162.7988 -0.6760416
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_17
+}
+entity
+{
+	type = Palm
+	uin = 93
+	classPrompt = MapObject
+	position = -43.81892 -178.2319 0.5054927
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_18
+}
+entity
+{
+	type = Palm
+	uin = 94
+	classPrompt = MapObject
+	position = -13.96449 -149.5335 2.0482
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_19
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 95
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -147.9745 -190.4921 -1.124924
+	rotation = 0.6188236 0 0 0.78553
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_8
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 96
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -150.1207 -185.4993 -1.485567
+	rotation = 0 0.6821302 0 0.7312307
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_9
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 97
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -145.6545 -181.3662 -0.9510835
+	rotation = 0.7775847 0 0 0.6287783
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_10
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 98
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -142.7216 -188.1097 -0.3384924
+	rotation = -0.6283606 -0.3765219 0.3498951 0.5839244
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_11
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 99
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -147.7066 -185.0433 -1.221517
+	rotation = 0 0.6504197 0 0.7595751
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_12
+}
+entity
+{
+	type = Box
+	uin = 100
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -149.1086 -183.4795 -1.030605
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_7
+}
+entity
+{
+	type = Box
+	uin = 101
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -149.138 -186.7756 -1.440484
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_8
+}
+entity
+{
+	type = Box
+	uin = 102
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -144.6447 -190.032 -0.662385
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_9
+}
+entity
+{
+	type = Box
+	uin = 103
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -143.6212 -184.9131 -0.879765
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_10
+}
+entity
+{
+	type = Box
+	uin = 104
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -146.5232 -183.9084 -1.355569
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_11
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 105
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -143.2033 -182.8965 -0.721251
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_13
+}
+entity
+{
+	type = ExplosionBarrel
+	uin = 106
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 50
+	lifeTime = 0
+	position = -147.2057 -188.1406 -1.110613
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ExplosionBarrel_14
+}
+entity
+{
+	type = Box
+	uin = 107
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -145.6537 -186.1329 -1.174106
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_12
+}
+entity
+{
+	type = Box
+	uin = 108
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -143.5214 -186.3452 -0.9452806
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_13
+}
+entity
+{
+	type = Box
+	uin = 109
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -145.1859 -182.887 -1.143796
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_14
+}
+entity
+{
+	type = Box
+	uin = 110
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -148.8925 -186.6828 -0.3830318
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_15
+}
+entity
+{
+	type = TestLamp
+	uin = 111
+	classPrompt = MapObject
+	position = -182.3979 -173.6886 1.903871
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_3
+}
+entity
+{
+	type = TestLamp
+	uin = 112
+	classPrompt = MapObject
+	position = -170.0762 -186.2166 1.893548
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = TestLamp_5
+}
+entity
+{
+	type = Palm
+	uin = 113
+	classPrompt = MapObject
+	position = -44.81268 -147.8002 -1.008871
+	rotation = 0 0 -0.4831272 0.8755502
+	scale = 0.7116658 0.7116658 0.7116658
+	editorAlignmentMethod = None
+	name = Palm_20
+}
+entity
+{
+	type = Palm
+	uin = 114
+	classPrompt = MapObject
+	position = -97.16544 -158.7468 -0.8196745
+	rotation = 0 0 -0.567371 0.8234624
+	scale = 0.5608007 0.5608007 0.5608007
+	editorAlignmentMethod = None
+	name = Palm_21
+}
+entity
+{
+	type = Palm
+	uin = 115
+	classPrompt = MapObject
+	position = -42.44622 -158.0701 -0.7218714
+	rotation = 0 0 -0.9985066 0.05463104
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_22
+}
+entity
+{
+	type = Palm
+	uin = 116
+	classPrompt = MapObject
+	position = -23.85216 -143.6197 2.459876
+	rotation = 0 0 -0.8731174 0.4875101
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_23
+}
+entity
+{
+	type = Palm
+	uin = 117
+	classPrompt = MapObject
+	position = -55.61345 -171.6227 1.115922
+	rotation = 0 0 -0.9849826 -0.1726541
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_24
+}
+entity
+{
+	type = Palm
+	uin = 118
+	classPrompt = MapObject
+	position = -142.2679 -63.31431 -0.6230137
+	rotation = 0 0 0.2964499 -0.9550484
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_25
+}
+entity
+{
+	type = Palm
+	uin = 119
+	classPrompt = MapObject
+	position = -159.4451 -68.79678 0.8804722
+	rotation = 0 0 -0.038665 0.9992522
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_26
+}
+entity
+{
+	type = Palm
+	uin = 120
+	classPrompt = MapObject
+	position = -163.4084 -90.52319 1.447254
+	rotation = 0 0 0.696548 -0.7175102
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_27
+}
+entity
+{
+	type = Palm
+	uin = 121
+	classPrompt = MapObject
+	position = -145.2049 -39.56834 0.209197
+	rotation = 0 0 0.9915597 -0.129651
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Palm_28
+}
+entity
+{
+	type = FlareTest
+	uin = 122
+	classPrompt = MapObject
+	position = -189.447 -193.0263 2.464059
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = FlareTest_0
+}
+entity
+{
+	type = FlareTest
+	uin = 123
+	classPrompt = MapObject
+	position = -189.447 -186.777 2.464059
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = FlareTest_1
+}
+entity
+{
+	type = FlareTest
+	uin = 124
+	classPrompt = MapObject
+	position = -189.447 -180.2692 2.464059
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = FlareTest_2
+}
+entity
+{
+	type = FlareTest
+	uin = 125
+	classPrompt = MapObject
+	position = -189.447 -174.0288 2.464059
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = FlareTest_3
+}
+entity
+{
+	type = Box
+	uin = 126
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -187.6111 -187.7842 2.352019
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_16
+}
+entity
+{
+	type = Box
+	uin = 127
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -187.6677 -186.3912 2.380823
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_17
+}
+entity
+{
+	type = Box
+	uin = 128
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -188.0324 -177.2863 2.339133
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_18
+}
+entity
+{
+	type = Box
+	uin = 129
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -187.1466 -175.7358 2.349506
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_19
+}
+entity
+{
+	type = Box
+	uin = 130
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = -187.6127 -176.5457 3.575229
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Box_20
+}
+entity
+{
+	type = FlareTest
+	uin = 131
+	classPrompt = MapObject
+	position = -183.0427 -193.0263 2.464059
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = FlareTest_4
+}
+entity
+{
+	type = FlareTest
+	uin = 132
+	classPrompt = MapObject
+	position = -176.3448 -193.0263 2.464059
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = FlareTest_5
+}
+entity
+{
+	type = FlareTest
+	uin = 133
+	classPrompt = MapObject
+	position = -170.422 -193.0263 2.464059
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = FlareTest_6
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 134
+	classPrompt = MapObject
+	position = -186.4092 -192.7311 2.005877
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_0
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 135
+	classPrompt = MapObject
+	position = -189.1475 -177 2.005877
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_1
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 136
+	classPrompt = MapObject
+	position = -186.4092 -174.5261 2.005877
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_2
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 137
+	classPrompt = MapObject
+	position = -173.326 -192.5011 2.005877
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_3
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 138
+	classPrompt = MapObject
+	position = -179.7558 -174.6072 2.005877
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_4
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 139
+	classPrompt = MapObject
+	position = -189.1475 -183.1339 2.005877
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_5
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 140
+	classPrompt = MapObject
+	position = -189.1475 -189.3365 2.005877
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_6
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 141
+	classPrompt = MapObject
+	position = -170.7348 -183.1339 2.005877
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_7
+}
+entity
+{
+	type = ParkingBarrier
+	uin = 142
+	classPrompt = MapObject
+	position = -170.7348 -189.3365 2.005877
+	rotation = 0 0 0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = ParkingBarrier_8
+}
+entity
+{
+	type = StopSign
+	uin = 143
+	classPrompt = MapObject
+	position = -174.6075 -187.876 3.694569
+	rotation = 0 0 -0.258819 0.9659258
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = StopSign_0
+}
+entity
+{
+	type = WoodBox
+	uin = 144
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 30
+	lifeTime = 0
+	position = -183.1393 -174.8073 2.354314
+	rotation = 0 0 -0.8750266 0.4840749
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WoodBox_0
+}
+entity
+{
+	type = WoodBox
+	uin = 145
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 30
+	lifeTime = 0
+	position = -187.6799 -180.2831 2.37474
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WoodBox_1
+}
+entity
+{
+	type = WoodBox
+	uin = 146
+	classPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 30
+	lifeTime = 0
+	position = -172.3406 -190.7517 2.380787
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = WoodBox_2
+}
+entity
+{
+	type = StaticMesh
+	uin = 147
+	classPrompt = StaticMesh
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Maps\TurretDemo\StaticGeometry\Data.mesh
+	allowDecals = All
+}
+entity
+{
+	type = StaticMesh
+	uin = 148
+	classPrompt = StaticMesh
+	position = -179.8095 -201.5156 1.898656
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Models\CorridorExit\CorridorExit.mesh
+	allowDecals = All
+}

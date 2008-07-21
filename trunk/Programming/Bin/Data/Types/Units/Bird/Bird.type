@@ -1,0 +1,34 @@
+type Bird
+{
+	class = Aircraft
+	velocity = 6
+	lifeMax = 20
+	substance = Flesh
+	physicsModel = "Types\\Dynamic\\Box\\Box.physics"
+	allowEditorCreate = True
+	allowEmptyName = False
+	influenceSlotNames
+	{
+	}
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\Units\\Zombie\\Zombie.mesh"
+			position = "0 0 -1.15"
+		}
+	}
+	dieObjects
+	{
+		mapObject
+		{
+			type = BirdDead
+			position = "0 0 -1"
+			copyVelocitiesFromParent = True
+		}
+		sound
+		{
+			soundName = "Types\\Units\\Zombie\\Die.ogg"
+		}
+	}
+}

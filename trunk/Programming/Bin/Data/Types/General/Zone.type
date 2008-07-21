@@ -1,0 +1,9 @@
+type Zone
+{
+	class = Zone
+	allowEditorCreate = True
+	allowEmptyName = True
+	attachedObjects
+	{
+	}
+}

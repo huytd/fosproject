@@ -734,7 +734,7 @@ namespace Game
 				ScreenControlManager.Instance.Controls.Add( gameWindow );
 			}
 
-			if( string.Compare( fileName, "Maps\\MainMenu\\Map.map", true ) != 0 )
+            if (string.Compare(fileName, "Maps\\Vietheroes\\Map.map", true) != 0)
 			{
 				GameMusic.MusicPlay( "Sounds\\Music\\Game.ogg", true );
 			}

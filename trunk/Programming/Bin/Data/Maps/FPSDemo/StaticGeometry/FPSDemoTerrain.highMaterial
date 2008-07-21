@@ -1,0 +1,9 @@
+highLevelMaterial FPSDemoTerrain
+{
+	template = ShaderBaseMaterial
+	diffuseScale = 0.4980392 1 0.4980392
+	diffuse1Map
+	{
+		texture = Materials\Game\Grass1024.jpg
+	}
+}

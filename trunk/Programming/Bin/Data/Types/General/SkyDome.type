@@ -1,0 +1,5 @@
+type SkyDome
+{
+	class = SkyDome
+	allowEditorCreate = true
+}

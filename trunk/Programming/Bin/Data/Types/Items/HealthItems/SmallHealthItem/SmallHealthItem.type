@@ -1,0 +1,21 @@
+type SmallHealthItem
+{
+	class = HealthItem
+	health = 125
+	defaultRespawnTime = 10
+	soundTake = Types\Items\HealthItems\Health.ogg
+	allowEditorCreate = True
+	networkType = Network
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\Items\HealthItems\SmallHealthItem\Main.mesh
+			castShadows = True
+		}
+		particle
+		{
+			particleName = ItemParticle
+		}
+	}
+}

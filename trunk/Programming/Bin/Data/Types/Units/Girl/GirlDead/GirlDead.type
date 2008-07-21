@@ -1,0 +1,22 @@
+type GirlDead
+{
+	class = Dynamic//Corpse
+	substance = Flesh
+	physicsModel = "Types\\Units\\Girl\\GirlDead\\GirlDead.physics"
+	allowEditorCreate = True
+	allowEmptyName = False
+	influenceSlotNames
+	{
+	}
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\Units\\Girl\\Girl.mesh"
+			castShadows = True
+			linkBonesToBodies = True
+			position = "0 0 -1.211434"
+			scale = "0.63 0.63 0.63"
+		}
+	}
+}

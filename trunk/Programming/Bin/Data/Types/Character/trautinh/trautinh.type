@@ -1,6 +1,19 @@
 type trautinh
 {
 	class = PlayerCharacter
+	optimalAttackDistanceRange = 0 1
+	idleAnimationName = stand
+	walkAnimationVelocityMultiplier = 0.5
+	height = 4.7
+	radius = 0.7
+	walkUpHeight = 0.7
+	walkMaxVelocity = 2
+	walkForce = 4000
+	flyControlMaxVelocity = 3
+	flyControlForce = 700
+	allowPlayerControl = True
+	lifeMax = 100
+	substance = Flesh
 	allowEditorCreate = True
 	allowEmptyName = True
 	attachedObjects
@@ -9,7 +22,8 @@ type trautinh
 		{
 			meshName = Types\Character\trautinh\trautinh.mesh
 			position = 0 0 -1
-			scale = 0.2679251 0.2679251 0.2679251
+			rotation = 0 0 -0.6427876 -0.7660444
+			scale = 0.3 0.3 0.3
 		}
 	}
 }

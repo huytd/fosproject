@@ -1,0 +1,9 @@
+highLevelMaterial TurretDemo
+{
+	template = ShaderBaseMaterial
+	diffuseScale = 0.3529412 0.7843137 0.3529412
+	diffuse1Map
+	{
+		texture = Materials\Game\Grass1024.jpg
+	}
+}

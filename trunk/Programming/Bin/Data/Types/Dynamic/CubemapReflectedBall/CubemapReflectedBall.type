@@ -1,0 +1,15 @@
+type CubemapReflectedBall
+{
+	class = MapObject
+	physicsModel = Types\Dynamic\CubemapReflectedBall\CubemapReflectedBall.physics
+	allowEditorCreate = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\Dynamic\CubemapReflectedBall\CubemapReflectedBall.mesh
+			castShadows = True
+			scale = 2 2 2
+		}
+	}
+}

@@ -1,0 +1,91 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+baseClassPrompt = Map
+gameType = Action
+ambientLight = 0.2 0.2 0.2
+physicsBounds = -40.4 -40.4 -20.001 40.4 40.4 20.101
+editorCameraPosition = 16.31659 -6.13976 23.9377
+editorCameraDirection = 3.061358 -1.034504
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawNodes = False
+drawRegions = False
+drawParticles = True
+drawMapObjectBounds = False
+drawLights = False
+drawModels = True
+drawGui = True
+drawWireframe = False
+shadowTechnique = None
+shadowFarDistance = 30
+shadowTextureSize = 1024
+fov = 80
+logicSystemManager = 3
+name = GameMap_0
+relations = 
+entity
+{
+	type = LogicSystemManager
+	uin = 3
+	mapClassManager = 4
+	entity
+	{
+		type = LogicClassManager
+		uin = 4
+	}
+}
+entity
+{
+	type = Collision
+	uin = 6
+	classPrompt = Collision
+	baseClassPrompt = MapGeneralObject
+}
+entity
+{
+	type = Light
+	uin = 7
+	classPrompt = Light
+	baseClassPrompt = MapObject
+	lightType = Point
+	diffuseColor = 1 1 1
+	specularColor = 1 1 1
+	attenuationRange = 100000
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	powerScale = 1
+	castShadows = True
+	position = 0.3874392 -1.393759 16.25432
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	name = Light_0
+	relations = 
+}
+entity
+{
+	type = Firework
+	uin = 8
+	classPrompt = Firework
+	baseClassPrompt = Dynamic
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	name = Firework_0
+	relations = 
+}
+entity
+{
+	type = StaticMesh
+	uin = 9
+	classPrompt = StaticMesh
+	editorLayer = Root\StaticGeometry
+	meshName = Maps\MainMenu\StaticGeometry\Data.mesh
+}

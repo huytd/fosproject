@@ -175,7 +175,7 @@ namespace GameEntities
 		{
 			string unitTypeName;
 			if( !player.Bot )
-				unitTypeName = "Rabbit";
+				unitTypeName = "trautinh";
 			else
 				unitTypeName = player.PlayerName;
 

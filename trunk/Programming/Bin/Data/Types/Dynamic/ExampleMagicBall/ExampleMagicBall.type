@@ -1,0 +1,20 @@
+type ExampleMagicBall
+{
+	class = ExampleMagicObject
+	blinkMaterialName = TransparentExample
+	physicsModel = "Types\\Dynamic\\ExampleMagicBall\\ExampleMagicBall.physics"
+	allowEditorCreate = True
+	allowEmptyName = False
+	influenceSlotNames
+	{
+	}
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\Dynamic\\Ball\\Ball.mesh"
+			castShadows = True
+			body = main
+		}
+	}
+}

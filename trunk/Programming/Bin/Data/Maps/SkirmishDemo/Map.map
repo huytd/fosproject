@@ -1,0 +1,647 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+gameType = Action
+ambientLight = 0.2 0.2 0.2
+soundDistanceFactor = 10
+editorCameraPosition = 9.380892 -17.67837 5.539056
+editorCameraDirection = 0.5381246 -0.5937079
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawNodes = False
+drawRegions = False
+drawMapObjectBounds = False
+drawSceneNodeBounds = False
+drawStaticMeshObjectBounds = False
+drawZonesPortalsOccluders = False
+drawLights = False
+drawStaticGeometry = True
+drawModels = True
+drawEffects = True
+drawGui = True
+drawWireframe = False
+drawGameSpecificDebugGeometry = False
+shadowTechnique = ShadowmapHigh
+shadowColor = 0.6 0.6 0.6 0.6
+shadowFarDistance = 30
+shadow2DTextureSize = 1024
+shadow2DTextureCount = 2
+shadowCubicTextureSize = 512
+shadowCubicTextureCount = 1
+frustumTest = False
+fov = 80
+nearFarClipDistance = 0 0
+logicSystemManager = 12
+name = GameMap_0
+rootEditorLayer
+{
+	layer
+	{
+		name = StaticGeometry
+		allowEdit = False
+	}
+}
+entity
+{
+	type = ShotgunItem
+	uin = 3
+	classPrompt = WeaponItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 20.08295 -16.5754 0.4760469
+	rotation = 0 0 0.5379508 0.8429762
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = SubmachineGunItem
+	uin = 4
+	classPrompt = WeaponItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 20.05432 -14.36692 0.4914041
+	rotation = 0 0 0.438444 -0.8987585
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = SpawnPoint
+	uin = 5
+	classPrompt = SpawnPoint
+	defaultPoint = True
+	position = 17.47486 -24.6 0.2185142
+	rotation = 0 0 -0.7071068 -0.7071068
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_0
+}
+entity
+{
+	type = Light
+	uin = 6
+	classPrompt = Light
+	lightType = Point
+	diffuseColor = 1 1 1
+	specularColor = 1 1 1
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 0.3874392 -1.393759 19.3727
+	rotation = -0.7329773 -0.01018954 0.6800882 -0.01098196
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_0
+}
+entity
+{
+	type = Collision
+	uin = 7
+	classPrompt = Collision
+}
+entity
+{
+	type = Terminal
+	uin = 8
+	classPrompt = GameGuiObject
+	relationships = 14
+	initialControl = Gui\SkirmishDemoTerminal.gui
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 18.36116 -11.70012 1.784176
+	rotation = 0 0 -0.7061533 0.708059
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	logicClass = 14
+	name = Terminal_0
+}
+entity
+{
+	type = Door
+	uin = 9
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = False
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 17.61415 -20.05266 0.2205143
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_0
+}
+entity
+{
+	type = Door
+	uin = 10
+	classPrompt = AutomaticOpenDoor
+	noAutomaticOpen = True
+	opened = False
+	needOpen = False
+	openDoorOffsetCoefficient = 0
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 17.58625 -36.34895 0.2173584
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Door_1
+}
+entity
+{
+	type = MapChangeRegion
+	uin = 11
+	classPrompt = MapChangeRegion
+	mapName = Maps\MainDemo\Map.map
+	spawnPointName = SpawnPoint_FromSkirmishDemo
+	shapeType = Box
+	filter = OnlyDynamicBodies
+	position = 17.47486 -31.96309 0.2185142
+	rotation = 0 0 -0.7071068 0.7071068
+	scale = 3 6.192717 5.927477
+	editorAlignmentMethod = None
+	name = MapChangeRegion_0
+	checkType = Bounds
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 12
+	mapClassManager = 13
+	entity
+	{
+		type = LogicClassManager
+		uin = 13
+		entity
+		{
+			type = LogicEntityClass
+			uin = 14
+			relationships = 8
+			entityClassName = GameGuiObject
+			className = Terminal_0
+			customScriptCodeCreated = True
+			customScriptCode = "//!!!!!!!!temp variables\r\nList<Unit> ourUnits = new List<Unit>();\r\nList<Unit> selectedUnits = new List<Unit>();\r\n//!!!!!!!!temp variables\r\n\r\n//!!!!!!temp in custom script code (out parameters)\r\nUnit GetUnitByCursor( out Vec3 position )\r\n{\r\n\tUnit retUnit = null;\r\n\tVec3 retPosition = new Vec3( float.NaN, float.NaN, float.NaN );\r\n\tRay ray = camera.GetCameraToViewportRay( cameraClientControl.MousePosition );\r\n\tMap.Instance.GetObjectsWithCollision( ray, delegate( MapObject obj, float scale )\r\n\t{\r\n\t\t//Collision\r\n\t\tif( obj == null )\r\n\t\t{\r\n\t\t\tretPosition = ray.GetPointOnRay( scale );\r\n\t\t\treturn false;\r\n\t\t}\r\n\r\n\t\t//Units\r\n\t\tUnit u = obj as Unit;\r\n\t\tif( u != null && camerasComboBox.SelectedItem != u )\r\n\t\t{\r\n\t\t\tretUnit = u;\r\n\t\t\tretPosition = retUnit.Position;\r\n\t\t\treturn false;\r\n\t\t}\r\n\t\treturn true;\r\n\t} );\r\n\r\n\tposition = retPosition;\r\n\treturn retUnit;\r\n}\r\n\r\nUnit GetUnitByCursor()\r\n{\r\n\tVec3 position;\r\n\treturn GetUnitByCursor( out position );\r\n}\r\n\r\n//!!!!!!temp in custom script code (MouseButtons)\r\nvoid clientControl_MouseDown( object sender, EMouseButtons button )\r\n{\r\n\tif( camera == null )\r\n\t\treturn;\r\n\r\n\t//Select unit\r\n\tif( button == EMouseButtons.Left )\r\n\t{\r\n\t\tselectionRectangle = true;\r\n\t\tselectionRectangleStart = cameraClientControl.MousePosition;\r\n\t}\r\n\r\n\t//Set selected units tasks\r\n\tif( button == EMouseButtons.Right && selectedUnits.Count != 0 )\r\n\t{\r\n\t\tVec3 position;\r\n\t\tUnit destinationUnit = GetUnitByCursor( out position );\r\n\r\n\t\tif( !float.IsNaN( position.X ) )\r\n\t\t{\r\n\t\t\tforeach( Unit unit in selectedUnits )\r\n\t\t\t{\r\n\t\t\t\tGameCharacterAI intellect = (GameCharacterAI)unit.Intellect;\r\n\t\t\t\tif( destinationUnit != null )\r\n\t\t\t\t\tintellect.ForceTaskMove = new GameCharacterAI.TaskMoveValue( destinationUnit );\r\n\t\t\t\telse\r\n\t\t\t\t\tintellect.ForceTaskMove = new GameCharacterAI.TaskMoveValue( position );\r\n\r\n\t\t\t\tif( destinationUnit != null && destinationUnit.Intellect.Faction != PlayerIntellect.Instance.Faction )\r\n\t\t\t\t{\r\n\t\t\t\t\tintellect.ForceTaskAttack = destinationUnit;\r\n\t\t\t\t\tintellect.ForceTaskMove = new GameCharacterAI.TaskMoveValue( null );\r\n\t\t\t\t}\r\n\t\t\t\telse\r\n\t\t\t\t\tintellect.ForceTaskAttack = null;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tSound sound = SoundWorld.Instance.SoundCreate( \"Sounds/Beep.ogg\", 0 );\r\n\t\tif(sound != null)\r\n\t\t\tSoundWorld.Instance.SoundPlay( sound, EngineApp.Instance.DefaultSoundChannelGroup, 1 );\r\n\t\r\n\t}\r\n}\r\n\r\n//!!!!!!temp in custom script code (MouseButtons)\r\nvoid clientControl_MouseUp( object sender, EMouseButtons button )\r\n{\r\n\tif( camera == null )\r\n\t\treturn;\r\n\r\n\tif( selectionRectangle && button == EMouseButtons.Left )\r\n\t{\r\n\t\tselectionRectangle = false;\r\n\r\n\t\t//Do selection\r\n\r\n\t\tif( !EngineApp.Instance.IsKeyPressed( EKeys.Shift ) )\r\n\t\t\tClearSelectedUnits();\r\n\r\n\t\tRect rect = new Rect( selectionRectangleStart );\r\n\t\trect.Add( cameraClientControl.MousePosition );\r\n\r\n\t\tif( Math.Abs( rect.Size.X ) > .005f || Math.Abs( rect.Size.Y ) > .005f )\r\n\t\t{\r\n\t\t\t//Select by rectangle\r\n\r\n\t\t\tMap.Instance.GetObjectsByScreenRectangle( camera, rect, delegate( MapObject obj )\r\n\t\t\t\t{\r\n\t\t\t\t\tUnit unit = obj as Unit;\r\n\t\t\t\t\tif( unit == null )\r\n\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\tif( !ourUnits.Contains( unit ) )\r\n\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\tSetSelectUnit( unit, true );\r\n\t\t\t\t} );\r\n\t\t}\r\n\t\telse\r\n\t\t{\r\n\t\t\t//Select by point\r\n\r\n\t\t\tUnit unit = GetUnitByCursor();\r\n\t\t\tif( unit != null && ourUnits.Contains( unit ) )\r\n\t\t\t\tSetSelectUnit( unit, true );\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n"
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 15
+				code = "( (EButton)Owner.MainControl.Controls[ \"OurUnitsZombie\" ] ).Click += ourUnits_Click;\r\n( (EButton)Owner.MainControl.Controls[ \"OurUnitsBug\" ] ).Click += ourUnits_Click;\r\n( (EButton)Owner.MainControl.Controls[ \"OurUnitsRobot\" ] ).Click += ourUnits_Click;\r\n( (EButton)Owner.MainControl.Controls[ \"OurUnitsTurret\" ] ).Click += ourUnits_Click;\r\n\r\n( (EButton)Owner.MainControl.Controls[ \"EnemyUnitsZombie\" ] ).Click += enemyUnits_Click;\r\n( (EButton)Owner.MainControl.Controls[ \"EnemyUnitsBug\" ] ).Click += enemyUnits_Click;\r\n( (EButton)Owner.MainControl.Controls[ \"EnemyUnitsRobot\" ] ).Click += enemyUnits_Click;\r\n( (EButton)Owner.MainControl.Controls[ \"EnemyUnitsTurret\" ] ).Click += enemyUnits_Click;\r\n\r\n( (EButton)Owner.MainControl.Controls[ \"Clear\" ] ).Click += clear_Click;\r\n\r\ncamerasComboBox = ( (EComboBox)Owner.MainControl.Controls[ \"Cameras\" ] );\r\nUpdateCamerasComboBox();\r\n\r\ncameraTextureSizeComboBox = ( (EComboBox)Owner.MainControl.Controls[ \"CameraTextureSize\" ] );\r\ncameraTextureSizeComboBox.SelectedIndexChange += cameraTextureSizeComboBox_SelectedIndexChange;\r\n\r\ncameraClientControl = Owner.MainControl.Controls[ \"Camera\" ].Controls[ \"ClientControl\" ];\r\ncameraClientControl.MouseDown += clientControl_MouseDown;\r\ncameraClientControl.MouseUp += clientControl_MouseUp;\r\ncameraClientControl.RenderUI += clientControl_RenderUI;\r\n\r\ncameraTextureSizeComboBox.Items.Add( \"Off\" );\r\ncameraTextureSizeComboBox.Items.Add( \"256x256\" );\r\ncameraTextureSizeComboBox.Items.Add( \"512x512\" );\r\ncameraTextureSizeComboBox.Items.Add( \"1024x1024\" );\r\n\r\nif( EngineApp.Instance.VideoMode.Size.X >= 1024 )\r\n\tcameraTextureSizeComboBox.SelectedIndex = 3;\r\nelse\r\n\tcameraTextureSizeComboBox.SelectedIndex = 2;\r\n\r\n( (EButton)Owner.MainControl.Controls[ \"Die\" ] ).Click += die_Click;\r\n\r\nOwner.AddTimer();\r\n"
+				methodName = PostCreated
+				returnType = System.Void
+				parameters = 16
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 16
+					parameterType = System.Boolean
+					parameterName = loaded
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 17
+				code = "DestroyCamera();\r\n"
+				methodName = Destroying
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = True
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 18
+				code = "DestroyCamera();\r\n\r\nif( cameraTextureSizeComboBox.SelectedIndex != 0 )\r\n{\r\n\tint textureSize = 256 * (int)Math.Pow( 2, cameraTextureSizeComboBox.SelectedIndex - 1 );\r\n\r\n\tcameraTexture = TextureManager.Instance.Create(\r\n\t\tTextureManager.Instance.GetUniqueName( \"SkirmishDemoCameraTestTexture\" ), Texture.Type.Type2D,\r\n\t\tnew Vec2i( textureSize, textureSize ), 1, 0, PixelFormat.R8G8B8, Texture.Usage.RenderTarget );\r\n\r\n\trenderTexture = cameraTexture.GetBuffer().GetRenderTarget();\r\n\r\n\tcamera = SceneManager.Instance.CreateCamera();\r\n\tcamera.NearClipDistance = .1f;\r\n\tcamera.FarClipDistance = 1000.0f;\r\n\tcamera.AspectRatio = 1.333f;\r\n\r\n\tviewport = renderTexture.AddViewport( camera );\r\n\r\n\t//Create compositor for HDR render technique\r\n\tif( RendererWorld.Instance.DefaultViewport.GetCompositorInstance( \"HDR\" ) != null )\r\n\t{\r\n\t\t//viewport.AddCompositor( \"HDR\", 0 );\r\n\t\t//viewport.SetCompositorEnabled( \"HDR\", true );\r\n\t}\r\n\r\n\tcameraClientControl.BackTexture = cameraTexture;\r\n}"
+				methodName = CreateCamera
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 19
+				code = "cameraClientControl.BackTexture = null;\r\n\r\nif( cameraTexture != null )\r\n{\r\n\t//renderTexture.RemoveViewport(viewport);\r\n\tviewport.Dispose();\r\n\tviewport = null;\r\n\r\n\tcamera.Dispose();\r\n\tcamera = null;\r\n\r\n\t//renderTexture.Dispose();\r\n\trenderTexture = null;\r\n\r\n\tcameraTexture.Dispose();\r\n\tcameraTexture = null;\r\n}\r\n"
+				methodName = DestroyCamera
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 20
+				code = "Unit unit = deletedEntity as Unit;\r\nif( unit != null )\r\n{\r\n\tif( selectedUnits.Contains( unit ) )\r\n\t\tSetSelectUnit( unit, false );\r\n\r\n\tif( ourUnits.Remove( unit ) )\r\n\t\tUpdateCamerasComboBox();\r\n}"
+				methodName = RelatedEntityDelete
+				returnType = System.Void
+				parameters = 21
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 21
+					parameterType = Engine.EntitySystem.Entity
+					parameterName = deletedEntity
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 22
+				code = "foreach( Entity entity in Map.Instance.Children )\r\n{\r\n\tstring str = entity.UserData as string;\r\n\tif( str != null && str == \"AllowClear\" )\r\n\t{\r\n\t\tentity.SetDeleted();\r\n\t\tcontinue;\r\n\t}\r\n\r\n\tif( ( entity as Corpse ) != null )\r\n\t\tentity.SetDeleted();\r\n}"
+				methodName = clear_Click
+				returnType = System.Void
+				parameters = 23
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 23
+					parameterType = Engine.UISystem.EButton
+					parameterName = sender
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 24
+				code = "string typeName = sender.Text;\r\n\r\nint startPos = -10;\r\nint step = 5;\r\nif(typeName == \"Robot\")\r\n{\r\n\tstep = 13;\r\n}\r\nelse if(typeName == \"Turret\")\r\n{\r\n\tstartPos = 0;\r\n\tstep = 20;\r\n}\r\n\t\r\nEntityType type = EntityTypes.Instance.GetByName( typeName );\r\nfor( float y = startPos; y <= 11; y += step )\r\n{\r\n\tUnit obj = (Unit)Entities.Instance.Create( type, Map.Instance );\r\n\tobj.UserData = \"AllowClear\";\r\n\tobj.PostCreate();\r\n\r\n\tif(obj is Character)\r\n\t{\r\n\t\t//\x043f\x0440\x0430\x0432\x0438\x043b\x044c\x043d\x0435\x0435 \x0437\x0430\x0434\x0430\x0432\x0430\x0442\x044c \x0447\x0435\x0440\x0435\x0437 Rotation = (\x043d\x0435 \x0440\x0435\x0430\x043b\x0438\x0437\x043e\x0432\x0430\x043d\x043e)\r\n\t\t((Character)obj).SetTurnToPosition( obj.Position + new Vec3( -10, 0, 0 ) );\r\n\t}\r\n\telse\r\n\t\tobj.Rotation = new Angles(0,0,180).ToQuat();\r\n\r\n\tGameCharacterAI intellect = (GameCharacterAI)obj.Intellect;\r\n\tif( intellect != null )\r\n\t\tintellect.Faction = PlayerIntellect.Instance.Faction;\r\n\r\n\tourUnits.Add( obj );\r\n\tOwner.AddRelationship( obj );\r\n\r\n\t//\x0441\x0442\x0430\x0432\x0438\x043c \x044e\x043d\x0438\x0442\x0430 \x0442\x0430\x043c \x0433\x0434\x0435 \x043d\x0438\x043a\x043e\x0433\x043e \x043d\x0435\x0442\r\n\tfor( float x = 10; x < 20; x++ )\r\n\t{\r\n\t\tVec3 pos = new Vec3( x, y, 1.7f );\r\n\t\tBounds bounds = obj.MapBounds + ( pos - obj.Position );\r\n\t\tbounds.Expand( new Vec3( 0, 0, 10 ) );\r\n\t\tbool free = true;\r\n\t\tMap.Instance.GetObjects( bounds, delegate( MapObject o )\r\n\t\t{\r\n\t\t\tif( o.PhysicsModel != null )\r\n\t\t\t\tfree = false;\r\n\t\t} );\r\n\r\n\t\tif( free )\r\n\t\t{\r\n\t\t\tobj.Position = pos;\r\n\t\t\tobj.OldPosition = pos;\r\n\t\t\tbreak;\r\n\t\t}\r\n\t}\r\n\r\n\tif( obj.Position == Vec3.Zero )\r\n\t\tobj.SetDeleted();\r\n}\r\n\r\nUpdateCamerasComboBox();\r\n"
+				methodName = ourUnits_Click
+				returnType = System.Void
+				parameters = 25
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 25
+					parameterType = Engine.UISystem.EButton
+					parameterName = sender
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 26
+				code = "string typeName = sender.Text;\r\n\r\nint startPos = -10;\r\nint step = 5;\r\nif(typeName == \"Robot\")\r\n{\r\n\tstep = 13;\r\n}\r\nelse if(typeName == \"Turret\")\r\n{\r\n\tstartPos = 0;\r\n\tstep = 20;\r\n}\r\n\r\nEntityType type = EntityTypes.Instance.GetByName( typeName );\r\nfor( float y = startPos; y <= 11; y += step )\r\n{\r\n\tUnit obj = (Unit)Entities.Instance.Create( type, Map.Instance );\r\n\tobj.UserData = \"AllowClear\";\r\n\tobj.PostCreate();\r\n\r\n\t//\x0441\x0442\x0430\x0432\x0438\x043c \x044e\x043d\x0438\x0442\x0430 \x0442\x0430\x043c \x0433\x0434\x0435 \x043d\x0438\x043a\x043e\x0433\x043e \x043d\x0435\x0442\r\n\tfor( float x = -10; x >= -20; x-- )\r\n\t{\r\n\t\tVec3 pos = new Vec3( x, y, 1.7f );\r\n\t\tBounds bounds = obj.MapBounds + ( pos - obj.Position );\r\n\t\tbounds.Expand( new Vec3( 0, 0, 10 ) );\r\n\t\tbool free = true;\r\n\t\tMap.Instance.GetObjects( bounds, delegate( MapObject o )\r\n\t\t{\r\n\t\t\tif( o.PhysicsModel != null )\r\n\t\t\t\tfree = false;\r\n\t\t} );\r\n\r\n\t\tif( free )\r\n\t\t{\r\n\t\t\tobj.Position = pos;\r\n\t\t\tobj.OldPosition = pos;\r\n\t\t\tbreak;\r\n\t\t}\r\n\t}\r\n\r\n\tif( obj.Position == Vec3.Zero )\r\n\t\tobj.SetDeleted();\r\n\r\n}\r\n"
+				methodName = enemyUnits_Click
+				returnType = System.Void
+				parameters = 27
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 27
+					parameterType = Engine.UISystem.EButton
+					parameterName = sender
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 28
+				code = "object lastSelectedItem = camerasComboBox.SelectedItem;\r\n\r\ncamerasComboBox.Items.Clear();\r\n\r\ncamerasComboBox.Items.Add( \"Side\" );\r\ncamerasComboBox.Items.Add( \"Perspective\" );\r\n//camerasComboBox.Items.Add( \"Up\" );\r\n\r\nforeach( Unit unit in ourUnits )\r\n\tcamerasComboBox.Items.Add( unit );\r\n\r\ncamerasComboBox.SelectedItem = lastSelectedItem;\r\nif( camerasComboBox.SelectedIndex == -1 )\r\n\tcamerasComboBox.SelectedIndex = 0;\r\n"
+				methodName = UpdateCamerasComboBox
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 29
+				code = "CreateCamera();"
+				methodName = cameraTextureSizeComboBox_SelectedIndexChange
+				returnType = System.Void
+				parameters = 30
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 30
+					parameterType = Engine.UISystem.EComboBox
+					parameterName = sender
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 31
+				code = "foreach( Unit unit in selectedUnits )\r\n\tunit.Die();\r\n"
+				methodName = die_Click
+				returnType = System.Void
+				parameters = 32
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 32
+					parameterType = Engine.UISystem.EButton
+					parameterName = sender
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 33
+				code = "string text = ( selectedUnits.Count != 0 ) ? selectedUnits.Count.ToString() : \"(None)\";\r\nOwner.MainControl.Controls[ \"SelectedUnits\" ].Text = text;\r\nOwner.MainControl.Controls[ \"Die\" ].Enable = selectedUnits.Count != 0;\r\n"
+				methodName = UpdateUnitsInfoControls
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 34
+				code = "if( select )\r\n{\r\n\tOwner.AddRelationship( unit );\r\n\r\n\tGameCharacterAI intellect = (GameCharacterAI)unit.Intellect;\r\n\tif( intellect != null )\r\n\t{\r\n\t\t//if( intellect.ForceTaskMove.Dynamic == null )\r\n\t\t//\tintellect.ForceTaskMove = new GameCharacterAI.TaskMoveValue( null );\r\n\t\tintellect.ForceTaskAttack = null;\r\n\t}\r\n\r\n\tselectedUnits.Add( unit );\r\n}\r\nelse\r\n{\r\n\tselectedUnits.Remove( unit );\r\n\r\n\tOwner.RemoveRelationship( unit );\r\n\r\n\tGameCharacterAI intellect = (GameCharacterAI)unit.Intellect;\r\n\tif( intellect != null )\r\n\t{\r\n\t\t//if( intellect.ForceTaskMove.Dynamic == null )\r\n\t\t//\tintellect.ForceTaskMove = new GameCharacterAI.TaskMoveValue( null );\r\n\t\t//intellect.ForceTaskAttack = null;\r\n\t}\r\n}\r\n\r\nUpdateUnitsInfoControls();\r\n"
+				methodName = SetSelectUnit
+				returnType = System.Void
+				parameters = 35 36
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 35
+					parameterType = GameEntities.Unit
+					parameterName = unit
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 36
+					parameterType = System.Boolean
+					parameterName = select
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 37
+				code = "while( selectedUnits.Count != 0 )\r\n\tSetSelectUnit( selectedUnits[ selectedUnits.Count - 1 ], false );\r\n"
+				methodName = ClearSelectedUnits
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 38
+				variableType = Engine.UISystem.EComboBox
+				variableName = camerasComboBox
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 39
+				variableType = Engine.UISystem.EComboBox
+				variableName = cameraTextureSizeComboBox
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 40
+				variableType = Engine.UISystem.EControl
+				variableName = cameraClientControl
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 41
+				variableType = System.Boolean
+				variableName = selectionRectangle
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 42
+				variableType = Engine.MathEx.Vec2
+				variableName = selectionRectangleStart
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 43
+				variableType = Engine.Renderer.Texture
+				variableName = cameraTexture
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 44
+				variableType = Engine.Renderer.Camera
+				variableName = camera
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 45
+				variableType = Engine.Renderer.RenderTexture
+				variableName = renderTexture
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 46
+				code = "Vec2 start = rectangle.LeftTop;\r\nVec2 end = rectangle.RightBottom;\r\n\r\nVec2 size = new Vec2( .0015f, .0015f * 1.333f );\r\n\r\nrenderer.AddQuad( new Rect( start, new Vec2( start.X + size.X, end.Y ) ), color, clipRectangle );\r\nrenderer.AddQuad( new Rect( start, new Vec2( end.X, start.Y + size.Y ) ), color, clipRectangle );\r\nrenderer.AddQuad( new Rect( new Vec2( end.X - size.X, start.Y ), end ), color, clipRectangle );\r\nrenderer.AddQuad( new Rect( new Vec2( start.X, end.Y - size.Y ), end ), color, clipRectangle );\r\n"
+				methodName = RenderRectangleBorder
+				returnType = System.Void
+				parameters = 47 48 49 50
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 47
+					parameterType = Engine.Renderer.GuiRenderer
+					parameterName = renderer
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 48
+					parameterType = Engine.MathEx.Rect
+					parameterName = rectangle
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 49
+					parameterType = Engine.MathEx.ColorValue
+					parameterName = color
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 50
+					parameterType = Engine.MathEx.Rect
+					parameterName = clipRectangle
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 51
+				code = "Vec3[] points = new Vec3[ 8 ];\r\n\r\nBounds bounds = new Bounds( unit.GetInterpolatedPosition() );\r\nbounds.Expand( .7f );\r\nbounds.ToPoints( ref points );\r\n\r\nRect rectangle = Rect.Cleared;\r\n\r\nfor( int n = 0; n < 8; n++ )\r\n{\r\n\tVec2 s = camera.ProjectToScreenCoordinates( points[ n ] );\r\n\tif( s.X == 0 )\r\n\t{\r\n\t\trectangle = Rect.Cleared;\r\n\t\tbreak;\r\n\t}\r\n\trectangle.Add( s );\r\n}\r\n\r\nif( !rectangle.IsCleared() )\r\n{\r\n\tRenderRectangleBorder( renderer, cameraClientControl.LocalToScreen( rectangle ), color, \r\n\t\tclipRectangle );\r\n}\r\n"
+				methodName = RenderUnitBorder
+				returnType = System.Void
+				parameters = 52 53 54 55
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 52
+					parameterType = Engine.Renderer.GuiRenderer
+					parameterName = renderer
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 53
+					parameterType = GameEntities.Unit
+					parameterName = unit
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 54
+					parameterType = Engine.MathEx.ColorValue
+					parameterName = color
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 55
+					parameterType = Engine.MathEx.Rect
+					parameterName = clipRectangle
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 56
+				code = "if( camera == null )\r\n\treturn;\r\n\r\nRect clipRectangle = sender.GetScreenRectangle();\r\n\r\n//Cursor on unit\r\n{\r\n\tUnit unit = GetUnitByCursor();\r\n\tif( unit != null )\r\n\t\tRenderUnitBorder( renderer, unit, new ColorValue( .7f, .7f, .7f, .7f ), clipRectangle );\r\n}\r\n\r\n//Selected Units\r\nforeach( Unit unit in selectedUnits )\r\n{\r\n\t//Render select border\r\n\tRenderUnitBorder( renderer, unit, new ColorValue( 0, 1, 0 ), clipRectangle );\r\n\r\n\t//Draw tasks\r\n\tGameCharacterAI intellect = (GameCharacterAI)unit.Intellect;\r\n\tif( intellect != null )\r\n\t{\r\n\t\tif( intellect.TaskMove.IsInitialized || intellect.TaskAttack != null )\r\n\t\t{\r\n\t\t\tVec3 position;\r\n\t\t\tColorValue color;\r\n\r\n\t\t\tif( intellect.TaskAttack != null )\r\n\t\t\t{\r\n\t\t\t\tposition = intellect.TaskAttack.GetInterpolatedPosition();\r\n\t\t\t\tcolor = new ColorValue( 1, 0, 0 );\r\n\t\t\t}\r\n\t\t\telse\r\n\t\t\t{\r\n\t\t\t\tif( intellect.TaskMove.Dynamic != null )\r\n\t\t\t\t\tposition = intellect.TaskMove.Dynamic.GetInterpolatedPosition();\r\n\t\t\t\telse\r\n\t\t\t\t\tposition = intellect.TaskMove.Position;\r\n\t\t\t\tcolor = new ColorValue( 0, 1, 0 );\r\n\t\t\t}\r\n\r\n\t\t\tVec2 screenPos = camera.ProjectToScreenCoordinates( position );\r\n\t\t\tif( screenPos.X != 0 )\r\n\t\t\t{\r\n\t\t\t\tVec2 p = cameraClientControl.LocalToScreen( screenPos );\r\n\r\n\t\t\t\tVec2 size = new Vec2( .01f, .01f * 1.333f );\r\n\t\t\t\trenderer.AddQuad( new Rect( p - size / 2, p + size / 2 ), color, clipRectangle );\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\n//Selection rectangle\r\nif( selectionRectangle )\r\n{\r\n\tRect rectangle = new Rect( selectionRectangleStart );\r\n\trectangle.Add( cameraClientControl.MousePosition );\r\n\trectangle = cameraClientControl.LocalToScreen( rectangle );\r\n\r\n\trenderer.AddQuad( rectangle, new ColorValue( 0, 0, 0, .2f ) );\r\n\tRenderRectangleBorder( renderer, rectangle, new ColorValue( 0, 1, 0 ), clipRectangle );\r\n}"
+				methodName = clientControl_RenderUI
+				returnType = System.Void
+				parameters = 57 58
+				isEntityEventMethod = False
+				entity
+				{
+					type = LogicParameter
+					uin = 57
+					parameterType = Engine.UISystem.EControl
+					parameterName = sender
+				}
+				entity
+				{
+					type = LogicParameter
+					uin = 58
+					parameterType = Engine.Renderer.GuiRenderer
+					parameterName = renderer
+				}
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 59
+				code = "object selectedItem = camerasComboBox.SelectedItem;\r\n\r\n//Check visibility\r\nif(renderTexture != null)\r\n{\r\n\tCamera defaultCamera = RendererWorld.Instance.DefaultCamera;\r\n\r\n\trenderTexture.AutoUpdate = false;\r\n\tIn3dControlManager controlManager = Owner.ControlManager;\r\n\tBox box = new Box( controlManager.Position3D, controlManager.Scale3D * .5f, \r\n\t\tcontrolManager.Rotation3D.ToMat3() );\r\n\tif( defaultCamera.IsIntersectsFast( box.ToBounds() ) )\r\n\t{\r\n\t\t//!!!!!slowly\r\n\t\tVec3[] points = new Vec3[ 8 ];\r\n\t\tbox.ToPoints( ref points );\r\n\t\tPlane plane = Plane.FromPoints( points[ 0 ], points[ 1 ], points[ 2 ] );\r\n\t\tif( plane.GetSide( defaultCamera.Position ) == Plane.Side.Positive )\r\n\t\t\trenderTexture.AutoUpdate = true;\r\n\t}\r\n}\r\n\r\nif( camera != null )\r\n{\r\n\r\n\tif( camerasComboBox.SelectedIndex == 0 )\r\n\t{\r\n\t\tMapCamera mapCameraPositions = (MapCamera)Entities.Instance.GetByName(\"MapCamera_Side\");\r\n\t\tif(mapCameraPositions.Fov != 0)\r\n\t\t\tcamera.Fov = mapCameraPositions.Fov;\r\n\t\tcamera.Position = mapCameraPositions.Position;\r\n\t\tcamera.FixedUp = /*SetFixedUpAxis*/( mapCameraPositions.Rotation * new Vec3(0,0,1) );\r\n\t\tcamera.LookAt( mapCameraPositions.Position + mapCameraPositions.Rotation * new Vec3(100,0,0) );\r\n\t}\r\n\telse if( camerasComboBox.SelectedIndex == 1 )\r\n\t{\r\n\t\tMapCamera mapCameraPositions = (MapCamera)Entities.Instance.GetByName(\"MapCamera_Perspective\");\r\n\t\tif(mapCameraPositions.Fov != 0)\r\n\t\t\tcamera.Fov = mapCameraPositions.Fov;\r\n\t\tcamera.Position = mapCameraPositions.Position;\r\n\t\tcamera.FixedUp = /*SetFixedUpAxis*/( mapCameraPositions.Rotation * new Vec3(0,0,1) );\r\n\t\tcamera.LookAt( mapCameraPositions.Position + mapCameraPositions.Rotation * new Vec3(100,0,0) );\r\n\t}\r\n\t//else if( camerasComboBox.SelectedIndex == 2 )\r\n\t//{\r\n\t//\tcamera.Fov = 10;\r\n\t//\tcamera.Position = new Vec3( 0, 0, 190 );\r\n\t//\tcamera.SetFixedUpAxis( Vec3.YAxis );\r\n\t//\tcamera.LookAt( new Vec3( 0, 0, 0 ) );\r\n\t//}\r\n\telse if( camerasComboBox.SelectedIndex != -1 )\r\n\t{\r\n\t\tCharacter unit = selectedItem as Character;\r\n\t\tcamera.Fov = 80;\r\n\t\tcamera.Position = unit.GetInterpolatedPosition() + unit.Type.FPSCameraOffset * unit.Rotation;\r\n\t\tcamera.FixedUp = /*SetFixedUpAxis*/( Vec3.ZAxis );\r\n\t\tcamera.LookAt( unit.SeePosition );\r\n\t}\r\n}"
+				methodName = UpdateCamera
+				returnType = System.Void
+				parameters = 
+				isEntityEventMethod = False
+			}
+			entity
+			{
+				type = LogicScriptMethod
+				uin = 60
+				code = "if(camera == RendererWorld.Instance.DefaultCamera)\r\n\tUpdateCamera();"
+				methodName = Render
+				returnType = System.Void
+				parameters = 61
+				isEntityEventMethod = True
+				entity
+				{
+					type = LogicParameter
+					uin = 61
+					parameterType = Engine.Renderer.Camera
+					parameterName = camera
+				}
+			}
+			entity
+			{
+				type = LogicVariable
+				uin = 62
+				variableType = Engine.Renderer.Viewport
+				variableName = viewport
+			}
+		}
+	}
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 63
+	classPrompt = HealthItem
+	respawnTime = 10
+	createLifeCoefficient = 1
+	life = 0
+	lifeTime = 0
+	position = 8.74534 -18.62343 0.03086722
+	rotation = 0 0 0.9513835 0.308009
+	scale = 1 1 1
+	editorAlignmentMethod = None
+}
+entity
+{
+	type = MapCamera
+	uin = 64
+	classPrompt = MapCamera
+	fov = 80
+	position = 0 -19 5
+	rotation = -0.1830127 0.1830127 0.6830127 0.6830127
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = MapCamera_Side
+}
+entity
+{
+	type = MapCamera
+	uin = 65
+	classPrompt = MapCamera
+	fov = 80
+	position = -13 -13 10
+	rotation = -0.06698729 0.25 0.25 0.9330127
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = MapCamera_Perspective
+}
+entity
+{
+	type = StaticMesh
+	uin = 66
+	classPrompt = StaticMesh
+	position = 0 0 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	editorLayer = Root\StaticGeometry
+	meshName = Models\Rooms\Rooms.mesh
+	allowDecals = All
+}

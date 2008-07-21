@@ -1,0 +1,228 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+gameType = Action
+ambientLight = 0.2 0.2 0.2
+soundDistanceFactor = 10
+editorCameraPosition = -270.0392 -238.5401 37.95603
+editorCameraDirection = 0.7671183 -0.8344256
+drawStaticPhysics = False
+drawDynamicPhysics = False
+drawSceneGraphInfo = False
+drawRegions = False
+drawMapObjectBounds = False
+drawSceneNodeBounds = False
+drawStaticMeshObjectBounds = False
+drawZonesPortalsOccluders = False
+drawLights = False
+drawStaticGeometry = True
+drawModels = True
+drawEffects = True
+drawGui = True
+drawWireframe = False
+drawGameSpecificDebugGeometry = False
+shadowTechnique = ShadowmapHigh
+shadowColor = 0.75 0.75 0.75
+shadowFarDistance = 30
+shadow2DTextureSize = 1024
+shadow2DTextureCount = 2
+shadowCubicTextureSize = 512
+shadowCubicTextureCount = 1
+frustumTest = False
+fov = 80
+nearFarClipDistance = 0 0
+logicSystemManager = 3
+sceneGraphDynamicTree = False
+sceneGraphType = Quadtree
+rootEditorLayer
+{
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 3
+	mapClassManager = 4
+	entity
+	{
+		type = LogicClassManager
+		uin = 4
+	}
+}
+entity
+{
+	type = Collision
+	uin = 5
+	classPrompt = Collision
+}
+entity
+{
+	type = HeightmapTerrain
+	uin = 6
+	classPrompt = HeightmapTerrain
+	position = 0 0 -12
+	horizontalSize = 1000
+	verticalSize = 100
+	dataDirectory = HeightmapTerrain
+	masksSize = 1024
+	lodMethod = None
+	maxPixelError = 5
+	maxLODLevel = 7
+	lodOffDistance = 0
+	detailMapsDistance = 50
+	renderQueueGroup = WorldGeometry1
+	collisionMaterialName = Default
+	bottomClipHeight = 6
+	castDynamicShadows = False
+	tileSize = 16
+	layers
+	{
+		item
+		{
+			name = base
+			baseMap = Defaults\HeightmapTerrain\Layer0Base.jpg
+			baseScale = 5
+			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = second
+			baseMap = Defaults\HeightmapTerrain\Layer1Base.jpg
+			baseScale = 10
+			detailMap = Defaults\HeightmapTerrain\Layer1Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = layer1
+			baseMap = Materials\Game\Terrain\RockBase.jpg
+			baseScale = 20
+			detailMap = Materials\Game\Terrain\RockDetail.jpg
+			detailScale = 2
+			projectionAxis = XAxis
+		}
+		item
+		{
+			name = layer2
+			baseMap = Materials\Game\Terrain\RockBase.jpg
+			baseScale = 20
+			detailMap = Materials\Game\Terrain\RockDetail.jpg
+			detailScale = 2
+			projectionAxis = YAxis
+		}
+	}
+}
+entity
+{
+	type = Light
+	uin = 7
+	classPrompt = Light
+	lightType = Point
+	diffuseColor = 1 1 1
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 8 12 100
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = Light_0
+}
+entity
+{
+	type = WaterPlane
+	uin = 8
+	classPrompt = WaterPlane
+	size = 1000 1000
+	position = 0 0 0
+	segments = 20 20
+	renderQueueGroup = Queue3
+	reflectionLevel = OnlySky
+	physicsHeight = 0
+	deepColor = 0 0.8000001 0.7333333
+	shallowColor = 0.4862745 0.8352942 1
+}
+entity
+{
+	type = SpawnPoint
+	uin = 9
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = -98 259 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_0
+}
+entity
+{
+	type = SpawnPoint
+	uin = 10
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = -38 242 0
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_1
+}
+entity
+{
+	type = Caelum
+	uin = 11
+	classPrompt = CaelumManager
+	ObserverLatitude = 45
+	ObserverLongitude = 45
+	ManageAmbientLight = True
+	CastShadows = True
+	SpecularMultiplier = 1 1 1
+	DiffuseMultiplier = 1 1 0.9
+	AmbientMultiplier = 1 1 1
+	MinAmbientLight = 0.15 0.15 0.15
+	StarFieldInclination = 13
+	CloudsCover = 0.3
+	IsCloudsAnimated = True
+	CloudsBlendTime = 86400
+	CloudsSpeed = 5 9
+	FogDensityMultiplier = 0.0015
+	TimeScale = 500
+	StartYear = 2007
+	StartMonth = 4
+	StartDay = 9
+	StartHour = 23
+}
+entity
+{
+	type = SpawnPoint
+	uin = 12
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = -263.6492 -247.2401 7.482418
+	rotation = 0 0 0 1
+	scale = 1 1 1
+	editorAlignmentMethod = None
+	name = SpawnPoint_2
+}
+entity
+{
+	type = DecorativeObjectManager
+	uin = 13
+	classPrompt = DecorativeObjectManager
+	visible = True
+	typeItems
+	{
+		item
+		{
+			type = DefaultGrass
+			itemCount = 354
+		}
+	}
+}

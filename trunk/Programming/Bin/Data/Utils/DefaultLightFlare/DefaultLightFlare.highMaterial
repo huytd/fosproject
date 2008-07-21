@@ -1,0 +1,12 @@
+highLevelMaterial DefaultLightFlare
+{
+	template = ShaderBaseMaterial
+	blending = AlphaAdd
+	lighting = False
+	diffuseVertexColor = True
+	diffuse1Map
+	{
+		texture = Utils\DefaultLightFlare\DefaultLightFlare.jpg
+		clamp = True
+	}
+}

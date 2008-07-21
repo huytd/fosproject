@@ -1,0 +1,8 @@
+highLevelMaterial FpsDemoHouse/LargeBricks
+{
+	template = ShaderBaseMaterial
+	diffuse1Map
+	{
+		texture = Maps\FPSDemo\StaticGeometry\House\LargeBricks.jpg
+	}
+}
