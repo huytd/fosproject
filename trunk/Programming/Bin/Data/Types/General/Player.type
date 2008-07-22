@@ -1,5 +1,0 @@
-type Player
-{
-	class = Player
-	networkType = Network
-}

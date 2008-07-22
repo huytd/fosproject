@@ -1,9 +1,0 @@
-type Occluder
-{
-	class = Occluder
-	allowEditorCreate = True
-	allowEmptyName = True
-	attachedObjects
-	{
-	}
-}

@@ -1,5 +1,0 @@
-type TankGameUnitAI
-{
-	class = TankGameUnitAI
-	notifyAlliesRadius = 70
-}

@@ -1,8 +1,0 @@
-highLevelMaterial FpsDemoHouse/WallMetal
-{
-	template = ShaderBaseMaterial
-	diffuse1Map
-	{
-		texture = Maps\FPSDemo\StaticGeometry\House\WallMetal.jpg
-	}
-}

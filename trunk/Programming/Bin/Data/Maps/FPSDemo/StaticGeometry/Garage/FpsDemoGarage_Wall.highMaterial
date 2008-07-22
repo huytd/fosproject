@@ -1,8 +1,0 @@
-highLevelMaterial FpsDemoGarage/Wall
-{
-	template = ShaderBaseMaterial
-	diffuse1Map
-	{
-		texture = Maps\FPSDemo\StaticGeometry\Garage\Wall.jpg
-	}
-}

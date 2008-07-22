@@ -1,7 +1,0 @@
-type FastMoveInfluence
-{
-	class = FastMoveInfluence
-	coefficient = 2
-	defaultParticleName = BigFireParticle
-	networkType = Network
-}

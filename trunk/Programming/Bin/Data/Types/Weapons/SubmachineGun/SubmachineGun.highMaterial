@@ -1,7 +1,0 @@
-highLevelMaterial SubmachineGun
-{
-	template = ShaderBaseMaterial
-	diffuseMap = Types\Weapons\SubmachineGun\SubmachineGun.jpg
-	specularScale = 1 1 1
-	specularShininess = 20
-}

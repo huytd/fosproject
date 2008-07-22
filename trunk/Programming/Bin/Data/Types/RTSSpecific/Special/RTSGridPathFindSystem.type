@@ -1,8 +1,0 @@
-type RTSGridPathFindSystem
-{
-	class = RTSGridPathFindSystem
-	fieldSize = 2
-	//smoothFindStep = 0.25
-	allowEditorCreate = True
-	uniqueEntityInstance = True
-}

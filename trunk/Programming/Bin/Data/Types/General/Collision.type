@@ -1,6 +1,0 @@
-type Collision
-{
-	class = Collision
-	allowEditorCreate = True
-	uniqueEntityInstance = True
-}

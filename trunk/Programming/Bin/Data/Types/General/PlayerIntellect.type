@@ -1,5 +1,0 @@
-type PlayerIntellect
-{
-	class = PlayerIntellect
-	networkType = Network
-}

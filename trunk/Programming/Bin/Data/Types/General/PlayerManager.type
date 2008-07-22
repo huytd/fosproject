@@ -1,5 +1,0 @@
-type PlayerManager
-{
-	class = PlayerManager
-	networkType = Network
-}

@@ -1,5 +1,0 @@
-type DefaultTurretAI
-{
-	class = TurretAI
-	allowEmptyName = False
-}

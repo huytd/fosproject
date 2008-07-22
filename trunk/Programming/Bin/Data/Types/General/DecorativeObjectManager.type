@@ -1,5 +1,0 @@
-type DecorativeObjectManager
-{
-	class = DecorativeObjectManager
-	allowEditorCreate = true
-}

@@ -1,8 +1,0 @@
-highLevelMaterial PipeSwitch
-{
-	template = ShaderBaseMaterial
-	diffuse1Map
-	{
-		texture = Types\Dynamic\Pipe\PipeSwitch\PipeSwitch.jpg
-	}
-}
