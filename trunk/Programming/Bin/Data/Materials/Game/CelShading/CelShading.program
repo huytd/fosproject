@@ -1,0 +1,57 @@
+vertex_program Ogre/CelShadingVP_hlsl hlsl
+{
+	source Materials\Game\CelShading\CelShading.cg_hlsl
+	entry_point main_vp
+	target vs_1_1
+	default_params
+	{
+		param_named_auto lightPosition light_position_object_space 0
+		param_named_auto eyePosition camera_position_object_space
+		param_named_auto worldViewProj worldviewproj_matrix
+		param_named shininess float 10 
+	}
+}
+
+vertex_program Ogre/CelShadingVP_cg cg
+{
+	source Materials\Game\CelShading\CelShading.cg_hlsl
+	entry_point main_vp
+	profiles arbvp1
+	default_params
+	{
+		param_named_auto lightPosition light_position_object_space 0
+		param_named_auto eyePosition camera_position_object_space
+		param_named_auto worldViewProj worldviewproj_matrix
+		param_named shininess float 10 
+	}
+}
+
+vertex_program Ogre/CelShadingVP unified
+{
+	delegate Ogre/CelShadingVP_hlsl
+	delegate Ogre/CelShadingVP_cg
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+fragment_program Ogre/CelShadingFP_hlsl hlsl
+{
+	source Materials\Game\CelShading\CelShading.cg_hlsl
+	entry_point main_fp
+	target ps_1_4
+}
+
+fragment_program Ogre/CelShadingFP_cg cg
+{
+	source Materials\Game\CelShading\CelShading.cg_hlsl
+	entry_point main_fp
+	profiles arbfp1 fp20
+}
+
+fragment_program Ogre/CelShadingFP unified
+{
+	delegate Ogre/CelShadingFP_hlsl
+	delegate Ogre/CelShadingFP_cg
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////

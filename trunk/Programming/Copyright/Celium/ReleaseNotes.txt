@@ -1,0 +1,24 @@
+1.0
+* Sun: CastShadows enabled (with directional lightning)
+* An unique entity in the map editor
+* More options editable in resource & map editors
+* Billboard for drawing (instead of spherical meshes)
+* Astronomically correct sun position.
+* Bug fix with ATI cards and OpenGL
+* Support for one moon
+* Moon's phases using a cg shader.
+* Moon will hide stars behind it
+* Moon's fades in and out at sunset and sunrise.
+* Astronomically correct moon position. 
+* Support for older NAE's version
+* Separated dll for an easier installation
+
+
+0.1
+* Dynamic sky colour
+* Dynamic ambient light
+* Dynamic fog colour and density
+* Dynamic sun color
+* Sun
+* Starfield 
+* LayeredClouds

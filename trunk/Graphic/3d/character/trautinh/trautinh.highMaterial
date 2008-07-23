@@ -1,0 +1,29 @@
+highLevelMaterial trautinh
+{
+	template = ShaderBaseMaterial
+	diffuseScale = 0.9882354 1 1
+	reflectionScaleDynamic = True
+	emissionScale = 1 0 0
+	specularScale = 1 0.8627452 0.5686275
+	heightScale = 0.4
+	diffuse1Map
+	{
+		texture = trautinh\trautinh.jpg
+	}
+	emissionMap
+	{
+		texture = trautinh\trautinhemission.jpg
+		transform
+		{
+			rotate = -1
+		}
+	}
+	specularMap
+	{
+		texture = trautinh\trautinhspecular.jpg
+	}
+	normalMap
+	{
+		texture = trautinh\trautinhnormal.jpg
+	}
+}

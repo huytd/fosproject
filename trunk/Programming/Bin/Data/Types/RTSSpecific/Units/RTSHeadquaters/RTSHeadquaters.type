@@ -1,0 +1,172 @@
+type RTSHeadquaters
+{
+	class = RTSBuilding
+	buildCost = 300
+	initialAI = DefaultRTSBuildingAI
+	lifeMax = 400
+	substance = Metal
+	physicsModel = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquaters.physics
+	allowEditorCreate = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquaters.mesh
+			castShadows = True
+		}
+		particle
+		{
+			particleName = ItemParticle
+			alias = productUnit
+			position = 0.1 -1.1 0.8
+			visible = False
+		}
+		particle
+		{
+			particleName = ItemParticle
+			alias = productUnit
+			position = -1.9 -1.1 0.8
+			visible = False
+		}
+		particle
+		{
+			particleName = ItemParticle
+			alias = productUnit
+			position = 0.1 0.9 0.8
+			visible = False
+		}
+		particle
+		{
+			particleName = ItemParticle
+			alias = productUnit
+			position = -1.9 0.9 0.8
+			visible = False
+		}
+		particle
+		{
+			particleName = ItemParticle
+			alias = productUnit
+			position = -0.9 -0.1 0.8
+			visible = False
+		}
+		helper
+		{
+			alias = productUnitPoint
+			position = -0.8 -0.2 2
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersLeft.mesh
+			forceMaterial = TransparentExample
+			alias = building0
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersRight.mesh
+			forceMaterial = TransparentExample
+			alias = building0
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersCenter.mesh
+			forceMaterial = TransparentExample
+			alias = building0
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersLeft.mesh
+			castShadows = True
+			alias = building1
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersRight.mesh
+			forceMaterial = TransparentExample
+			alias = building1
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersCenter.mesh
+			forceMaterial = TransparentExample
+			alias = building1
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersLeft.mesh
+			castShadows = True
+			alias = building2
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersRight.mesh
+			castShadows = True
+			alias = building2
+			visible = False
+		}
+		mesh
+		{
+			meshName = Types\RTSSpecific\Units\RTSHeadquaters\RTSHeadquatersCenter.mesh
+			forceMaterial = TransparentExample
+			alias = building2
+			visible = False
+		}
+		particle
+		{
+			particleName = BigFireParticle
+			alias = lessHalfLife
+			position = 0 0 1
+			visible = False
+		}
+		particle
+		{
+			particleName = BigFireParticle
+			alias = lessQuarterLife
+			position = 2.3 0.7 3
+			visible = False
+		}
+		particle
+		{
+			particleName = BigFireParticle
+			alias = lessQuarterLife
+			position = -2 0 1
+			visible = False
+		}
+	}
+	dieObjects
+	{
+		particle
+		{
+			particleName = ExplosionParticle
+		}
+		sound
+		{
+			soundName = Sounds\Explode.ogg
+			priority = 0.7
+		}
+		mapObject
+		{
+			type = FumingSplinterBullet
+			alias = randomRotation
+			count = 10
+			position = 0 0 3.1
+		}
+		mapObject
+		{
+			type = FireworkBullet
+			alias = randomRotation
+			count = 5
+			position = 0 0 3.1
+		}
+		mapObject
+		{
+			type = RTSHeadquatersDead
+		}
+	}
+}

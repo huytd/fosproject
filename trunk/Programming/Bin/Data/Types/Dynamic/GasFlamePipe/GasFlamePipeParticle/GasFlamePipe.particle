@@ -1,0 +1,36 @@
+GasFlamePipeParticle
+{
+    	material        	GasFlamePipeParticle
+    	particle_width  	.2
+    	particle_height 	.2
+    	cull_each       	false
+    	quota           	100
+	renderer		billboard
+    
+	emitter Point
+    	{
+		colour 				0 0 0
+		angle               		10
+        	emission_rate       		20
+        	time_to_live        		.4
+        	direction           		1 0 0
+		velocity_min        		.5
+		velocity_max        		.7
+	}
+
+	affector ColourInterpolator
+	{
+		time0 0
+		colour0 0.803 0.435 0.058 0
+		time1 .1
+		colour1 0.803 0.435 0.058 1
+		time2 1
+		colour2 1 0 0 0
+	}
+
+   	affector Scaler
+	{
+	       	rate 	.1
+   	}
+
+}

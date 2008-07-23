@@ -1,0 +1,16 @@
+type HelperPoint
+{
+	class = MapObject
+	allowEditorCreate = True
+	allowEmptyName = False
+	networkType = Server
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\Special\InvisiblePoint.mesh
+			castShadows = False
+			onlyForEditor = True
+		}
+	}
+}

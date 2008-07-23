@@ -1,0 +1,7 @@
+type FastAttackInfluence
+{
+	class = FastAttackInfluence
+	networkType = Network
+
+	coefficient = 2
+}

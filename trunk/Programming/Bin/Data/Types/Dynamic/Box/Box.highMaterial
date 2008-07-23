@@ -1,0 +1,23 @@
+highLevelMaterial Box
+{
+	template = ShaderBaseMaterial
+	emissionScale = 1 1 1
+	specularScale = 1.392157 1.392157 1.392157
+	specularShininess = 14.73
+	diffuse1Map
+	{
+		texture = Types\Dynamic\Box\BoxDiffuse.dds
+	}
+	emissionMap
+	{
+		texture = Types\Dynamic\Box\BoxEmission.dds
+	}
+	specularMap
+	{
+		texture = Types\Dynamic\Box\BoxSpecular.dds
+	}
+	normalMap
+	{
+		texture = Types\Dynamic\Box\BoxNormal.dds
+	}
+}

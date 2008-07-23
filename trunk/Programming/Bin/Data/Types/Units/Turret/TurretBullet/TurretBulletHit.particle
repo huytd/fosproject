@@ -1,0 +1,21 @@
+TurretBulletHit
+{
+	material        	TurretBulletHit
+	particle_width  	2
+	particle_height 	2
+	cull_each       	false
+	quota           	20
+	renderer		billboard
+
+	emitter Point
+    	{
+		duration 	.1
+
+		colour 		0.803 0.435 0.058 1
+		angle           11
+        	emission_rate   60
+        	time_to_live    .2
+		velocity	0
+	}
+
+}

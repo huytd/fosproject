@@ -1,0 +1,15 @@
+type OgreHead
+{
+	class = MapObject
+	allowEditorCreate = True
+	allowEmptyName = False
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\StaticObjects\\OgreHead\\OgreHead.mesh"
+			castShadows = True
+			toCollision = True
+		}
+	}
+}

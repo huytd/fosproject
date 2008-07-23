@@ -1,0 +1,12 @@
+highLevelMaterial GasFlamePipeParticle
+{
+	template = ShaderBaseMaterial
+	blending = AlphaAdd
+	lighting = False
+	receiveShadows = False
+	diffuseVertexColor = True
+	diffuse1Map
+	{
+		texture = Effects/FireParticle/fire.png
+	}
+}
