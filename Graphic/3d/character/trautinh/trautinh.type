@@ -1,0 +1,14 @@
+type trautinh
+{
+	class = PlayerCharacter
+	allowEditorCreate = True
+	allowEmptyName = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = trautinh\trautinh.mesh
+			position = 0 0 3
+		}
+	}
+}

@@ -1,0 +1,22 @@
+type BirdDead
+{
+	class = Corpse
+	substance = Flesh
+	lifeTime = 10
+	physicsModel = "Types\\Units\\Bird\\BirdDead\\BirdDead.physics"
+	allowEditorCreate = True
+	allowEmptyName = False
+	networkType = Network
+	influenceSlotNames
+	{
+	}
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\Units\\Zombie\\Zombie.mesh"
+			body = main
+			position = "0 0 -0.2"
+		}
+	}
+}

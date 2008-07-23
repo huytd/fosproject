@@ -1,0 +1,25 @@
+type FastMoveInfluenceItem
+{
+	class = InfluenceItem
+	influenceType = FastMoveInfluence
+	influenceTime = 10
+	defaultRespawnTime = 10
+	allowEditorCreate = True
+	networkType = Network
+	soundTake = Types/Items/DefaultItemTake.ogg
+	influenceSlotNames
+	{
+	}
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\Items\FastMoveInfluenceItem\Main.mesh
+			castShadows = True
+		}
+		particle
+		{
+			particleName = ItemParticle
+		}
+	}
+}

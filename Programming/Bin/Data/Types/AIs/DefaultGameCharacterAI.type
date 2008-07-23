@@ -1,0 +1,5 @@
+type DefaultGameCharacterAI
+{
+	class = GameCharacterAI
+	allowEmptyName = False
+}

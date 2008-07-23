@@ -1,0 +1,15 @@
+physicsModel
+{
+	body door
+	{
+		static = true
+
+		position = 0 0 1.5
+
+		shape
+		{
+			type = box
+			dimensions = 3.36 .2 3
+		}
+	}
+}

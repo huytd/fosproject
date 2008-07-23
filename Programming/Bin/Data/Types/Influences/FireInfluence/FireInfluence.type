@@ -1,0 +1,8 @@
+type FireInfluence
+{
+	class = FireInfluence
+	damagePerSecond = 10
+	defaultParticleName = FireParticle
+	allowEmptyName = True
+	allowSubstance = Flesh
+}

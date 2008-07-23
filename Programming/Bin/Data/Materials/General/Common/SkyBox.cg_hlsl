@@ -1,0 +1,27 @@
+// Copyright (C) 2006-2008 NeoAxis Group
+
+void main_vp(
+	uniform float4x4 worldViewProjMatrix,
+
+	float4 position : POSITION,
+	float2 uv : TEXCOORD0,
+
+	out float4 oPosition : POSITION,
+	out float2 oUv : TEXCOORD0
+	)
+{
+	oPosition = mul(worldViewProjMatrix, position);
+	oUv = uv;
+}
+
+void main_fp(
+	uniform float3 colorScale,
+
+	float2 uv : TEXCOORD0,
+	uniform sampler2D skyBoxMap : register(s0),
+
+	out float4 oColor : COLOR
+	)
+{
+	oColor = float4(tex2D(skyBoxMap, uv).rgb * colorScale, 1);
+}

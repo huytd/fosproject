@@ -1,0 +1,5 @@
+type SkyBox
+{
+	class = SkyBox
+	allowEditorCreate = true
+}

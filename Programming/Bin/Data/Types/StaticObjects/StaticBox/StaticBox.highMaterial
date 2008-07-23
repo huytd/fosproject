@@ -1,0 +1,8 @@
+highLevelMaterial StaticBox
+{
+	template = ShaderBaseMaterial
+	diffuseMap = Types\StaticObjects\StaticBox\StaticBox.jpg
+	specularScale = 1 1 1
+	specularMap = Types\StaticObjects\StaticBox\StaticBox_Specular.jpg
+	normalMap = Types\StaticObjects\StaticBox\StaticBox_Normal.png
+}

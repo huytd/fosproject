@@ -1,0 +1,15 @@
+type BugJumpBlowMeleeWeapon
+{
+	class = JumpBlowMeleeWeapon
+	normalMode
+	{
+		betweenFireTime = 3
+		useDistanceRange = 8 10
+		fireTimes = 0.5
+		damage = 5
+		soundFire = Types\Units\Bug\JumpBlow.ogg
+		//fireUnitAnimationName = attack
+	}
+	jumpVelocity = 16 0 4
+	soundBlowKick = Types\Units\Bug\JumpBlowKick.ogg
+}

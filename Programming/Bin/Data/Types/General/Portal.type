@@ -1,0 +1,9 @@
+type Portal
+{
+	class = Portal
+	allowEditorCreate = true
+	allowEmptyName = True
+	attachedObjects
+	{
+	}
+}

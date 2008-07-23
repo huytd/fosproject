@@ -1,0 +1,25 @@
+type RTSGeyser
+{
+	class = MapObject
+	allowEditorCreate = True
+	allowEmptyName = False
+	networkType = Network
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\Dynamic\\Ball\\Ball.mesh"
+			castShadows = True
+			scale = "1 1 0.1"
+			forceSubMeshMaterial
+			{
+				subMeshIndex = 0
+				materialName = Black
+			}
+		}
+		particle
+		{
+			particleName = RTSGeyserParticle
+		}
+	}
+}

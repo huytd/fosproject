@@ -1,0 +1,13 @@
+type Light
+{
+	class = Light
+	allowEditorCreate = True
+	attachedObjects
+	{
+		billboard
+		{
+			materialName = DefaultLightFlare
+			onlyForEditor = True
+		}
+	}
+}

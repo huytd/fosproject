@@ -1,0 +1,12 @@
+idle : 0 > 40 ( bo?)
+walk : 41 > 70
+run : 71 > 100
+hit : 101 > 115
+attack1: 116 > 130
+attack2: 131 > 145
+attack3: 146 > 160
+spell : 161 > 180
+die : 181 > 215
+selected: 216 > 245
+idle1(without staff): 246 > 285
+run1 ( without staff) : 286 > 315

@@ -1,0 +1,24 @@
+type BugDead
+{
+	class = Corpse
+	substance = Flesh
+	lifeTime = 5
+	physicsModel = "Types\\Units\\Bug\\BugDead\\BugDead.physics"
+	allowEditorCreate = True
+	allowEmptyName = False
+	networkType = Network
+	influenceSlotNames
+	{
+	}
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\Units\\Bug\\Bug.mesh"
+			castShadows = True
+			body = main
+			position = "0 0 -0.2"
+			scale = "0.2 0.2 0.2"
+		}
+	}
+}

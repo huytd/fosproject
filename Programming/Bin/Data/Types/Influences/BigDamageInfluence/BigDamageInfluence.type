@@ -1,0 +1,9 @@
+type BigDamageInfluence
+{
+	class = BigDamageInfluence
+	networkType = Network
+
+	defaultParticleName = BigFireParticle
+
+	coefficient = 4
+}

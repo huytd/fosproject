@@ -1,0 +1,36 @@
+PipeLeakFlameParticle
+{
+    	material        	PipeLeakFlameParticle
+    	particle_width  	.1
+    	particle_height 	.1
+    	cull_each       	false
+    	quota           	100
+	renderer		billboard
+    
+	emitter Point
+    	{
+		colour 				0 0 0
+		angle               		5
+        	emission_rate       		200
+        	time_to_live        		.3
+        	direction           		1 0 0
+		velocity_min        		16
+		velocity_max        		16
+	}
+
+	affector ColourInterpolator
+	{
+		time0 0
+		colour0 0.803 0.435 0.058 0
+		time1 .1
+		colour1 0.803 0.435 0.058 1
+		time2 1
+		colour2 1 0 0 0
+	}
+
+   	affector Scaler
+	{
+	       	rate 	3
+   	}
+
+}

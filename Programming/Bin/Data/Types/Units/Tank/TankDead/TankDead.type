@@ -1,0 +1,37 @@
+type TankDead
+{
+	class = Dynamic
+	lifeMax = 2000
+	targetPriority = 1
+	physicsModel = Types\Units\Tank\TankDead\TankDead.physics
+	allowEditorCreate = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\Units\Tank\Base.mesh
+			castShadows = True
+			forceMaterial = Black
+			body = chassis
+			position = 0 0 0.3754162
+		}
+	}
+	dieObjects
+	{
+		sound
+		{
+			soundName = Types\Units\Tank\Sounds\Die.ogg
+			priority = 0.7
+		}
+		particle
+		{
+			particleName = ExplosionParticle
+			position = 2 0 0
+		}
+		particle
+		{
+			particleName = ExplosionParticle
+			position = -2 0 0
+		}
+	}
+}

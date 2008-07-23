@@ -1,0 +1,15 @@
+type DynamicCollision
+{
+	class = DynamicCollision
+	allowEditorCreate = True
+	allowEmptyName = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = "Types\\Special\\InvisiblePoint.mesh"
+			useOwnerScale = False
+			onlyForEditor = True
+		}
+	}
+}
