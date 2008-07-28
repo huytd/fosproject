@@ -1,0 +1,17 @@
+highLevelMaterial Cay
+{
+	template = VegetationMaterial
+	specularScale = 0.9490197 0.764706 0.5411765
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\export\diffuse.png
+	}
+	specularMap
+	{
+		texture = Types\StaticObjects\export\specular.png
+	}
+	normalMap
+	{
+		texture = Types\StaticObjects\export\normal.png
+	}
+}

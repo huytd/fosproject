@@ -1,0 +1,12 @@
+highLevelMaterial Leaf
+{
+	template = VegetationMaterial
+	blending = AlphaBlend
+	culling = False
+	reflectionScale = 0.5607843 0.9176471 0.6
+	specularScale = 0.8352942 0.8980393 0.5568628
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\export\leaf.png
+	}
+}
