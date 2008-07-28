@@ -1,0 +1,16 @@
+type Tree
+{
+	class = MapObject
+	allowEditorCreate = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\StaticObjects\export\tree.mesh
+			castDynamicShadows = True
+			collision = True
+			castStaticShadows = True
+			scale = 0.01549216 0.01549216 0.01549216
+		}
+	}
+}
