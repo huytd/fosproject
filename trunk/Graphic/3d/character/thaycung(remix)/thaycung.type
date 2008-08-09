@@ -1,0 +1,25 @@
+type thaycung
+{
+	class = PlayerCharacter
+	allowEditorCreate = True
+	allowEmptyName = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = thaycung\thaycung.mesh
+			forceMaterial = trautinh2
+			collision = True
+			receiveStaticShadows = True
+			position = 0 0 -14
+			scale = 0.8182958 0.8182958 0.8182958
+		}
+		mesh
+		{
+			meshName = thaycung\gay.mesh
+			receiveStaticShadows = True
+			position = -3 0 -8
+			scale = 0.4386813 0.4386813 0.4386813
+		}
+	}
+}
