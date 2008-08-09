@@ -1,0 +1,25 @@
+highLevelMaterial gay
+{
+	template = ShaderBaseMaterial
+	culling = False
+	alphaRejectFunction = Greater
+	diffuseScale = 0.9882354 1 1
+	reflectionScaleDynamic = True
+	specularScale = 0.6862745 0.6666667 0.654902
+	heightScale = 0.4
+	diffuse1Map
+	{
+		texture = thaycung\gaytex.tga
+	}
+	emissionMap
+	{
+		transform
+		{
+			rotate = -1
+		}
+	}
+	normalMap
+	{
+		texture = thaycung\gaynormal.jpg
+	}
+}

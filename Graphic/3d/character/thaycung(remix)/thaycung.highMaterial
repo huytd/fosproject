@@ -1,0 +1,29 @@
+highLevelMaterial trautinh2
+{
+	template = ShaderBaseMaterial
+	culling = False
+	alphaRejectFunction = Greater
+	diffuseScale = 0.9882354 1 1
+	reflectionScaleDynamic = True
+	specularScale = 0.4392157 0.454902 0.4666667
+	heightScale = 0.4
+	diffuse1Map
+	{
+		texture = thaycung\thaycungtex.tga
+	}
+	emissionMap
+	{
+		transform
+		{
+			rotate = -1
+		}
+	}
+	specularMap
+	{
+		texture = thaycung\thaycungspec.jpg
+	}
+	normalMap
+	{
+		texture = thaycung\thaycungnormal.jpg
+	}
+}
