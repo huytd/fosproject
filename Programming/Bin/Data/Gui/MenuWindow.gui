@@ -4,72 +4,70 @@ control Gui\Controls\DefaultWindow.gui
 {
 	horizontalAlign = Center
 	verticalAlign = Center
-	size = Texture 317.5 265.3125
-	text = Viet Heroes
+	size = Texture 290 453.5
+	text = Menu
 	mouseCover = True
 	control Gui\Controls\DefaultButton.gui
 	{
-		enable = False
-		position = Texture 2.5 39
-		horizontalAlign = Center
-		size = Texture 250 45
-		name = Options
-		text = "Thi\x1ebft l\x1eadp"
-	}
-	control Gui\Controls\DefaultButton.gui
-	{
-		position = Texture 22.5 419
-		horizontalAlign = Center
-		name = Debug
-		text = Debug
-		visible = False
-	}
-	control Gui\Controls\DefaultButton.gui
-	{
-		position = Texture 22.5 429
-		horizontalAlign = Center
-		name = About
-		text = About us
-		visible = False
-	}
-	control Gui\Controls\DefaultButton.gui
-	{
-		position = Texture 3 82.43751
-		horizontalAlign = Center
-		size = Texture 250 45
-		name = ExitToMainMenu
-		text = "Tho\x00e1t v\x1ec1 menu"
-	}
-	control Gui\Controls\DefaultButton.gui
-	{
-		position = Texture 3 122.4375
-		horizontalAlign = Center
-		size = Texture 250 45
-		name = Exit
-		text = "Tho\x00e1t game"
-	}
-	control Gui\Controls\DefaultButton.gui
-	{
-		position = Texture 3 182.4375
-		horizontalAlign = Center
-		size = Texture 250 45
-		name = Resume
-		text = "Tr\x1edf l\x1ea1i"
-	}
-	control Gui\Controls\DefaultButton.gui
-	{
-		position = Texture 2.5 419
-		horizontalAlign = Center
-		name = PostEffects
-		text = Post effects
-		visible = False
-	}
-	control Gui\Controls\DefaultButton.gui
-	{
-		position = Texture 162.5 759
+		position = Texture 2.5 42.75001
 		horizontalAlign = Center
 		name = Maps
 		text = Maps
-		visible = False
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 122.75
+		horizontalAlign = Center
+		name = Options
+		text = Options
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 162.75
+		horizontalAlign = Center
+		name = Debug
+		text = Debug
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 242.75
+		horizontalAlign = Center
+		name = About
+		text = About us
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 282.7501
+		horizontalAlign = Center
+		name = ExitToMainMenu
+		text = Exit to menu
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 322.75
+		horizontalAlign = Center
+		name = Exit
+		text = Exit
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 382.75
+		horizontalAlign = Center
+		name = Resume
+		text = Resume
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 202.75
+		horizontalAlign = Center
+		name = PostEffects
+		text = Post effects
+	}
+	control Gui\Controls\DefaultButton.gui
+	{
+		position = Texture 2.5 82.75002
+		horizontalAlign = Center
+		name = LoadSave
+		text = Load/Save
 	}
 }
