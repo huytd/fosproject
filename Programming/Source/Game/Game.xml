@@ -162,5 +162,57 @@
             Defines a system game menu.
             </summary>
         </member>
+        <member name="T:Game.VHFOSGameWindows">
+            <summary>
+            Defines a game window for Viet Heroes - Fight or Surrender games.
+            </summary>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.UpdateCurrentPlayerUseObjects">
+            <summary>
+            Updates objects on which the player can to operate.
+            Such as which the player can supervise switches, ingameGUI or control units.
+            </summary>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.UpdateHUD">
+            <summary>
+            Updates HUD screen
+            </summary>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.DrawTarget(Engine.Renderer.GuiRenderer)">
+            <summary>
+            Draw a target at center of screen
+            </summary>
+            <param name="renderer"></param>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.DrawPlayerInformation(Engine.Renderer.GuiRenderer)">
+            <summary>
+            To draw some information of a player
+            </summary>
+            <param name="renderer"></param>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.GetActiveObserveCameraArea">
+            <summary>
+            Finds observe area in which there is a player.
+            </summary>
+            <returns><b>ObserveCameraArea</b>if the player is in area; otherwise <b>null</b>.</returns>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.GetNearestPointToMapCurve(Engine.MathEx.Vec3,Engine.MapSystem.MapCurve)">
+            <summary>
+            Finds the nearest point to a map curve.
+            </summary>
+            <param name="destPos">The point to which is searched the nearest.</param>
+            <param name="mapCurve">The map curve.</param>
+            <returns>The nearest point to a map curve.</returns>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.GetActiveObserveCameraAreaCameraOrientation(Engine.MathEx.Vec3@,Engine.MathEx.Vec3@,Engine.MathEx.Vec3@,Engine.MathEx.Degree@)">
+            <summary>
+            Receives orientation of the camera in the observe area of in which there is a player.
+            </summary>
+            <param name="position">The camera position.</param>
+            <param name="forward">The forward vector.</param>
+            <param name="up">The up vector.</param>
+            <param name="cameraFov">The camera FOV.</param>
+            <returns><b>true</b>if the player is in any area; otherwise <b>false</b>.</returns>
+        </member>
     </members>
 </doc>

@@ -18,12 +18,6 @@ namespace GameEntities
 	/// </summary>
 	public class DoorType : DynamicType
 	{
-		/*
-		[FieldSerialize]
-		[DefaultValue( false )]
-		bool allowLock;
-		*/
-
 		[FieldSerialize]
 		Vec3 openDoorBodyOffset = new Vec3( 0, 0, 1 );
 
@@ -37,14 +31,6 @@ namespace GameEntities
 		string soundClose;
 
 		//
-
-		/*
-		[DefaultValue( false )]
-		public bool AllowLock
-		{
-			get { return allowLock; }
-			set { allowLock = value; }
-		}*/
 
 		/// <summary>
 		/// Gets or sets the displacement a position of a body "door" when the door is open.
@@ -100,20 +86,14 @@ namespace GameEntities
 		[FieldSerialize]
 		bool opened;
 
-		//[FieldSerialize]
-		//bool locked;
-
 		[FieldSerialize]
 		bool needOpen;
-		//[FieldSerialize]
-		//bool needLock;
 
 		[FieldSerialize]
 		float openDoorOffsetCoefficient;
 
 		Vec3 doorBodyInitPosition;
 		Body doorBody;
-
 
 		//
 
@@ -123,7 +103,6 @@ namespace GameEntities
 		{
 			base.OnCreate();
 			needOpen = opened;
-			//needLock = locked;
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
@@ -163,8 +142,6 @@ namespace GameEntities
 		{
 			base.OnTick();
 
-			//!!!!!locked not implemented
-
 			if( needOpen != opened || openDoorOffsetCoefficient != 0 )
 			{
 				float offset = TickDelta / Type.OpenTime;
@@ -197,7 +174,7 @@ namespace GameEntities
 			if( doorBody == null )
 				return;
 
-			Vec3 pos = Position + doorBodyInitPosition + 
+			Vec3 pos = Position + doorBodyInitPosition +
 				Type.OpenDoorBodyOffset * openDoorOffsetCoefficient;
 
 			//not very marvelously :) because this is a fake
@@ -235,26 +212,5 @@ namespace GameEntities
 				}
 			}
 		}
-
-		/*
-		[DefaultValue( false )]
-		[LogicSystemBrowsable( true )]
-		public bool Locked
-		{
-			get { return locked; }
-			set
-			{
-				if( value && !Type.AllowLock )
-					throw new Exception( "Type not allow Lock" );
-
-				needLock = value;
-
-				if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor )
-				{
-					locked = value;
-				}
-			}
-		}*/
-
 	}
 }

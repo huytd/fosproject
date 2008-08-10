@@ -11,6 +11,7 @@ using Engine.MapSystem;
 using Engine.MathEx;
 using Engine.PhysicsSystem;
 using Engine.SoundSystem;
+using Engine.Renderer;
 using Engine.Utils;
 
 namespace GameEntities
@@ -79,16 +80,6 @@ namespace GameEntities
 					return "(not initialized)";
 				return influence.Name;
 			}
-		}
-
-		///////////////////////////////////////////
-
-		[EditorBrowsable( EditorBrowsableState.Never )]
-		public class AutomaticInfluencesCollectionEditor : PropertyGridUtils.ModalDialogCollectionEditor
-		{
-			public AutomaticInfluencesCollectionEditor()
-				: base( typeof( List<AutomaticInfluenceItem> ) )
-			{ }
 		}
 
 		///////////////////////////////////////////
@@ -165,7 +156,6 @@ namespace GameEntities
 		}
 
 		[TypeConverter( typeof( CollectionTypeConverter ) )]
-		[Editor( typeof( AutomaticInfluencesCollectionEditor ), typeof( UITypeEditor ) )]
 		public List<AutomaticInfluenceItem> AutomaticInfluences
 		{
 			get { return automaticInfluences; }
@@ -178,11 +168,11 @@ namespace GameEntities
 	/// </summary>
 	public class Dynamic : MapObject
 	{
-		[FieldSerialize]
-		float createLifeCoefficient = 1.0f;
-		[FieldSerialize]
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float life;
 
+		[FieldSerialize]
+		[DefaultValue( 0.0f )]
 		float dieLatencyRamainingTime;
 
 		bool died;
@@ -192,11 +182,27 @@ namespace GameEntities
 
 		//currently only for Type.LifeTime
 		[FieldSerialize]
+		[DefaultValue( 0.0f )]
 		float lifeTime;
 
+		[FieldSerialize]
+		[DefaultValue( 1.0f )]
 		float receiveDamageCoefficient = 1;
 
+		[FieldSerialize]
 		Influence[] automaticInfluences;
+
+		//animation
+		const float animationsBlendTime = .1f;
+
+		MapObjectAttachedMesh attachedMeshForAnimation;
+		//key: animation name; value: maximum index (walk, walk2, walk3)
+		Dictionary<string, int> maxAnimationIndices;
+		MeshObject.AnimationState forceAnimationState;
+
+		[FieldSerialize]
+		[DefaultValue( 0.0f )]
+		float lastAnimationTimePosition;
 
 		//
 
@@ -321,13 +327,42 @@ namespace GameEntities
 			}
 		}
 
+		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnLoad(TextBlock)"/>.</summary>
+		protected override bool OnLoad( TextBlock block )
+		{
+			if( !base.OnLoad( block ) )
+				return false;
+
+			if( EntitySystemWorld.Instance.SerializationMode == SerializationModes.Map )
+				life = Type.LifeMax;
+
+			return true;
+		}
+
+		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnSave(TextBlock)"/>.</summary>
+		protected override void OnSave( TextBlock block )
+		{
+			base.OnSave( block );
+
+			if( EntitySystemWorld.Instance.SerializationMode == SerializationModes.World )
+			{
+				if( attachedMeshForAnimation != null )
+					SaveAnimationStates( block );
+			}
+		}
+
+		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnCreate()"/>.</summary>
+		protected override void OnCreate()
+		{
+			base.OnCreate();
+
+			life = Type.LifeMax;
+		}
+
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
 		protected override void OnPostCreate( bool loaded )
 		{
 			base.OnPostCreate( loaded );
-
-			createLifeCoefficient = 1;
-			life = Type.LifeMax * createLifeCoefficient;
 
 			if( PhysicsModel != null )
 			{
@@ -343,11 +378,27 @@ namespace GameEntities
 
 			if( Type.LifeTime != 0 )
 				AddTimer();
+
+			FindAttachedMeshForAnimation();
+			if( loaded && EntitySystemWorld.Instance.SerializationMode == SerializationModes.World )
+			{
+				if( attachedMeshForAnimation != null )
+					LoadAnimationStates( LoadingTextBlock );
+			}
+		}
+
+		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnShouldDelete()"/>.</summary>
+		protected override bool OnShouldDelete()
+		{
+			attachedMeshForAnimation = null;
+			return base.OnShouldDelete();
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnDestroy()"/>.</summary>
 		protected override void OnDestroy()
 		{
+			attachedMeshForAnimation = null;
+
 			if( PhysicsModel != null )
 			{
 				if( Type.ImpulseDamageCoefficient != 0 || Type.SoundCollision != null )
@@ -356,6 +407,7 @@ namespace GameEntities
 						body.Collision -= Body_Collision;
 				}
 			}
+
 			base.OnDestroy();
 		}
 
@@ -391,7 +443,7 @@ namespace GameEntities
 				}
 			}
 
-			if( Position.Z < -200.0f )
+			if( Position.Z < Map.Instance.InitialSceneObjectsBounds.Minimum.Z - 300.0f )
 				Die();
 
 			if( soundCollisionTimeRemaining != 0 )
@@ -590,7 +642,7 @@ namespace GameEntities
 
 		}
 
-		protected override void OnDieObjectCreate( MapObjectCreateObject createObject, 
+		protected override void OnDieObjectCreate( MapObjectCreateObject createObject,
 			object objectCreated )
 		{
 			base.OnDieObjectCreate( createObject, objectCreated );
@@ -664,11 +716,302 @@ namespace GameEntities
 			}
 		}
 
-		protected virtual void OnSetForceAnimationState( string animationName ) { }
-
-		public void SetForceAnimationState( string animationName )
+		protected override void OnRenderFrame()
 		{
-			OnSetForceAnimationState( animationName );
+			base.OnRenderFrame();
+
+			if( attachedMeshForAnimation != null )
+				UpdateAnimations();
+		}
+
+		void FindAttachedMeshForAnimation()
+		{
+			MapObjectAttachedMesh attachedMesh = null;
+
+			foreach( MapObjectAttachedObject attachedObject in AttachedObjects )
+			{
+				attachedMesh = attachedObject as MapObjectAttachedMesh;
+				if( attachedMesh != null )
+					break;
+			}
+
+			if( attachedMesh == null )
+				return;
+			if( attachedMesh.MeshObject == null )
+				return;
+			if( attachedMesh.MeshObject.AnimationStates == null )
+				return;
+
+			attachedMeshForAnimation = attachedMesh;
+		}
+
+		protected virtual void OnUpdateAnimation( ref string animationName,
+			ref float animationVelocity, ref bool animationLoop, ref bool allowRandomAnimationNumber )
+		{
+		}
+
+		/// <summary>
+		/// Returns animation with index addition. 
+		/// </summary>
+		/// <remarks>
+		/// Example: animationName: walk; return: 1(walk) or 2(walk2) or 3(walk3).
+		/// </remarks>
+		/// <param name="animationName"></param>
+		/// <param name="firstAnimationIn10TimesMoreOften"></param>
+		/// <returns></returns>
+		protected int GetRandomAnimationNumber( string animationName,
+			bool firstAnimationIn10TimesMoreOften )
+		{
+			if( maxAnimationIndices == null )
+				maxAnimationIndices = new Dictionary<string, int>();
+
+			int maxIndex;
+
+			MeshObject meshObject = attachedMeshForAnimation.MeshObject;
+
+			if( !maxAnimationIndices.TryGetValue( animationName, out maxIndex ) )
+			{
+				//calculate max animation index
+				maxIndex = 1;
+				for( int n = 2; ; n++ )
+				{
+					if( meshObject.GetAnimationState( animationName + n.ToString() ) != null )
+						maxIndex++;
+					else
+						break;
+				}
+				maxAnimationIndices.Add( animationName, maxIndex );
+			}
+
+			int number;
+
+			//The first animation in 10 times more often
+			if( firstAnimationIn10TimesMoreOften )
+			{
+				number = World.Instance.Random.Next( 10 + maxIndex ) + 1 - 10;
+				if( number < 1 )
+					number = 1;
+			}
+			else
+				number = World.Instance.Random.Next( maxIndex ) + 1;
+
+			return number;
+		}
+
+		[Browsable( false )]
+		public MapObjectAttachedMesh AttachedMeshForAnimation
+		{
+			get { return attachedMeshForAnimation; }
+		}
+
+		[Browsable( false )]
+		public MeshObject.AnimationState ForceAnimationState
+		{
+			get { return forceAnimationState; }
+		}
+
+		[Browsable( false )]
+		public MapObjectAttachedMesh.AnimationStateItem CurrentAnimationState
+		{
+			get
+			{
+				if( attachedMeshForAnimation != null )
+				{
+					IList<MapObjectAttachedMesh.AnimationStateItem> items =
+						attachedMeshForAnimation.CurrentAnimationStates;
+					for( int n = 0; n < items.Count; n++ )
+					{
+						MapObjectAttachedMesh.AnimationStateItem item = items[ n ];
+
+						MeshObject.AnimationState state = item.AnimationState;
+
+						if( item.FadeOutBlendTime == 0 )
+						{
+							if( !state.Loop )
+							{
+								if( state.TimePosition + animationsBlendTime * 2 < state.Length )
+									return item;
+							}
+							else
+								return item;
+						}
+					}
+				}
+				return null;
+			}
+		}
+
+		void UpdateAnimations()
+		{
+			MeshObject.AnimationState animationState = null;
+			float animationVelocity = 1.0f;
+			bool animationLoop = false;
+
+			//get current animation
+			{
+				MapObjectAttachedMesh.AnimationStateItem item = CurrentAnimationState;
+				if( item != null )
+				{
+					animationState = item.AnimationState;
+					animationVelocity = item.Velocity;
+					animationLoop = item.AnimationState.Loop;
+				}
+			}
+
+			//force set animation
+			if( forceAnimationState != null )
+			{
+				if( animationState != forceAnimationState )
+				{
+					forceAnimationState = null;
+					animationState = null;
+				}
+			}
+
+			if( forceAnimationState == null )
+			{
+				string oldAnimationName = null;
+				if( animationState != null )
+					oldAnimationName = animationState.Name;
+
+				string animationName = oldAnimationName;
+				bool allowRandomAnimationNumber = false;
+
+				OnUpdateAnimation( ref animationName, ref animationVelocity, ref animationLoop,
+					ref allowRandomAnimationNumber );
+
+				if( !string.IsNullOrEmpty( animationName ) )
+				{
+					//random animation number functionality
+					if( allowRandomAnimationNumber )
+					{
+						if( !string.IsNullOrEmpty( oldAnimationName ) &&
+							oldAnimationName.Length >= animationName.Length )
+						{
+							if( string.Compare( oldAnimationName, 0, animationName, 0,
+								animationName.Length ) == 0 )
+							{
+								//detect rewind
+								if( animationState.TimePosition < lastAnimationTimePosition )
+								{
+									//get random animation
+									int number = GetRandomAnimationNumber( animationName, true );
+									if( number != 1 )
+										animationName += number.ToString();
+								}
+								else
+								{
+									//use old animation
+									animationName = oldAnimationName;
+								}
+							}
+						}
+					}
+
+					if( string.Compare( animationName, oldAnimationName ) != 0 )
+					{
+						animationState = attachedMeshForAnimation.MeshObject.GetAnimationState(
+							animationName );
+					}
+				}
+				else
+				{
+					animationState = null;
+				}
+			}
+
+			attachedMeshForAnimation.ChangeCurrentAnimationState( animationState, animationVelocity,
+				animationLoop, animationsBlendTime );
+
+			//update lastAnimationTimePosition
+			if( animationState != null )
+				lastAnimationTimePosition = animationState.TimePosition;
+			else
+				lastAnimationTimePosition = 0;
+		}
+
+		public void SetForceAnimation( string animationName, bool allowRandomAnimationNumber )
+		{
+			if( attachedMeshForAnimation == null )
+				return;
+
+			string name = animationName;
+			if( allowRandomAnimationNumber )
+			{
+				int number = GetRandomAnimationNumber( name, true );
+				if( number != 1 )
+					name += number.ToString();
+			}
+
+			forceAnimationState = attachedMeshForAnimation.MeshObject.GetAnimationState( name );
+
+			if( forceAnimationState != null )
+			{
+				//reset time for animation
+				attachedMeshForAnimation.RemoveCurrentAnimationState( forceAnimationState, 0 );
+				attachedMeshForAnimation.ChangeCurrentAnimationState( forceAnimationState,
+					1, false, animationsBlendTime );
+			}
+		}
+
+		void LoadAnimationStates( TextBlock block )
+		{
+			TextBlock itemsBlock = block.FindChild( "animationStates" );
+			if( itemsBlock != null )
+			{
+				foreach( TextBlock itemBlock in itemsBlock.Children )
+				{
+					MeshObject.AnimationState animationState = attachedMeshForAnimation.MeshObject.
+						GetAnimationState( itemBlock.GetAttribute( "name" ) );
+
+					if( animationState != null )
+					{
+						float velocity = 0;
+						if( itemBlock.IsAttributeExist( "velocity" ) )
+							velocity = float.Parse( itemBlock.GetAttribute( "velocity" ) );
+						bool loop = false;
+						if( itemBlock.IsAttributeExist( "loop" ) )
+							loop = bool.Parse( itemBlock.GetAttribute( "loop" ) );
+
+						MapObjectAttachedMesh.AnimationStateItem item = attachedMeshForAnimation.
+							AddCurrentAnimationState( animationState, velocity, loop, 0 );
+						if( item != null )
+						{
+							if( itemBlock.IsAttributeExist( "timePosition" ) )
+							{
+								float timePosition = float.Parse( itemBlock.GetAttribute( "timePosition" ) );
+								item.AnimationState.TimePosition = timePosition;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		void SaveAnimationStates( TextBlock block )
+		{
+			TextBlock itemsBlock = block.AddChild( "animationStates" );
+
+			foreach( MapObjectAttachedMesh.AnimationStateItem item in
+				attachedMeshForAnimation.CurrentAnimationStates )
+			{
+				if( item.FadeOutBlendTime != 0 )
+					continue;
+
+				TextBlock itemBlock = itemsBlock.AddChild( "item" );
+
+				itemBlock.SetAttribute( "name", item.AnimationState.Name );
+				itemBlock.SetAttribute( "velocity", item.Velocity.ToString() );
+				itemBlock.SetAttribute( "loop", item.AnimationState.Loop.ToString() );
+				if( !float.IsNaN( item.AnimationState.TimePosition ) )
+				{
+					itemBlock.SetAttribute( "timePosition", item.AnimationState.
+						TimePosition.ToString() );
+				}
+			}
+
+			if( forceAnimationState != null )
+				block.SetAttribute( "forceAnimationState", forceAnimationState.Name );
 		}
 
 	}

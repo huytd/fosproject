@@ -213,17 +213,6 @@ namespace Caelum
         }
     }
 
-    ///////////////////////////////////////////
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class CaelumCollectionEditor : PropertyGridUtils.ModalDialogCollectionEditor
-    {
-        public CaelumCollectionEditor()
-            : base(typeof(List<CaelumItem>))
-        { }
-    }
-
-    ///////////////////////////////////////////
 
     /// <summary>
     /// Defines some math tools. It also make all necessary 

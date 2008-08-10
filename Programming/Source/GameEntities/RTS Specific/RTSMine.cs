@@ -56,7 +56,6 @@ namespace GameEntities
 				}
 			}
 
-			//!!!!!temp. not true
 			//Rotation propeller
 			if( BuildedProgress == 1 )
 			{

@@ -1,6 +1,7 @@
 // Copyright (C) 2006-2008 NeoAxis Group Ltd.
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Engine.EntitySystem;
 
@@ -15,16 +16,19 @@ namespace GameEntities
 
 	public class Player : Entity
 	{
+		[FieldSerialize]
 		string playerName;
 		int ping;
+		[FieldSerialize]
 		int frags;
 
+		[FieldSerialize]
 		bool bot;
 
-		//server
-		//!!!!!!ServerClientEntry client;//!!!!!!relations?
-		bool needClientUpdate;
+		////server
+		//bool needClientUpdate;
 
+		[FieldSerialize]
 		Intellect intellect;
 
 		//
@@ -55,36 +59,12 @@ namespace GameEntities
 			set { bot = value; }
 		}
 
-		//server
-		public bool NeedClientUpdate
-		{
-			get { return needClientUpdate; }
-			set { needClientUpdate = value; }
-		}
-
-		//server
-		/*!!!!!!!
-		public ServerClientEntry Client
-		{
-			get { return client; }
-			set { client = value; }
-		}*/
-
-		//server
-		public void UpdateClient()
-		{
-			//!!!!!!if( client == null)
-				//return;
-
-			/*!!!!!!
-			BASSERT( IsNetworkServerObject() );
-			ObjectSystemPacket packet = BeginPacket( OSPT_PLAYER_UPDATE, client );
-			packet->WriteString( playerName );
-			packet->WriteInt( ping );
-			packet->WriteInt( frags );
-			packet->End();
-			*/
-		}
+		////server
+		//public bool NeedClientUpdate
+		//{
+		//   get { return needClientUpdate; }
+		//   set { needClientUpdate = value; }
+		//}
 
 		public Intellect Intellect
 		{
@@ -107,22 +87,5 @@ namespace GameEntities
 			if( intellect == entity )
 				intellect = null;
 		}
-			
-		/*!!!!!
-		protected override void OnPacket(ObjectSystemPacket& packet)
-		{
-			super::OnPacket(packet);
-
-			switch(packet->GetId())
-			{
-			case OSPT_PLAYER_UPDATE:
-				playerName = packet->ReadString();
-				ping = packet->ReadInt();
-				frags = packet->ReadInt();
-				break;
-			}
-		}*/
-
-
 	}
 }

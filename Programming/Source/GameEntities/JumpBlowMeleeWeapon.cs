@@ -49,6 +49,7 @@ namespace GameEntities
 
 		bool firstTick = true;
 
+		[FieldSerialize]
 		float lastJumpTime;
 
 		bool collisionEventInitialized;

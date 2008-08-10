@@ -32,6 +32,7 @@ namespace GameEntities
 	{
 		AircraftType _type = null; public new AircraftType Type { get { return _type; } }
 
+		[FieldSerialize]
 		float flyHeight = 10;
 
 		public float FlyHeight
@@ -77,7 +78,7 @@ namespace GameEntities
 				new Vec3( 0, 0, force ) * mass, Vec3.Zero );
 
 			//check outside Map position
-			Bounds checkBounds = PhysicsWorld.Instance.InitialBounds;
+			Bounds checkBounds = Map.Instance.InitialCollisionBounds;
 			checkBounds.Expand( new Vec3( 300, 300, 10000 ) );
 			if( !checkBounds.IsContainsPoint( Position ) )
 				SetDeleted();

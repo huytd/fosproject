@@ -59,8 +59,6 @@ namespace Game
 		public static bool drawPostEffects = true;
 		[Config( "Map", "drawDebugGeometry" )]
 		public static bool drawDebugGeometry = true;
-		[Config( "Map", "drawPerformanceCounter" )]
-		public static bool drawPerformanceCounter = false;
 		[Config( "Map", "drawGameSpecificDebugGeometry" )]
 		public static bool drawGameSpecificDebugGeometry = false;
 
@@ -136,10 +134,7 @@ namespace Game
 
 			//Shound change map
 			if( GameWorld.Instance != null && GameWorld.Instance.ShouldChangeMapName != null )
-			{
-				GameEngineApp.Instance.MapLoad( GameWorld.Instance.ShouldChangeMapName,
-					GameWorld.Instance.ShouldChangeMapSpawnPointName, null, false );
-			}
+				GameEngineApp.Instance.MapLoad( GameWorld.Instance.ShouldChangeMapName, null, false );
 
 			//moving free camera by keys
 			if( FreeCameraEnabled && !EngineConsole.Instance.Active )
@@ -170,13 +165,13 @@ namespace Game
 					if( EngineApp.Instance.IsKeyPressed( EKeys.A ) ||
 						EngineApp.Instance.IsKeyPressed( EKeys.Left ) )
 					{
-						pos += new SphereDir( 
+						pos += new SphereDir(
 							dir.Horizontal + MathFunctions.PI / 2, 0 ).GetVector() * step;
 					}
 					if( EngineApp.Instance.IsKeyPressed( EKeys.D ) ||
 						EngineApp.Instance.IsKeyPressed( EKeys.Right ) )
 					{
-						pos += new SphereDir( 
+						pos += new SphereDir(
 							dir.Horizontal - MathFunctions.PI / 2, 0 ).GetVector() * step;
 					}
 					if( EngineApp.Instance.IsKeyPressed( EKeys.Q ) )
@@ -213,7 +208,7 @@ namespace Game
 				}
 
 				if( cameraFov == 0 )
-					cameraFov = ( fov != 0 ) ? fov : Map.Instance.Fov;// mapOriginalFov;
+					cameraFov = ( fov != 0 ) ? fov : Map.Instance.Fov;
 
 				Camera camera = RendererWorld.Instance.DefaultCamera;
 				camera.NearClipDistance = Map.Instance.GetRealNearFarClipDistance().Minimum;
@@ -222,7 +217,7 @@ namespace Game
 				camera.FixedUp = up;
 				camera.Fov = cameraFov;
 				camera.Position = position;
-				camera.Direction = forward;	//camera.LookAt( position + forward * 100 );
+				camera.Direction = forward;
 			}
 
 			//update debug options to a map
@@ -294,19 +289,13 @@ namespace Game
 			}
 		}
 
-		protected override void OnRenderUI( GuiRenderer renderer )
-		{
-			base.OnRenderUI( renderer );
-
-			if( drawPerformanceCounter )
-				Engine.PerformanceCounter.DoRenderUI( renderer );
-		}
-
 		protected override void OnControlAttach( EControl control )
 		{
 			base.OnControlAttach( control );
 			if( control as MenuWindow != null )
 			{
+				EngineApp.Instance.KeysAndMouseButtonUpAll();
+
 				simulationAfterCloseMenuWindow = EntitySystemWorld.Instance.Simulation;
 				EntitySystemWorld.Instance.Simulation = false;
 				EngineApp.Instance.MouseRelativeMode = false;
@@ -422,6 +411,8 @@ namespace Game
 		{
 			get { return freeCameraMouseRotating; }
 		}
+
+		public virtual void OnBeforeWorldSave() { }
 
 	}
 }

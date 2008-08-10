@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Design;
 using Engine;
@@ -54,16 +53,6 @@ namespace GameEntities
 
 		///////////////////////////////////////////
 
-		[EditorBrowsable( EditorBrowsableState.Never )]
-		public class WeaponCollectionEditor : PropertyGridUtils.ModalDialogCollectionEditor
-		{
-			public WeaponCollectionEditor()
-				: base( typeof( List<WeaponItem> ) )
-			{ }
-		}
-
-		///////////////////////////////////////////
-
 		[DefaultValue( typeof( Vec3 ), "0 0 0" )]
 		public Vec3 WeaponAttachPosition
 		{
@@ -78,7 +67,6 @@ namespace GameEntities
 			set { weaponFPSAttachPosition = value; }
 		}
 
-		[Editor( typeof( WeaponCollectionEditor ), typeof( UITypeEditor ) )]
 		public List<WeaponItem> Weapons
 		{
 			get { return weapons; }
@@ -87,24 +75,32 @@ namespace GameEntities
 
 	public class PlayerCharacter : GameCharacter
 	{
-		List<WeaponItem> weapons;
+		[FieldSerialize]
+		List<WeaponItem> weapons = new List<WeaponItem>();
 
+		[FieldSerialize]
 		Weapon activeWeapon;
 		MapObjectAttachedMapObject activeWeaponAttachedObject;
 
 		bool allowContusionMotionBlur = true;
+		[FieldSerialize]
 		float contusionTimeRemaining;
 
 		///////////////////////////////////////////
 
 		public class WeaponItem
 		{
+			[FieldSerialize]
 			internal bool exists;
 
+			[FieldSerialize]
 			internal int normalBulletCount;
+			[FieldSerialize]
 			internal int normalMagazineCount;
 
+			[FieldSerialize]
 			internal int alternativeBulletCount;
+			[FieldSerialize]
 			internal int alternativeMagazineCount;
 
 			public bool Exists
@@ -287,18 +283,23 @@ namespace GameEntities
 
 				activeWeapon.PostCreate();
 
-				activeWeaponAttachedObject = new MapObjectAttachedMapObject();
-				activeWeaponAttachedObject.MapObject = activeWeapon;
-				activeWeaponAttachedObject.BoneSlot = GetBoneSlotFromAttachedMeshes(
-					activeWeapon.Type.BoneSlot );
-				if( activeWeaponAttachedObject.BoneSlot == null )
-					activeWeaponAttachedObject.PositionOffset = Type.WeaponAttachPosition;
-				Attach( activeWeaponAttachedObject );
+				CreateActiveWeaponAttachedObject();
 
 				activeWeapon.PreFire += activeWeapon_PreFire;
 			}
 
 			return true;
+		}
+
+		void CreateActiveWeaponAttachedObject()
+		{
+			activeWeaponAttachedObject = new MapObjectAttachedMapObject();
+			activeWeaponAttachedObject.MapObject = activeWeapon;
+			activeWeaponAttachedObject.BoneSlot = GetBoneSlotFromAttachedMeshes(
+				activeWeapon.Type.BoneSlot );
+			if( activeWeaponAttachedObject.BoneSlot == null )
+				activeWeaponAttachedObject.PositionOffset = Type.WeaponAttachPosition;
+			Attach( activeWeaponAttachedObject );
 		}
 
 		int GetActiveWeapon()
@@ -362,9 +363,11 @@ namespace GameEntities
 		{
 			base.OnPreCreate( loaded );
 
-			weapons = new List<WeaponItem>();
-			for( int n = 0; n < Type.Weapons.Count; n++ )
-				weapons.Add( new WeaponItem() );
+			if( !loaded )
+			{
+				for( int n = 0; n < Type.Weapons.Count; n++ )
+					weapons.Add( new WeaponItem() );
+			}
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
@@ -372,6 +375,17 @@ namespace GameEntities
 		{
 			base.OnPostCreate( loaded );
 			AddTimer();
+
+			if( loaded && EntitySystemWorld.Instance.SerializationMode == SerializationModes.World )
+			{
+				if( activeWeapon != null )
+				{
+					activeWeapon.PreFire += activeWeapon_PreFire;
+
+					if( activeWeaponAttachedObject == null )
+						CreateActiveWeaponAttachedObject();
+				}
+			}
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnDestroy()"/>.</summary>
@@ -414,7 +428,6 @@ namespace GameEntities
 
 			if( activeWeapon == null || activeWeapon.Ready )
 				UpdateTPSArcadeRotation();
-
 		}
 
 		void activeWeapon_PreFire( Weapon entity, bool alternative )

@@ -107,11 +107,15 @@ namespace GameEntities
 
 	public class MeleeWeapon : Weapon
 	{
+		[FieldSerialize]
 		float readyTimeRemaining;
 
 		//for FireTimes
+		[FieldSerialize]
 		float currentFireTime;
+		//serialized in OnLoad/OnSave
 		MeleeWeaponType.MeleeWeaponMode currentFireTypeMode;
+		[FieldSerialize]
 		int fireTimesExecuted;
 
 		//
@@ -122,6 +126,35 @@ namespace GameEntities
 		public override bool Ready
 		{
 			get { return readyTimeRemaining == 0; }
+		}
+
+		protected override bool OnLoad( TextBlock block )
+		{
+			if( !base.OnLoad( block ) )
+				return false;
+
+			if( block.IsAttributeExist( "currentFireTypeMode" ) )
+			{
+				if( block.GetAttribute( "currentFireTypeMode" ) == "normal" )
+					currentFireTypeMode = Type.NormalMode;
+				else
+					currentFireTypeMode = Type.AlternativeMode;
+			}
+
+			return true;
+		}
+
+		protected override void OnSave( TextBlock block )
+		{
+			base.OnSave( block );
+
+			if( currentFireTypeMode != null )
+			{
+				if( currentFireTypeMode == Type.NormalMode )
+					block.SetAttribute( "currentFireTypeMode", "normal" );
+				else
+					block.SetAttribute( "currentFireTypeMode", "alternative" );
+			}
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
@@ -158,7 +191,7 @@ namespace GameEntities
 				else
 					currentFireTypeMode = null;
 			}
-			
+
 			if( readyTimeRemaining != 0 )
 			{
 				float coef = 1.0f;
@@ -179,7 +212,7 @@ namespace GameEntities
 			if( !Ready )
 				return false;
 
-			MeleeWeaponType.MeleeWeaponMode typeMode = alternative ? 
+			MeleeWeaponType.MeleeWeaponMode typeMode = alternative ?
 				Type.AlternativeMode : Type.NormalMode;
 
 			if( typeMode.Damage == 0 && typeMode.Impulse == 0 )
@@ -193,7 +226,7 @@ namespace GameEntities
 		{
 			DoPreFireEvent( alternative );
 
-			MeleeWeaponType.MeleeWeaponMode typeMode = alternative ? 
+			MeleeWeaponType.MeleeWeaponMode typeMode = alternative ?
 				Type.AlternativeMode : Type.NormalMode;
 
 			if( typeMode.FireTimes.Count == 0 )
@@ -208,14 +241,14 @@ namespace GameEntities
 			SoundPlay3D( currentFireTypeMode.SoundFire, .5f, true );
 
 			//animation
-			SetForceAnimationState( typeMode.FireAnimationName );
+			SetForceAnimation( typeMode.FireAnimationName, true );
 
 			//parent unit animation
 			if( !string.IsNullOrEmpty( typeMode.FireUnitAnimationName ) )
 			{
 				Unit parentUnit = GetParentUnit();
 				if( parentUnit != null )
-					parentUnit.SetForceAnimationState( typeMode.FireUnitAnimationName );
+					parentUnit.SetForceAnimation( typeMode.FireUnitAnimationName, true );
 			}
 		}
 

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using Engine;
@@ -28,6 +27,8 @@ namespace Game
 		static GameEngineApp instance;
 
 		string needMapLoadName;
+		bool needMapCreateForDynamicMapExample;
+		string needWorldLoadName;
 
 		static float gamma = 1;
 		[Config( "Video", "gamma" )]
@@ -79,6 +80,19 @@ namespace Game
 			{
 				drawFPS = value;
 				EngineApp.Instance.ShowFPS = value;
+			}
+		}
+
+		static MaterialSchemes materialScheme = MaterialSchemes.Default;
+		[Config( "Video", "materialScheme" )]
+		public static MaterialSchemes MaterialScheme
+		{
+			get { return materialScheme; }
+			set
+			{
+				materialScheme = value;
+				if( RendererWorld.Instance != null )
+					RendererWorld.Instance.DefaultViewport.MaterialScheme = materialScheme.ToString();
 			}
 		}
 
@@ -259,11 +273,6 @@ namespace Game
 			if( !base.OnCreate() )
 				return false;
 
-			//set main form logo
-			Form form = WindowControl as Form;
-			if( form != null )
-				form.Icon = Game.Properties.Resources.Logo;
-
 			SoundVolume = soundVolume;
 			MusicVolume = musicVolume;
 
@@ -271,15 +280,16 @@ namespace Game
 			if( !ControlsWorld.Init() )
 				return false;
 
+			_ShowSystemCursor = _ShowSystemCursor;
+			_DrawFPS = _DrawFPS;
+			MaterialScheme = materialScheme;
+
 			EControl programLoadingWindow = ControlDeclarationManager.Instance.CreateControl(
 				"Gui\\ProgramLoadingWindow.gui" );
 			if( programLoadingWindow != null )
 				ScreenControlManager.Instance.Controls.Add( programLoadingWindow );
 
 			RenderScene();
-
-			_ShowSystemCursor = _ShowSystemCursor;
-			_DrawFPS = _DrawFPS;
 
 			EngineConsole.Instance.Texture = TextureManager.Instance.Load( "Utils/Console.png",
 				Texture.Type.Type2D, 0 );
@@ -292,25 +302,22 @@ namespace Game
 					EngineConsole.Instance.Print( text );
 			};
 
-			Log.Handlers.WarningHandler -= Program.Log_WarningHandler;
-			Log.Handlers.WarningHandler += delegate( string text )
+			Log.Handlers.WarningHandler += delegate( string text, ref bool handled )
 			{
 				if( EngineConsole.Instance != null )
 				{
+					handled = true;
 					EngineConsole.Instance.Print( "Warning: " + text, new ColorValue( 1, 0, 0 ) );
-					EngineConsole.Instance.Active = true;
-				}
-				else
-				{
-					MessageBox.Show( text, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+					EngineConsole.Instance.Active = false;
 				}
 			};
 
-			Log.Handlers.ErrorHandler -= Program.Log_ErrorHandler;
-			Log.Handlers.ErrorHandler += delegate( string text )
+			Log.Handlers.ErrorHandler += delegate( string text, ref bool handled )
 			{
 				if( ScreenControlManager.Instance != null )
 				{
+					handled = true;
+
 					//find already created MessageBoxWindow
 					foreach( EControl control in ScreenControlManager.Instance.Controls )
 					{
@@ -339,10 +346,6 @@ namespace Game
 							ScreenControlManager.Instance.Controls.Add( new MainMenuWindow() );
 
 						} ) );
-				}
-				else
-				{
-					MessageBox.Show( text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
 				}
 			};
 
@@ -463,9 +466,25 @@ namespace Game
 		{
 			if( EngineConsole.Instance.OnKeyDown( e ) )
 				return true;
+
 			if( ScreenControlManager.Instance != null )
 				if( ScreenControlManager.Instance.DoKeyDown( e ) )
 					return true;
+
+			//Debug information window
+			if( e.Key == EKeys.F11 )
+			{
+				if( DebugInformationWindow.Instance == null )
+				{
+					DebugInformationWindow window = new DebugInformationWindow();
+					ScreenControlManager.Instance.Controls.Add( window );
+				}
+				else
+				{
+					DebugInformationWindow.Instance.SetShouldDetach();
+				}
+				return true;
+			}
 
 			//make screenshot
 			if( e.Key == EKeys.F12 )
@@ -589,20 +608,31 @@ namespace Game
 				needMapLoadName = null;
 				MapLoad( name );
 			}
+			if( needMapCreateForDynamicMapExample )
+			{
+				needMapCreateForDynamicMapExample = false;
+				MapCreateForDynamicMapExample();
+			}
+			if( needWorldLoadName != null )
+			{
+				string name = needWorldLoadName;
+				needWorldLoadName = null;
+				WorldLoad( name );
+			}
 
 			EngineConsole.Instance.OnTick( delta );
 			ScreenControlManager.Instance.DoTick( delta );
 		}
 
-		protected override void OnRender()
+		protected override void OnRenderFrame()
 		{
-			base.OnRender();
+			base.OnRenderFrame();
 			ScreenControlManager.Instance.DoRender();
 		}
 
-		protected override void OnRenderUI( GuiRenderer renderer )
+		protected override void OnRenderScreenUI( GuiRenderer renderer )
 		{
-			base.OnRenderUI( renderer );
+			base.OnRenderScreenUI( renderer );
 			if( Map.Instance != null )
 				Map.Instance.DoDebugRenderUI( renderer );
 			ScreenControlManager.Instance.DoRenderUI( renderer );
@@ -630,14 +660,42 @@ namespace Game
 			}
 			if( list.Count != 1 )
 			{
-				Log.Error( "World type need alone." );
+				Log.Error( "Only one instance of World type is supported." );
 				return null;
 			}
 			return (WorldType)list[ 0 ];
 		}
 
-		public bool MapLoad( string fileName, string playerSpawnPointName, WorldType worldType,
-			bool noChangeWindows )
+		void CreateGameWindowForMap()
+		{
+			ScreenControlManager.Instance.Controls.Clear();
+
+			GameWindow gameWindow = null;
+
+			//Create specific game window
+			if( GameMap.Instance != null )
+				gameWindow = CreateGameWindowByGameType( GameMap.Instance.GameType );
+
+			if( gameWindow == null )
+				gameWindow = new VHFOSGameWindows();
+
+			ScreenControlManager.Instance.Controls.Add( gameWindow );
+		}
+
+		void DeleteAllGameWindows()
+		{
+			ttt:
+			foreach( EControl control in ScreenControlManager.Instance.Controls )
+			{
+				if( control is GameWindow )
+				{
+					ScreenControlManager.Instance.Controls.Remove( control );
+					goto ttt;
+				}
+			}
+		}
+
+		public bool MapLoad( string fileName, WorldType worldType, bool noChangeWindows )
 		{
 			EControl mapLoadingWindow = null;
 
@@ -653,18 +711,8 @@ namespace Game
 				RenderScene();
 			}
 
-			//Delete all GameWindow's
-			{
-				ttt:
-				foreach( EControl control in ScreenControlManager.Instance.Controls )
-				{
-					if( control is GameWindow )
-					{
-						ScreenControlManager.Instance.Controls.Remove( control );
-						goto ttt;
-					}
-				}
-			}
+			//delete all GameWindow's
+			DeleteAllGameWindows();
 
 			MapSystemWorld.MapDestroy();
 
@@ -681,11 +729,14 @@ namespace Game
 					return false;
 				}
 
-				if( !EntitySystemWorld.Instance.WorldCreate( WorldSimulationType.Single, needWorldType ) )
+				if( !EntitySystemWorld.Instance.WorldCreate( WorldSimulationType.Single,
+					needWorldType ) )
+				{
 					Log.Fatal( "EntitySystemWorld.Instance.WorldCreate failed." );
+				}
 			}
 
-			if( !MapSystemWorld.MapLoad( fileName, false ) )
+			if( !MapSystemWorld.MapLoad( fileName ) )
 			{
 				if( mapLoadingWindow != null )
 					mapLoadingWindow.SetShouldDetach();
@@ -719,6 +770,245 @@ namespace Game
 			}
 
 			if( !noChangeWindows )
+				CreateGameWindowForMap();
+
+			//play music
+			if( string.Compare( fileName, "Maps\\MainMenu\\Map.map", true ) != 0 )
+				GameMusic.MusicPlay( "Sounds\\Music\\Game.ogg", true );
+
+			return true;
+		}
+
+		public bool MapLoad( string fileName )
+		{
+			return MapLoad( fileName, null, false );
+		}
+
+		GameMapType GetGameMapType()
+		{
+			List<EntityType> list = EntityTypes.Instance.GetTypesBasedOnClass(
+				EntityTypes.Instance.GetClassInfoByEntityClassName( "GameMap" ) );
+
+			if( list.Count == 0 )
+			{
+				Log.Error( "GameMap type not defined." );
+				return null;
+			}
+			if( list.Count != 1 )
+			{
+				Log.Error( "Only one instance of GameMap type is supported." );
+				return null;
+			}
+			return (GameMapType)list[ 0 ];
+		}
+
+		public bool MapCreateForDynamicMapExample()
+		{
+			EControl mapLoadingWindow = null;
+
+			//if( !noChangeWindows )
+			{
+				mapLoadingWindow = ControlDeclarationManager.Instance.CreateControl(
+					"Gui\\MapLoadingWindow.gui" );
+				if( mapLoadingWindow != null )
+				{
+					mapLoadingWindow.Text = "[Dynamic map creating]";
+					ScreenControlManager.Instance.Controls.Add( mapLoadingWindow );
+				}
+				RenderScene();
+			}
+
+			//delete all GameWindow's
+			DeleteAllGameWindows();
+
+			MapSystemWorld.MapDestroy();
+
+			WorldType needWorldType = null;//worldType
+			if( needWorldType == null )
+				needWorldType = GetWorldType();
+
+			if( World.Instance == null || World.Instance.Type != needWorldType )
+			{
+				if( needWorldType == null )
+				{
+					if( mapLoadingWindow != null )
+						mapLoadingWindow.SetShouldDetach();
+					return false;
+				}
+
+				if( !EntitySystemWorld.Instance.WorldCreate( WorldSimulationType.Single,
+					needWorldType ) )
+				{
+					Log.Fatal( "EntitySystemWorld.Instance.WorldCreate failed." );
+				}
+			}
+
+			//create entites
+			{
+				//create map
+				GameMapType gameMapType = GetGameMapType();
+				GameMap gameMap = (GameMap)Entities.Instance.Create( gameMapType, World.Instance );
+				gameMap.ShadowFarDistance = 60;
+				gameMap.PostCreate();
+
+				//ground
+				{
+					StaticMesh staticMesh = (StaticMesh)Entities.Instance.Create(
+						"StaticMesh", Map.Instance );
+					staticMesh.SplitGeometry = StaticMesh.SplitGeometryTypes.Yes;
+					staticMesh.SplitGeometryPieceSize = new Vec3( 30, 30, 30 );
+					staticMesh.MeshName = "Models\\DefaultBox\\DefaultBox.mesh";
+					staticMesh.ForceMaterial = "DarkGreen";
+					staticMesh.Position = new Vec3( 0, 0, -.5f );
+					staticMesh.Scale = new Vec3( 200, 200, 1 );
+					staticMesh.PostCreate();
+				}
+
+				//SkyBox
+				{
+					Entity skyBox = Entities.Instance.Create( "SkyBox", Map.Instance );
+					skyBox.PostCreate();
+				}
+
+				//light
+				{
+					Light light = (Light)Entities.Instance.Create( "Light", Map.Instance );
+					light.LightType = RenderLightType.Directional;
+					light.SpecularColor = new ColorValue( 1, 1, 1 );
+					light.Position = new Vec3( 0, 0, 10 );
+					light.Rotation = new Angles( 120, 50, 330 ).ToQuat();
+					light.PostCreate();
+				}
+
+				//SpawnPoint
+				{
+					SpawnPoint spawnPoint = (SpawnPoint)Entities.Instance.Create(
+						"SpawnPoint", Map.Instance );
+					spawnPoint.Position = new Vec3( 0, 0, 1 );
+					spawnPoint.PostCreate();
+				}
+
+				//Maple's
+				{
+					for( int n = 0; n < 70; n++ )
+					{
+						for( int attempt = 0; attempt < 20; attempt++ )
+						{
+							Radian angle = World.Instance.Random.NextFloat() * MathFunctions.PI * 2;
+							float radius = World.Instance.Random.NextFloat() * 40 + 10;
+
+							Vec3 position = new Vec3( MathFunctions.Cos( angle ) * radius,
+								MathFunctions.Sin( angle ) * radius, 0 );
+
+							bool free = true;
+
+							Bounds bounds = new Bounds( position - new Vec3( 2, 2, 2 ),
+								position + new Vec3( 2, 2, 6 ) );
+							Map.Instance.GetObjects( bounds, delegate( MapObject obj )
+							{
+								if( obj is StaticMesh )
+									return;
+								free = false;
+							} );
+
+							if( free )
+							{
+								MapObject mapObject = (MapObject)Entities.Instance.Create(
+									"Maple", Map.Instance );
+								mapObject.Position = position;
+								mapObject.Rotation = Mat3.FromRotateByZ(
+									World.Instance.Random.NextFloat() * MathFunctions.PI * 2 ).ToQuat();
+								mapObject.PostCreate();
+
+								break;
+							}
+						}
+					}
+				}
+
+				//Box's
+				{
+					for( int n = 0; n < 50; n++ )
+					{
+						Vec3 position = new Vec3(
+							World.Instance.Random.NextFloatCenter() * 10,
+							World.Instance.Random.NextFloatCenter() * 10,
+							40 + (float)n * 1.1f );
+
+						MapObject mapObject = (MapObject)Entities.Instance.Create( "Box", Map.Instance );
+						mapObject.Position = position;
+						mapObject.Rotation = new Angles(
+							World.Instance.Random.NextFloat() * 360,
+							World.Instance.Random.NextFloat() * 360,
+							World.Instance.Random.NextFloat() * 360 ).ToQuat();
+						mapObject.PostCreate();
+					}
+				}
+
+			}
+
+			//Error
+			foreach( EControl control in ScreenControlManager.Instance.Controls )
+			{
+				if( control is MessageBoxWindow )
+					return false;
+			}
+
+			//if( !noChangeWindows )
+			{
+				CreateGameWindowForMap();
+			}
+
+			//play music
+			GameMusic.MusicPlay( "Sounds\\Music\\Game.ogg", true );
+
+			return true;
+		}
+
+		public bool WorldLoad( string fileName )
+		{
+			EControl worldLoadingWindow = null;
+
+			//world loading window
+			{
+				worldLoadingWindow = ControlDeclarationManager.Instance.CreateControl(
+					"Gui\\WorldLoadingWindow.gui" );
+				if( worldLoadingWindow != null )
+				{
+					worldLoadingWindow.Text = fileName;
+					ScreenControlManager.Instance.Controls.Add( worldLoadingWindow );
+				}
+				RenderScene();
+			}
+
+			//Delete all GameWindow's
+			{
+				ttt:
+				foreach( EControl control in ScreenControlManager.Instance.Controls )
+				{
+					if( control is GameWindow )
+					{
+						ScreenControlManager.Instance.Controls.Remove( control );
+						goto ttt;
+					}
+				}
+			}
+
+			if( !MapSystemWorld.WorldLoad( WorldSimulationType.Single, fileName ) )
+			{
+				if( worldLoadingWindow != null )
+					worldLoadingWindow.SetShouldDetach();
+				return false;
+			}
+
+			//Error
+			foreach( EControl control in ScreenControlManager.Instance.Controls )
+			{
+				if( control is MessageBoxWindow )
+					return false;
+			}
+
+			//create game window
 			{
 				ScreenControlManager.Instance.Controls.Clear();
 
@@ -734,27 +1024,59 @@ namespace Game
 				ScreenControlManager.Instance.Controls.Add( gameWindow );
 			}
 
-            if (string.Compare(fileName, "Maps\\Vietheroes\\Map.map", true) != 0)
-			{
+			if( string.Compare( fileName, "Maps\\MainMenu\\Map.map", true ) != 0 )
 				GameMusic.MusicPlay( "Sounds\\Music\\Game.ogg", true );
-			}
 
 			return true;
 		}
 
-		public bool MapLoad( string fileName, WorldType worldType, bool noCreateGameWindow )
+		public bool WorldSave( string fileName )
 		{
-			return MapLoad( fileName, null, worldType, noCreateGameWindow );
-		}
+			EControl worldSavingWindow = null;
 
-		public bool MapLoad( string fileName )
-		{
-			return MapLoad( fileName, null, null, false );
+			//world loading window
+			{
+				worldSavingWindow = ControlDeclarationManager.Instance.CreateControl(
+					"Gui\\WorldSavingWindow.gui" );
+				if( worldSavingWindow != null )
+				{
+					worldSavingWindow.Text = fileName;
+					ScreenControlManager.Instance.Controls.Add( worldSavingWindow );
+				}
+				RenderScene();
+			}
+
+			GameWindow gameWindow = null;
+			foreach( EControl control in ScreenControlManager.Instance.Controls )
+			{
+				gameWindow = control as GameWindow;
+				if( gameWindow != null )
+					break;
+			}
+			if( gameWindow != null )
+				gameWindow.OnBeforeWorldSave();
+
+			bool result = MapSystemWorld.WorldSave( fileName );
+
+			if( worldSavingWindow != null )
+				worldSavingWindow.SetShouldDetach();
+
+			return result;
 		}
 
 		public void SetNeedMapLoad( string fileName )
 		{
 			needMapLoadName = fileName;
+		}
+
+		public void SetNeedMapCreateForDynamicMapExample()
+		{
+			needMapCreateForDynamicMapExample = true;
+		}
+
+		public void SetNeedWorldLoad( string fileName )
+		{
+			needWorldLoadName = fileName;
 		}
 
 		GameWindow CreateGameWindowByGameType( GameMap.GameTypes gameType )

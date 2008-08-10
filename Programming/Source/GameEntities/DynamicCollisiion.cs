@@ -83,14 +83,14 @@ namespace GameEntities
 		{
 			base.OnRender( camera );
 
-			if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor 
+			if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor
 				&& EditorLayer.Visible )
 			{
 				if( PhysicsModel != null )
 				{
 					PhysicsWorld.Instance.SetForceDebugRenderColor( new ColorValue( 1, 0, 0 ) );
 					foreach( Body body in PhysicsModel.Bodies )
-						body.DebugRender( 0, 1, true );
+						body.DebugRender( camera.DebugGeometry, 0, 1, true );
 					PhysicsWorld.Instance.ResetForceDebugRenderColor();
 				}
 			}
@@ -107,11 +107,11 @@ namespace GameEntities
 			return ret;
 		}
 
-		protected override void OnEditorSelectionDebugRender( bool bigBorder )
+		protected override void OnEditorSelectionDebugRender( Camera camera, bool bigBorder )
 		{
 			Box box = GetBox();
 			box.Expand( bigBorder ? .2f : .1f );
-			DebugGeometry.Instance.AddBox( box );
+			camera.DebugGeometry.AddBox( box );
 		}
 
 	}

@@ -76,18 +76,5 @@ namespace GameEntities
 					playerCharacterInformation );
 			}
 		}
-
-		/*
-		protected override void OnRender( Camera camera )
-		{
-			base.OnRender( camera );
-
-			if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor )
-			{
-				if( PhysicsModel != null )
-					foreach( Body body in PhysicsModel.Bodies )
-						body.DebugRender( 0, 1, true );
-			}
-		}*/		
 	}
 }

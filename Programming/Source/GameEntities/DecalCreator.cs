@@ -92,16 +92,6 @@ namespace GameEntities
 
 		///////////////////////////////////////////
 
-		[EditorBrowsable( EditorBrowsableState.Never )]
-		public class MaterialCollectionEditor : PropertyGridUtils.ModalDialogCollectionEditor
-		{
-			public MaterialCollectionEditor()
-				: base( typeof( List<MaterialItem> ) )
-			{ }
-		}
-
-		///////////////////////////////////////////
-
 		public DecalCreatorType()
 		{
 			AllowEmptyName = true;
@@ -129,7 +119,6 @@ namespace GameEntities
 		}
 
 		[TypeConverter( typeof( CollectionTypeConverter ) )]
-		[Editor( typeof( MaterialCollectionEditor ), typeof( UITypeEditor ) )]
 		public List<MaterialItem> Materials
 		{
 			get { return materials; }
@@ -208,6 +197,7 @@ namespace GameEntities
 	{
 		bool decalsCreated;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float lifeTime;
 
 		List<Decal> decals = new List<Decal>();
@@ -315,7 +305,7 @@ namespace GameEntities
 
 					if( result.Shape != null )
 					{
-						CreateDirectionalDecal( result.Shape, result.Position, 
+						CreateDirectionalDecal( result.Shape, result.Position,
 							result.Normal, result.TriangleID );
 					}
 				}
@@ -352,7 +342,7 @@ namespace GameEntities
 							Radian angle = MathFunctions.ACos( Vec3.Dot( -dir, result.Normal ) );
 							if( angle <= new Degree( 45.0f ).InRadians() )
 							{
-								CreateDirectionalDecal( result.Shape, result.Position, -dir, 
+								CreateDirectionalDecal( result.Shape, result.Position, -dir,
 									result.TriangleID );
 							}
 						}
@@ -375,11 +365,11 @@ namespace GameEntities
 
 				//StaticMesh
 				{
-					Map.StaticMeshItem item = Map.Instance.GetStaticMeshItemByBody( body );
-					if( item != null )
+					StaticMesh staticMesh = StaticMesh.GetStaticMeshByBody( body );
+					if( staticMesh != null )
 					{
-						if( item.AllowDecals == StaticMesh.DecalTypes.OnlySmall && smallDecal ||
-							item.AllowDecals == StaticMesh.DecalTypes.All )
+						if( staticMesh.AllowDecals == StaticMesh.DecalTypes.OnlySmall && smallDecal ||
+							staticMesh.AllowDecals == StaticMesh.DecalTypes.All )
 						{
 							CreateDecalForStaticObject( triangle, pos, normal, null );
 							return;
@@ -457,7 +447,7 @@ namespace GameEntities
 		static List<Decal.Vertex> tempVertices = new List<Decal.Vertex>( 64 );
 		static List<int> tempIndices = new List<int>( 128 );
 
-		void CreateDecalForStaticObject( ShapeTriangleID startTriangle, Vec3 pos, Vec3 normal, 
+		void CreateDecalForStaticObject( ShapeTriangleID startTriangle, Vec3 pos, Vec3 normal,
 			MapObject parentMapObject )
 		{
 			Shape currentShape = null;

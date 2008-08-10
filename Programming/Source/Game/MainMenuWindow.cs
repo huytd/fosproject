@@ -183,7 +183,7 @@ namespace Game
 					worldTypeName, EntityTypes.Instance.GetClassInfoByEntityClassName( "World" ) );
 			}
 
-			if( !GameEngineApp.Instance.MapLoad( "Maps\\Vietheroes\\Map.map", worldType, true ) )
+			if( !GameEngineApp.Instance.MapLoad( "Maps\\MainMenu\\Map.map", worldType, true ) )
 				return;
 
 			mapInstance = Map.Instance;

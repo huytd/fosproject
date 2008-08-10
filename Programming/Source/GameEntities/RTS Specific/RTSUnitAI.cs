@@ -25,17 +25,28 @@ namespace GameEntities
 
 		float inactiveFindTaskTimer;
 
-		Task currentTask;
+		[FieldSerialize]
+		Task currentTask = new Task( Task.Types.Stop );
 
+		[FieldSerialize]
 		List<Task> tasks = new List<Task>();
 
 		///////////////////////////////////////////
 
 		public struct Task
 		{
+			[FieldSerialize]
+			[DefaultValue( Types.None )]
 			Types type;
+
+			[FieldSerialize]
+			[DefaultValue( typeof( Vec3 ), "0 0 0" )]
 			Vec3 position;
+
+			[FieldSerialize]
 			DynamicType entityType;
+
+			[FieldSerialize]
 			Dynamic entity;
 
 			public enum Types
@@ -187,8 +198,6 @@ namespace GameEntities
 		{
 			base.OnPostCreate( loaded );
 			AddTimer();
-
-			currentTask = new Task( Task.Types.Stop );
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnDestroy()"/>.</summary>
@@ -386,7 +395,7 @@ namespace GameEntities
 					if( ( controlledObj.Position.ToVec2() - pos.ToVec2() ).LengthFast() < 1.5f &&
 						Math.Abs( controlledObj.Position.Z - pos.Z ) < 3.0f )
 					{
-						//дошел
+						//get to
 						DoNextTask();
 					}
 					else
@@ -400,7 +409,7 @@ namespace GameEntities
 			case Task.Types.Repair:
 			case Task.Types.BreakableRepair:
 				{
-					//вылечил
+					//healed
 					if( ( currentTask.Type == Task.Types.Repair ||
 						currentTask.Type == Task.Types.BreakableRepair )
 						&& currentTask.Entity != null )
@@ -514,7 +523,7 @@ namespace GameEntities
 					{
 						controlledObj.Stop();
 
-						//дошел
+						//get to
 
 						//check free area for build
 						bool free;

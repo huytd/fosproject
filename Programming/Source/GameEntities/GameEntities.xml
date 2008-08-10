@@ -51,8 +51,20 @@
             and management of influences.
             </summary>
         </member>
+        <member name="M:GameEntities.Dynamic.OnLoad(Engine.Utils.TextBlock)">
+            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnLoad(Engine.Utils.TextBlock)"/>.</summary>
+        </member>
+        <member name="M:GameEntities.Dynamic.OnSave(Engine.Utils.TextBlock)">
+            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnSave(Engine.Utils.TextBlock)"/>.</summary>
+        </member>
+        <member name="M:GameEntities.Dynamic.OnCreate">
+            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnCreate"/>.</summary>
+        </member>
         <member name="M:GameEntities.Dynamic.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
+        </member>
+        <member name="M:GameEntities.Dynamic.OnShouldDelete">
+            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnShouldDelete"/>.</summary>
         </member>
         <member name="M:GameEntities.Dynamic.OnDestroy">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
@@ -63,14 +75,15 @@
         <member name="M:GameEntities.Dynamic.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
         </member>
-        <member name="M:GameEntities.Weapon.GetRandomAnimationNumber(System.String)">
+        <member name="M:GameEntities.Dynamic.GetRandomAnimationNumber(System.String,System.Boolean)">
             <summary>
             Returns animation with index addition. 
             </summary>
             <remarks>
-            Example: animationName: walk; return: walk or walk2 or walk3.
+            Example: animationName: walk; return: 1(walk) or 2(walk2) or 3(walk3).
             </remarks>
             <param name="animationName"></param>
+            <param name="firstAnimationIn10TimesMoreOften"></param>
             <returns></returns>
         </member>
         <member name="M:GameEntities.Gun.OnPostCreate(System.Boolean)">
@@ -272,6 +285,9 @@
         <member name="M:GameEntities.PlayerIntellect.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
         </member>
+        <member name="M:GameEntities.PlayerIntellect.OnPostCreate2(System.Boolean)">
+            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate2(System.Boolean)"/>.</summary>
+        </member>
         <member name="M:GameEntities.PlayerIntellect.OnDestroy">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
         </member>
@@ -341,8 +357,8 @@
             intellect (<see cref="T:GameEntities.Intellect"/>).
             </summary>
         </member>
-        <member name="M:GameEntities.Unit.OnLoad(Engine.TextBlock)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnLoad(Engine.TextBlock)"/>.</summary>
+        <member name="M:GameEntities.Unit.OnLoad(Engine.Utils.TextBlock)">
+            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnLoad(Engine.Utils.TextBlock)"/>.</summary>
         </member>
         <member name="M:GameEntities.Unit.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
@@ -454,24 +470,8 @@
         <member name="M:GameEntities.GameCharacter.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
         </member>
-        <member name="M:GameEntities.GameCharacter.OnShouldDelete">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnShouldDelete"/>.</summary>
-        </member>
-        <member name="M:GameEntities.GameCharacter.OnDestroy">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
-        </member>
         <member name="M:GameEntities.GameCharacter.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
-        </member>
-        <member name="M:GameEntities.GameCharacter.GetRandomAnimationNumber(System.String)">
-            <summary>
-            Returns animation with index addition. 
-            </summary>
-            <remarks>
-            Example: animationName: walk; return: walk or walk2 or walk3.
-            </remarks>
-            <param name="animationName"></param>
-            <returns></returns>
         </member>
         <member name="M:GameEntities.PlayerCharacter.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
@@ -600,7 +600,7 @@
             is implemented through the use of influences.
             </summary>
         </member>
-        <member name="M:GameEntities.Influence.OnPostCreate(System.Boolean)">
+        <member name="M:GameEntities.Influence.OnPostCreate2(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
         </member>
         <member name="M:GameEntities.Influence.OnDestroy">
@@ -819,27 +819,11 @@
         <member name="M:GameEntities.RTSCharacter.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
         </member>
-        <member name="M:GameEntities.RTSCharacter.OnShouldDelete">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnShouldDelete"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSCharacter.OnDestroy">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
-        </member>
         <member name="M:GameEntities.RTSCharacter.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
         </member>
         <member name="M:GameEntities.RTSCharacter.OnRender(Engine.Renderer.Camera)">
             <summary>Overridden from <see cref="M:Engine.MapSystem.MapObject.OnRender(Engine.Renderer.Camera)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSCharacter.GetRandomAnimationNumber(System.String)">
-            <summary>
-            Returns animation with index addition. 
-            </summary>
-            <remarks>
-            Example: animationName: walk; return: walk or walk2 or walk3.
-            </remarks>
-            <param name="animationName"></param>
-            <returns></returns>
         </member>
         <member name="T:GameEntities.CorpseType">
             <summary>
@@ -866,12 +850,6 @@
         </member>
         <member name="M:GameEntities.Corpse.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.Corpse.OnShouldDelete">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnShouldDelete"/>.</summary>
-        </member>
-        <member name="M:GameEntities.Corpse.OnDestroy">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
         </member>
         <member name="M:GameEntities.Corpse.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
@@ -905,6 +883,9 @@
         </member>
         <member name="M:GameEntities.Crane.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
+        </member>
+        <member name="M:GameEntities.Crane.OnPostCreate2(System.Boolean)">
+            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate2(System.Boolean)"/>.</summary>
         </member>
         <member name="M:GameEntities.Crane.OnDestroy">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
@@ -1191,13 +1172,6 @@
         </member>
         <member name="M:GameEntities.Firework.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
-        </member>
-        <member name="M:GameEntities.Inventory.AddItem(GameEntities.Item)">
-            <summary>
-            This returns true if it can be taken into inventory, false if full.
-            </summary>
-            <param name="theItem"></param>
-            <returns></returns>
         </member>
     </members>
 </doc>

@@ -15,17 +15,12 @@ namespace Game
 	/// </summary>
 	public class AboutWindow : EControl
 	{
-		//string lastMusicName;
-
 		protected override void OnAttach()
 		{
 			base.OnAttach();
 
-			//if( GameMusic.MusicSound != null )
-			//   lastMusicName = GameMusic.MusicSound.Name;
-			//GameMusic.MusicPlay( "Sounds\\Music\\AboutUs.ogg", false );
-
-			EControl window = ControlDeclarationManager.Instance.CreateControl( "Gui\\AboutWindow.gui" );
+			EControl window = ControlDeclarationManager.Instance.CreateControl( 
+				"Gui\\AboutWindow.gui" );
 			Controls.Add( window );
 
 			window.Controls[ "Version" ].Text = EngineVersionInformation.Version;
@@ -57,7 +52,6 @@ namespace Game
 			}
 
 			sourceControl.SetShouldDetach();
-			//Controls.Remove( sourceControl );
 
 			window.Controls[ "Copyright" ].Text = EngineVersionInformation.Copyright;
 
@@ -67,14 +61,6 @@ namespace Game
 			{
 				SetShouldDetach();
 			};
-		}
-
-		protected override void OnDetach()
-		{
-			//if( lastMusicName != null )
-			//   GameMusic.MusicPlay( lastMusicName );
-
-			base.OnDetach();
 		}
 
 		protected override bool OnKeyDown( KeyEvent e )

@@ -1,12 +1,12 @@
 // Copyright (C) 2006-2008 NeoAxis Group Ltd.
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using Engine;
 using Engine.MathEx;
 using Engine.FileSystem;
+using Engine.Utils;
 using GameEntities;
 
 namespace Game
@@ -47,17 +47,14 @@ namespace Game
 			if( !VirtualFileSystem.Init() )
 				return;
 
-			Log.Handlers.WarningHandler += Log_WarningHandler;
-			Log.Handlers.ErrorHandler += Log_ErrorHandler;
-			Log.Handlers.FatalHandler += Log_FatalHandler;
-
 			EngineApp.ConfigName = "Configs/Game.config";
 			EngineApp.UseSystemMouseDeviceForRelativeMode = true;
 			EngineApp.AllowJoysticksAndCustomInputDevices = true;
 			EngineApp.AllowChangeVideoMode = true;
 
 			EngineApp.Init( new GameEngineApp() );
-			EngineApp.Instance.WindowTitle = "Game";
+			EngineApp.Instance.WindowTitle = "Viet Heroes - Fight or Surrender";
+			EngineApp.Instance.Icon = Game.Properties.Resources.Logo;
 
 			EngineConsole.Init();
 
@@ -71,34 +68,6 @@ namespace Game
 			Log.DumpToFile( "Program END\r\n" );
 
 			VirtualFileSystem.Shutdown();
-		}
-
-		public static void Log_WarningHandler( string text )
-		{
-			MessageBox.Show( text, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-		}
-
-		public static void Log_ErrorHandler( string text )
-		{
-			MessageBox.Show( text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning );
-		}
-
-		static void MinimizeWindow()
-		{
-			if( EngineApp.Instance != null )
-			{
-				Form form = EngineApp.Instance.WindowControl as Form;
-				if( form != null )
-				{
-					form.TopMost = false;
-					form.WindowState = FormWindowState.Minimized;
-				}
-			}
-		}
-
-		public static void Log_FatalHandler( string text, ref bool handled )
-		{
-			MinimizeWindow();
 		}
 	}
 }

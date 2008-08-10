@@ -165,16 +165,19 @@ namespace GameEntities
 	{
 		Body mainBody;
 
-		//Vec3 needTurnToPosition;
-
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		SphereDir needAngles;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float mainBodyGroundDistance = 1000;//from center of body
 		Body groundBody;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float jumpInactiveTime;
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float shouldJumpTime;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float onGroundTime;
 
 		Vec3 seePosition;
@@ -186,6 +189,9 @@ namespace GameEntities
 		Vec2 lastTickForceVector;
 
 		bool noWakeBodies;
+
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
+		Vec3 linearVelocityForSerialization;
 
 		//
 
@@ -215,12 +221,6 @@ namespace GameEntities
 		{
 			get { return seePosition; }
 		}
-
-		//public void SetNeedTurnToPosition( Vec3 pos )
-		//{
-		//   needTurnToPosition = pos;
-		//   Trace.Assert( false );
-		//}
 
 		public void SetTurnToPosition( Vec3 pos )
 		{
@@ -265,6 +265,14 @@ namespace GameEntities
 			return mainBodyGroundDistance - .05f < Type.FloorHeight && groundBody != null;
 		}
 
+		protected override void OnSave( TextBlock block )
+		{
+			if( mainBody != null )
+				linearVelocityForSerialization = mainBody.LinearVelocity;
+
+			base.OnSave( block );
+		}
+
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
 		protected override void OnPostCreate( bool loaded )
 		{
@@ -280,6 +288,7 @@ namespace GameEntities
 			body.Position = Position;
 			body.Rotation = Rotation;
 			body.Sleepiness = 0;
+			body.LinearVelocity = linearVelocityForSerialization;
 
 			float length = Type.Height - Type.Radius * 2 - Type.WalkUpHeight;
 			if( length < 0 )
@@ -323,8 +332,10 @@ namespace GameEntities
 
 			//That the body did not fall after loading a map. 
 			//After loading a map, the physics simulate 5 seconds, that bodies have fallen asleep.
-			if( loaded )
+			if( loaded && EntitySystemWorld.Instance.SerializationMode == SerializationModes.Map )
+			{
 				body.Static = true;
+			}
 
 			PhysicsModel.PushToWorld();
 

@@ -88,25 +88,14 @@ namespace GameEntities
 			CreateMesh();
 			AttachMesh();
 			AddTimer();
-			//RenderSystem.Instance.RenderSystemEvent += RenderSystem_RenderSystemEvent;
 		}
 
 		protected override void OnDestroy()
 		{
-			//RenderSystem.Instance.RenderSystemEvent -= RenderSystem_RenderSystemEvent;
 			DetachMesh();
 			DestroyMesh();
 			base.OnDestroy();
 		}
-
-		//void RenderSystem_RenderSystemEvent( string name )
-		//{
-		//   if( name == "DeviceRestored" )
-		//   {
-		//      needUpdateVertices = true;
-		//      needUpdateIndices = true;
-		//   }
-		//}
 
 		void CreateMesh()
 		{
@@ -160,7 +149,7 @@ namespace GameEntities
 		{
 			attachedMesh = new MapObjectAttachedMesh();
 			attachedMesh.CastDynamicShadows = false;
-			attachedMesh.SetMeshObject( mesh.Name );
+			attachedMesh.MeshName = mesh.Name;
 			Attach( attachedMesh );
 		}
 

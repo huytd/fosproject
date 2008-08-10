@@ -82,7 +82,7 @@ namespace Caelum
         /// in the world. If there isn't any parameters the component
         /// won't be created.</summary>
         [TypeConverter(typeof(CollectionTypeConverter))]
-        [Editor(typeof(CaelumCollectionEditor), typeof(UITypeEditor))]
+        
         public List<CaelumItem> CaelumItems
         {
             get { return mCaelumItems; }

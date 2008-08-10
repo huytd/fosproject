@@ -83,7 +83,6 @@ namespace GameEntities
 				set { useDistanceRange = value; }
 			}
 
-			[Editor( typeof( FireTimesCollectionEditor ), typeof( UITypeEditor ) )]
 			public List<float> FireTimes
 			{
 				get { return fireTimes; }
@@ -107,19 +106,6 @@ namespace GameEntities
 			{
 				get;
 			}
-
-			////////////////////////////////////////
-
-			[EditorBrowsable( EditorBrowsableState.Never )]
-			public class FireTimesCollectionEditor : PropertyGridUtils.ModalDialogCollectionEditor
-			{
-				public FireTimesCollectionEditor()
-					: base( typeof( List<float> ) )
-				{ }
-			}
-
-			////////////////////////////////////////
-
 		}
 
 		[FieldSerialize]
@@ -182,13 +168,6 @@ namespace GameEntities
 		bool setForceFireRotation;
 		Quat forceFireRotation;
 
-		//for animations
-		const float animationsBlendTime = .1f;
-		//key: animation name; value: maximum index (walk, walk2, walk3)
-		Dictionary<string, int> maxAnimationIndices = new Dictionary<string, int>();
-		MeshObject.AnimationState forceAnimationState;
-		float lastAnimationTimePosition;
-
 		//
 
 		WeaponType _type = null; public new WeaponType Type { get { return _type; } }
@@ -212,13 +191,6 @@ namespace GameEntities
 				UpdateMainMeshObjectMaterial();
 
 			AddTimer();
-		}
-
-		protected override void OnTick()
-		{
-			base.OnTick();
-
-			TickAnimations();
 		}
 
 		[Browsable( false )]
@@ -276,136 +248,19 @@ namespace GameEntities
 			return Position + Rotation * typeMode.StartOffsetPosition;
 		}
 
-		/// <summary>
-		/// Returns animation with index addition. 
-		/// </summary>
-		/// <remarks>
-		/// Example: animationName: walk; return: walk or walk2 or walk3.
-		/// </remarks>
-		/// <param name="animationName"></param>
-		/// <returns></returns>
-		string GetRandomAnimationNumber( string animationName )
+		protected override void OnUpdateAnimation( ref string animationName, 
+			ref float animationVelocity, ref bool animationLoop, ref bool allowRandomAnimationNumber )
 		{
-			int maxIndex;
-
-			if( !maxAnimationIndices.TryGetValue( animationName, out maxIndex ) )
-			{
-				//calculate max animation index
-				maxIndex = 1;
-				for( int n = 2; ; n++ )
-				{
-					if( mainMeshObject.MeshObject.GetAnimationState( animationName + n.ToString() ) != null )
-						maxIndex++;
-					else
-						break;
-				}
-				maxAnimationIndices.Add( animationName, maxIndex );
-			}
-
-			int number;
-
-			if( animationName == Type.IdleAnimationName )
-			{
-				//The first animation in 10 times more often
-				number = World.Instance.Random.Next( 10 + maxIndex ) + 1 - 10;
-				if( number < 1 )
-					number = 1;
-			}
-			else
-				number = World.Instance.Random.Next( maxIndex ) + 1;
-
-			return animationName + ( number != 1 ? number.ToString() : "" );
-		}
-
-		void TickAnimations()
-		{
-			if( mainMeshObject == null || mainMeshObject.MeshObject == null )
-				return;
-
-			MeshObject.AnimationState animationState = null;
-			float animationVelocity = 1.0f;
-			bool animationLoop = false;
-
-			//find current animation
-			MeshObject.AnimationState currentAnimationState = null;
-			{
-				foreach( MapObjectAttachedMesh.AnimationStateItem item in
-					mainMeshObject.CurrentAnimationStates )
-				{
-					if( item.FadeOutBlendTime == 0 )
-					{
-						currentAnimationState = item.AnimationState;
-						break;
-					}
-				}
-			}
-
-			//force set animation
-			if( forceAnimationState != null )
-			{
-				if( currentAnimationState == forceAnimationState )
-				{
-					if( forceAnimationState.TimePosition + TickDelta * 2 >= forceAnimationState.Length )
-						forceAnimationState = null;
-					animationState = forceAnimationState;
-				}
-				else
-					forceAnimationState = null;
-			}
+			base.OnUpdateAnimation( ref animationName, ref animationVelocity, ref animationLoop, 
+				ref allowRandomAnimationNumber );
 
 			//idle animation
-			if( animationState == null )
 			{
-				bool allowChange = true;
-
-				if( currentAnimationState != null )
-				{
-					if( string.Compare( currentAnimationState.Name, 0,
-						Type.IdleAnimationName, 0, Type.IdleAnimationName.Length ) == 0 )
-					{
-						if( currentAnimationState.TimePosition >= lastAnimationTimePosition )
-							allowChange = false;
-					}
-				}
-
-				if( allowChange )
-				{
-					string animationName = GetRandomAnimationNumber( Type.IdleAnimationName );
-					animationState = mainMeshObject.MeshObject.GetAnimationState( animationName );
-				}
-				else
-					animationState = currentAnimationState;
-
+				animationName = Type.IdleAnimationName;
+				animationVelocity = 1;
 				animationLoop = true;
-				animationVelocity = 1.0f + World.Instance.Random.NextFloatCenter() * .1f;
-			}
-
-			mainMeshObject.ChangeCurrentAnimationState(
-				animationState, animationVelocity, animationLoop, animationsBlendTime );
-
-			//update lastAnimationTimePosition
-			if( animationState != null )
-				lastAnimationTimePosition = animationState.TimePosition;
-			else
-				lastAnimationTimePosition = 0;
-		}
-
-		protected override void OnSetForceAnimationState( string animationName )
-		{
-			base.OnSetForceAnimationState( animationName );
-
-			if( mainMeshObject != null && mainMeshObject.MeshObject != null )
-			{
-				string numberedAnimationName = GetRandomAnimationNumber( animationName );
-				forceAnimationState = mainMeshObject.MeshObject.GetAnimationState( numberedAnimationName );
-
-				if( forceAnimationState != null )
-				{
-					//reset time for animation
-					mainMeshObject.RemoveCurrentAnimationState( forceAnimationState, 0 );
-					mainMeshObject.ChangeCurrentAnimationState( forceAnimationState,
-						1, false, animationsBlendTime );
-				}
+				allowRandomAnimationNumber = true;
+				return;
 			}
 		}
 

@@ -31,7 +31,7 @@ namespace Game
 
 			TopMost = true;
 
-			EControl window = ControlDeclarationManager.Instance.CreateControl( 
+			EControl window = ControlDeclarationManager.Instance.CreateControl(
 				"Gui\\MessageBoxWindow.gui" );
 			Controls.Add( window );
 
@@ -39,12 +39,19 @@ namespace Game
 
 			window.Text = caption;
 
-			if( clickHandler != null )
-				( (EButton)window.Controls[ "OK" ] ).Click += clickHandler;
+			( (EButton)window.Controls[ "OK" ] ).Click += OKButton_Click;
 
 			BackColor = new Engine.MathEx.ColorValue( 0, 0, 0, .5f );
 
 			EngineApp.Instance.RenderScene();
+		}
+
+		void OKButton_Click( EButton sender )
+		{
+			if( clickHandler != null )
+				clickHandler( sender );
+
+			SetShouldDetach();
 		}
 	}
 }

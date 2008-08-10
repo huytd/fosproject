@@ -22,7 +22,11 @@ namespace GameEntities
 
 	public class RTSBuilding : RTSUnit
 	{
+		[FieldSerialize]
 		RTSUnitType productUnitType;
+
+		[FieldSerialize]
+		[DefaultValue( 0.0f )]
 		float productUnitProgress;
 
 		MapObjectAttachedMesh productUnitAttachedMesh;
@@ -40,6 +44,12 @@ namespace GameEntities
 		{
 			base.OnPostCreate( loaded );
 			AddTimer();
+
+			//for world load/save
+			if( productUnitType != null )
+				CreateProductUnitAttachedMesh();
+
+			UpdateAttachedObjectsVisibility();
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnTick()"/>.</summary>
@@ -57,7 +67,10 @@ namespace GameEntities
 			productUnitProgress += TickDelta / productUnitType.BuildTime;
 
 			if( productUnitAttachedMesh != null )
-				productUnitAttachedMesh.RotationOffset = new Angles( 0, 0, productUnitProgress * 150 ).ToQuat();
+			{
+				productUnitAttachedMesh.RotationOffset =
+					new Angles( 0, 0, productUnitProgress * 150 ).ToQuat();
+			}
 
 			if( BuildUnitProgress >= 1 )
 			{
@@ -71,8 +84,8 @@ namespace GameEntities
 			StopProductUnit();
 
 			//check cost
-			RTSFactionManager.FactionItem factionItem = RTSFactionManager.Instance.GetFactionItemByType( 
-				Intellect.Faction );
+			RTSFactionManager.FactionItem factionItem = RTSFactionManager.Instance.
+				GetFactionItemByType( Intellect.Faction );
 			if( factionItem != null )
 			{
 				float cost = unitType.BuildCost;
@@ -86,7 +99,23 @@ namespace GameEntities
 			productUnitType = unitType;
 			productUnitProgress = 0;
 
-			//render model
+			CreateProductUnitAttachedMesh();
+
+			UpdateAttachedObjectsVisibility();
+		}
+
+		public void StopProductUnit()
+		{
+			DestroyProductUnitAttachedMesh();
+
+			productUnitType = null;
+			productUnitProgress = 0;
+
+			UpdateAttachedObjectsVisibility();
+		}
+
+		void CreateProductUnitAttachedMesh()
+		{
 			productUnitAttachedMesh = new MapObjectAttachedMesh();
 			Attach( productUnitAttachedMesh );
 
@@ -94,9 +123,11 @@ namespace GameEntities
 			Vec3 meshOffset = Vec3.Zero;
 			Vec3 meshScale = new Vec3( 1, 1, 1 );
 			{
-				foreach( MapObjectTypeAttachedObject typeAttachedObject in unitType.AttachedObjects )
+				foreach( MapObjectTypeAttachedObject typeAttachedObject in 
+					productUnitType.AttachedObjects )
 				{
-					MapObjectTypeAttachedMesh typeAttachedMesh = typeAttachedObject as MapObjectTypeAttachedMesh;
+					MapObjectTypeAttachedMesh typeAttachedMesh =
+						typeAttachedObject as MapObjectTypeAttachedMesh;
 					if( typeAttachedMesh == null )
 						continue;
 
@@ -107,12 +138,12 @@ namespace GameEntities
 				}
 			}
 
-			productUnitAttachedMesh.SetMeshObject( meshName );
-
+			productUnitAttachedMesh.MeshName = meshName;
 
 			Vec3 pos = meshOffset;
 			{
-				MapObjectAttachedObject buildPointAttachedHelper = GetAttachedObjectByAlias( "productUnitPoint" );
+				MapObjectAttachedObject buildPointAttachedHelper =
+					GetAttachedObjectByAlias( "productUnitPoint" );
 				if( buildPointAttachedHelper != null )
 					pos += buildPointAttachedHelper.PositionOffset;
 			}
@@ -125,22 +156,15 @@ namespace GameEntities
 				foreach( MeshObject.SubObject subMesh in productUnitAttachedMesh.MeshObject.SubObjects )
 					subMesh.MaterialName = "TransparentExample";
 			}
-
-			UpdateAttachedObjectsVisibility();
 		}
 
-		public void StopProductUnit()
+		void DestroyProductUnitAttachedMesh()
 		{
-			//render model
 			if( productUnitAttachedMesh != null )
 			{
 				Detach( productUnitAttachedMesh );
 				productUnitAttachedMesh = null;
 			}
-
-			productUnitType = null;
-
-			UpdateAttachedObjectsVisibility();
 		}
 
 		[Browsable( false )]
@@ -159,24 +183,14 @@ namespace GameEntities
 		{
 			RTSUnit unit = (RTSUnit)Entities.Instance.Create( productUnitType, Map.Instance );
 
-			/*
-			Vec3 pos = Position;
-			{
-				MapObjectAttachedObject buildPointAttachedHelper = GetAttachedObjectByAlias( "productUnitPoint" );
-				if( buildPointAttachedHelper != null )
-					pos += buildPointAttachedHelper.PositionOffset;
-			}
-			unit.Position = pos;
-			unit.Rotation = Rotation * productUnitAttachedMesh.RotationOffset;
-			*/
-
 			RTSCharacter character = unit as RTSCharacter;
 			if( character == null )
 				Log.Fatal( "RTSBuilding: CreateProductedUnit: character == null" );
 
 			Vec2 p = GridPathFindSystem.Instance.GetNearestFreePosition( Position.ToVec2(),
 				character.Type.Radius * 2 );
-			unit.Position = new Vec3( p.X, p.Y, GridPathFindSystem.Instance.GetMotionMapHeight( p ) + character.Type.Height * .5f );
+			unit.Position = new Vec3( p.X, p.Y, GridPathFindSystem.Instance.GetMotionMapHeight( p ) +
+				character.Type.Height * .5f );
 
 			if( Intellect != null )
 				unit.InitialFaction = Intellect.Faction;
@@ -196,7 +210,7 @@ namespace GameEntities
 			}
 		}
 
-		protected override void OnDamage( MapObject prejudicial, Vec3 pos, Shape shape, float damage, 
+		protected override void OnDamage( MapObject prejudicial, Vec3 pos, Shape shape, float damage,
 			bool allowMoveDamageToParent )
 		{
 			float oldLife = Life;

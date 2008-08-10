@@ -1,4 +1,4 @@
-// Copyright (C) 2006-2008 NeoAxis Group
+// Copyright (C) 2006-2008 NeoAxis Group Ltd.
 #define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
 #include <psapi.h>

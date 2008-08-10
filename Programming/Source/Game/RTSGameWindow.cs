@@ -29,11 +29,9 @@ namespace Game
 
 		[Config( "Map", "drawPathMotionMap" )]
 		public static bool mapDrawPathMotionMap;
-		[Config( "Camera", "rtsCameraDistance" )]
-		static float rtsCameraDistance = 23;
-		[Config( "Camera", "rtsCameraDirection" )]
-		static SphereDir rtsCameraDirection = new SphereDir( 1.5f, .85f );
 
+		float cameraDistance = 23;
+		SphereDir cameraDirection = new SphereDir( 1.5f, .85f );
 		Vec2 cameraPosition;
 
 		//HUD
@@ -83,7 +81,7 @@ namespace Game
 
 			( (EButton)hudControl.Controls[ "Exit" ] ).Click += delegate( EButton sender )
 			{
-				string mapName = "Maps\\MainDemo\\Map.map";
+				string mapName = "Maps\\Vietheroes\\Map.map";
 				string spawnPointName = "SpawnPoint_FromRTSDemo";
 				GameWorld.Instance.SetShouldChangeMap( mapName, spawnPointName, null );
 			};
@@ -112,7 +110,7 @@ namespace Game
 
 			//minimap
 			minimapControl = hudControl.Controls[ "Minimap" ];
-			string textureName = Map.Instance.GetVirtualFileDirectory() + "\\Minimap\\Minimap";
+			string textureName = Map.Instance.GetSourceMapVirtualFileDirectory() + "\\Minimap\\Minimap";
 			Texture minimapTexture = TextureManager.Instance.Load( textureName, Texture.Type.Type2D, 0 );
 			minimapControl.BackTexture = minimapTexture;
 			minimapControl.RenderUI += new RenderUIDelegate( Minimap_RenderUI );
@@ -127,7 +125,39 @@ namespace Game
 				break;
 			}
 
+			//World serialized data
+			if( World.Instance.GetCustomSerializationValue( "cameraDistance" ) != null )
+				cameraDistance = (float)World.Instance.GetCustomSerializationValue( "cameraDistance" );
+			if( World.Instance.GetCustomSerializationValue( "cameraDirection" ) != null )
+				cameraDirection = (SphereDir)World.Instance.GetCustomSerializationValue( "cameraDirection" );
+			if( World.Instance.GetCustomSerializationValue( "cameraPosition" ) != null )
+				cameraPosition = (Vec2)World.Instance.GetCustomSerializationValue( "cameraPosition" );
+			for( int n = 0; ; n++ )
+			{
+				Unit unit = World.Instance.GetCustomSerializationValue(
+					"selectedUnit" + n.ToString() ) as Unit;
+				if( unit == null )
+					break;
+				SetEntitySelected( unit, true );
+			}
+
 			ResetTime();
+		}
+
+		public override void OnBeforeWorldSave()
+		{
+			base.OnBeforeWorldSave();
+
+			//World serialized data
+			World.Instance.ClearAllCustomSerializationValues();
+			World.Instance.SetCustomSerializationValue( "cameraDistance", cameraDistance );
+			World.Instance.SetCustomSerializationValue( "cameraDirection", cameraDirection );
+			World.Instance.SetCustomSerializationValue( "cameraPosition", cameraPosition );
+			for( int n = 0; n < selectedUnits.Count; n++ )
+			{
+				Unit unit = selectedUnits[ n ];
+				World.Instance.SetCustomSerializationValue( "selectedUnit" + n.ToString(), unit );
+			}
 		}
 
 		protected override void OnDetach()
@@ -236,16 +266,6 @@ namespace Game
 							mouseOnObject = MapSystemWorld.GetMapObjectByBody( result.Shape.Body ) as Unit;
 							mouseMapPos = result.Position;
 						}
-
-						/*
-						Map.Instance.GetObjectsWithCollision( ray, delegate( MapObject obj, float scale )
-							{
-								pickingSuccess = true;
-								mouseOnObject = obj as Unit;
-								mouseMapPos = ray.GetPointOnRay( scale );
-								return false;
-							} );
-						 */
 					}
 				}
 
@@ -354,7 +374,7 @@ namespace Game
 							bool mineFound = false;
 							if( taskTargetBuildingType is RTSMineType )
 							{
-								Bounds bounds = new Bounds( pos - new Vec3( 2, 2, 2 ), 
+								Bounds bounds = new Bounds( pos - new Vec3( 2, 2, 2 ),
 									pos + new Vec3( 2, 2, 2 ) );
 								Map.Instance.GetObjects( bounds, delegate( MapObject obj )
 								{
@@ -377,7 +397,7 @@ namespace Game
 								intellect.DoTask( new RTSUnitAI.Task( taskType, pos,
 									tasks[ index ].Task.EntityType ), toQueue );
 
-								ScreenControlManager.Instance.PlaySound( 
+								ScreenControlManager.Instance.PlaySound(
 									"Sounds\\Feedback\\RTSBuildBuilding.ogg" );
 							}
 							else
@@ -475,16 +495,6 @@ namespace Game
 						if( unit != null )
 							areaObjs.Add( unit );
 					}
-
-					/*
-					Map.Instance.GetObjects( ray, GameFilterGroups.UnitFilterGroup,
-						delegate( MapObject obj, float scale )
-						{
-							Unit unit = (Unit)obj;
-							areaObjs.Add( unit );
-							return false;
-						} );
-					*/
 				}
 			}
 
@@ -619,51 +629,51 @@ namespace Game
 
 			if( GetRealCameraType() == CameraType.Game && !EngineConsole.Instance.Active )
 			{
-				Vec2 distanceRange = new Vec2( 10, 100 );
+				Vec2 distanceRange = new Vec2( 10, 300 );
 				Vec2 angleRange = new Vec2( .001f, MathFunctions.PI / 2 - .001f );
 
 				if( EngineApp.Instance.IsKeyPressed( EKeys.PageUp ) )
 				{
-					rtsCameraDistance -= delta * ( distanceRange[ 1 ] - distanceRange[ 0 ] ) / 10.0f;
-					if( rtsCameraDistance < distanceRange[ 0 ] )
-						rtsCameraDistance = distanceRange[ 0 ];
+					cameraDistance -= delta * ( distanceRange[ 1 ] - distanceRange[ 0 ] ) / 10.0f;
+					if( cameraDistance < distanceRange[ 0 ] )
+						cameraDistance = distanceRange[ 0 ];
 				}
 
 				if( EngineApp.Instance.IsKeyPressed( EKeys.PageDown ) )
 				{
-					rtsCameraDistance += delta * ( distanceRange[ 1 ] - distanceRange[ 0 ] ) / 10.0f;
-					if( rtsCameraDistance > distanceRange[ 1 ] )
-						rtsCameraDistance = distanceRange[ 1 ];
+					cameraDistance += delta * ( distanceRange[ 1 ] - distanceRange[ 0 ] ) / 10.0f;
+					if( cameraDistance > distanceRange[ 1 ] )
+						cameraDistance = distanceRange[ 1 ];
 				}
 
 				//rtsCameraDirection
 
 				if( EngineApp.Instance.IsKeyPressed( EKeys.Home ) )
 				{
-					rtsCameraDirection.Vertical += delta * ( angleRange[ 1 ] - angleRange[ 0 ] ) / 2;
-					if( rtsCameraDirection.Vertical >= angleRange[ 1 ] )
-						rtsCameraDirection.Vertical = angleRange[ 1 ];
+					cameraDirection.Vertical += delta * ( angleRange[ 1 ] - angleRange[ 0 ] ) / 2;
+					if( cameraDirection.Vertical >= angleRange[ 1 ] )
+						cameraDirection.Vertical = angleRange[ 1 ];
 				}
 
 				if( EngineApp.Instance.IsKeyPressed( EKeys.End ) )
 				{
-					rtsCameraDirection.Vertical -= delta * ( angleRange[ 1 ] - angleRange[ 0 ] ) / 2;
-					if( rtsCameraDirection.Vertical < angleRange[ 0 ] )
-						rtsCameraDirection.Vertical = angleRange[ 0 ];
+					cameraDirection.Vertical -= delta * ( angleRange[ 1 ] - angleRange[ 0 ] ) / 2;
+					if( cameraDirection.Vertical < angleRange[ 0 ] )
+						cameraDirection.Vertical = angleRange[ 0 ];
 				}
 
 				if( EngineApp.Instance.IsKeyPressed( EKeys.Q ) )
 				{
-					rtsCameraDirection.Horizontal += delta * 2;
-					if( rtsCameraDirection.Horizontal >= MathFunctions.PI * 2 )
-						rtsCameraDirection.Horizontal -= MathFunctions.PI * 2;
+					cameraDirection.Horizontal += delta * 2;
+					if( cameraDirection.Horizontal >= MathFunctions.PI * 2 )
+						cameraDirection.Horizontal -= MathFunctions.PI * 2;
 				}
 
 				if( EngineApp.Instance.IsKeyPressed( EKeys.E ) )
 				{
-					rtsCameraDirection.Horizontal -= delta * 2;
-					if( rtsCameraDirection.Horizontal < 0 )
-						rtsCameraDirection.Horizontal += MathFunctions.PI * 2;
+					cameraDirection.Horizontal -= delta * 2;
+					if( cameraDirection.Horizontal < 0 )
+						cameraDirection.Horizontal += MathFunctions.PI * 2;
 				}
 
 
@@ -696,8 +706,8 @@ namespace Game
 					if( vector != Vec2.Zero )
 					{
 						//rotate vector
-						float angle = MathFunctions.ATan( -vector.Y, vector.X ) + 
-							rtsCameraDirection.Horizontal;
+						float angle = MathFunctions.ATan( -vector.Y, vector.X ) +
+							cameraDirection.Horizontal;
 						vector = new Vec2( MathFunctions.Sin( angle ), MathFunctions.Cos( angle ) );
 
 						cameraPosition += vector * delta * 50;
@@ -754,6 +764,8 @@ namespace Game
 
 		void UpdateHUD()
 		{
+			Camera camera = RendererWorld.Instance.DefaultCamera;
+
 			hudControl.Visible = Map.Instance.DrawGui;
 
 			//Selected units bounds
@@ -766,8 +778,7 @@ namespace Game
 
 				if( !EngineApp.Instance.MouseRelativeMode )
 				{
-					Ray ray = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay(
-						EngineApp.Instance.MousePosition );
+					Ray ray = camera.GetCameraToViewportRay( EngineApp.Instance.MousePosition );
 					if( !float.IsNaN( ray.Direction.X ) )
 					{
 						RayCastResult result = PhysicsWorld.Instance.RayCast( ray,
@@ -778,20 +789,6 @@ namespace Game
 							mouseOnObject = MapSystemWorld.GetMapObjectByBody( result.Shape.Body ) as Unit;
 							mouseMapPos = result.Position;
 						}
-
-						/*
-						Map.Instance.GetObjectsWithCollision( ray, //GameFilterGroups.UnitFilterGroup,
-							delegate( MapObject obj, float scale )
-							{
-								//if( obj != null )//&& !obj.EditorSelectable )
-								//	return true;
-
-								pickingSuccess = true;
-								mouseOnObject = obj as Unit;
-								mouseMapPos = ray.GetPointOnRay( scale );
-								return false;
-							} );
-						*/
 					}
 
 					if( selectMode && selectDraggedMouse )
@@ -804,14 +801,10 @@ namespace Game
 							{
 								Unit unit = (Unit)obj;
 
-								//if( true )
-								//{
-								DebugGeometry.Instance.Color = new ColorValue( 1, 1, 0 );
-
+								camera.DebugGeometry.Color = new ColorValue( 1, 1, 0 );
 								Bounds bounds = obj.MapBounds;
 								bounds.Expand( .1f );
-								DebugGeometry.Instance.AddBounds( bounds );
-								//}
+								camera.DebugGeometry.AddBounds( bounds );
 							} );
 					}
 					else
@@ -820,16 +813,16 @@ namespace Game
 						{
 							if( mouseOnObject != null )
 							{
-								DebugGeometry.Instance.Color = new ColorValue( 1, 1, 0 );
+								camera.DebugGeometry.Color = new ColorValue( 1, 1, 0 );
 
 								Bounds bounds = mouseOnObject.MapBounds;
 								bounds.Expand( .1f );
-								DebugGeometry.Instance.AddBounds( bounds );
+								camera.DebugGeometry.AddBounds( bounds );
 							}
 							else
 							{
-								DebugGeometry.Instance.Color = new ColorValue( 1, 0, 0 );
-								DebugGeometry.Instance.AddSphere( new Sphere( mouseMapPos, .4f ), 16 );
+								camera.DebugGeometry.Color = new ColorValue( 1, 0, 0 );
+								camera.DebugGeometry.AddSphere( new Sphere( mouseMapPos, .4f ), 16 );
 							}
 						}
 					}
@@ -847,8 +840,8 @@ namespace Game
 					else
 						color = new ColorValue( 1, 0, 0 );
 
-					DebugGeometry.Instance.Color = color;
-					DebugGeometry.Instance.AddBounds( unit.MapBounds );
+					camera.DebugGeometry.Color = color;
+					camera.DebugGeometry.AddBounds( unit.MapBounds );
 				}
 			}
 
@@ -861,10 +854,7 @@ namespace Game
 
 				//pick on active area
 				if( IsMouseInActiveArea() )
-				{
-					ray = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay(
-						EngineApp.Instance.MousePosition );
-				}
+					ray = camera.GetCameraToViewportRay( EngineApp.Instance.MousePosition );
 
 				//pick on minimap
 				if( minimapControl.GetScreenRectangle().IsContainsPoint( MousePosition ) )
@@ -1240,9 +1230,9 @@ namespace Game
 		void Minimap_RenderUI( EControl sender, GuiRenderer renderer )
 		{
 			Rect screenMapRect = sender.GetScreenRectangle();
-			//Map.Instance.PhysicsBounds
-			Rect mapRect = new Rect( PhysicsWorld.Instance.InitialBounds.Minimum.ToVec2(),
-				PhysicsWorld.Instance.InitialBounds.Maximum.ToVec2() );
+
+			Bounds initialBounds = Map.Instance.InitialCollisionBounds;
+			Rect mapRect = new Rect( initialBounds.Minimum.ToVec2(), initialBounds.Maximum.ToVec2() );
 
 			Vec2 mapSizeInv = new Vec2( 1, 1 ) / mapRect.Size;
 
@@ -1389,9 +1379,9 @@ namespace Game
 		Vec2 GetMapPositionByMouseOnMinimap()
 		{
 			Rect screenMapRect = minimapControl.GetScreenRectangle();
-			//Map.Instance.PhysicsBounds
-			Rect mapRect = new Rect( PhysicsWorld.Instance.InitialBounds.Minimum.ToVec2(),
-				PhysicsWorld.Instance.InitialBounds.Maximum.ToVec2() );
+
+			Bounds initialBounds = Map.Instance.InitialCollisionBounds;
+			Rect mapRect = new Rect( initialBounds.Minimum.ToVec2(), initialBounds.Maximum.ToVec2() );
 
 			Vec2 point = MousePosition;
 
@@ -1447,10 +1437,10 @@ namespace Game
 			Vec3 offset;
 			{
 				Quat rot = new Angles( 0, 0, MathFunctions.RadToDeg(
-					rtsCameraDirection.Horizontal ) ).ToQuat();
-				rot *= new Angles( 0, MathFunctions.RadToDeg( rtsCameraDirection.Vertical ), 0 ).ToQuat();
+					cameraDirection.Horizontal ) ).ToQuat();
+				rot *= new Angles( 0, MathFunctions.RadToDeg( cameraDirection.Vertical ), 0 ).ToQuat();
 				offset = rot * new Vec3( 1, 0, 0 );
-				offset *= rtsCameraDistance;
+				offset *= cameraDistance;
 			}
 			Vec3 lookAt = new Vec3( cameraPosition.X, cameraPosition.Y, 0 );
 
@@ -1458,6 +1448,5 @@ namespace Game
 			forward = -offset;
 			up = new Vec3( 0, 0, 1 );
 		}
-
 	}
 }

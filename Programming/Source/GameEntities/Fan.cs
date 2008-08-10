@@ -33,6 +33,9 @@ namespace GameEntities
 		float forceMaximum = 50;
 
 		[FieldSerialize]
+		Vec3 influenceRegionScale = new Vec3( 20, 3, 3 );
+
+		[FieldSerialize]
 		float throttle = 1;
 
 		InfluenceRegion region;
@@ -46,7 +49,7 @@ namespace GameEntities
 		/// <summary>
 		/// Gets or sets the the maximal pushing force.
 		/// </summary>
-		[Description("The the maximal pushing force.")]
+		[Description( "The the maximal pushing force." )]
 		public float ForceMaximum
 		{
 			get { return forceMaximum; }
@@ -68,6 +71,19 @@ namespace GameEntities
 			}
 		}
 
+		[DefaultValue( typeof( Vec3 ), "20 3 3" )]
+		public Vec3 InfluenceRegionScale
+		{
+			get { return influenceRegionScale; }
+			set
+			{
+				influenceRegionScale = value;
+
+				if( region != null )
+					region.SetTransform( Position, Rotation, InfluenceRegionScale );
+			}
+		}
+
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
 		protected override void OnPostCreate( bool loaded )
 		{
@@ -75,7 +91,7 @@ namespace GameEntities
 
 			const string regionTypeName = "ManualInfluenceRegion";
 
-			InfluenceRegionType regionType = (InfluenceRegionType)EntityTypes.Instance.GetByName( 
+			InfluenceRegionType regionType = (InfluenceRegionType)EntityTypes.Instance.GetByName(
 				regionTypeName );
 			if( regionType == null )
 			{
@@ -87,7 +103,7 @@ namespace GameEntities
 			region.ShapeType = Region.ShapeTypes.Capsule;
 			region.DistanceFunction = InfluenceRegion.DistanceFunctionType.NormalFadeAxisX;
 
-			region.SetTransform( Position, Rotation, Scale );
+			region.SetTransform( Position, Rotation, InfluenceRegionScale );
 			region.PostCreate();
 			region.AllowSave = false;
 			region.EditorSelectable = false;
@@ -116,18 +132,7 @@ namespace GameEntities
 			base.OnSetTransform( ref pos, ref rot, ref scl );
 
 			if( region != null )
-			{
-				//так изза того что scale беретс€ при тиках из body'а вентил€тора
-				if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor )
-				{
-					region.SetTransform( Position, Rotation, Scale );
-				}
-				else
-				{
-					region.Position = Position;
-					region.Rotation = Rotation;
-				}
-			}
+				region.SetTransform( Position, Rotation, InfluenceRegionScale );
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnTick()"/>.</summary>

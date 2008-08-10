@@ -38,7 +38,6 @@ namespace Game
 			InitCheckBox( "Gui", typeof( GameWindow ).GetField( "mapDrawGui" ) );
 			InitCheckBox( "Wireframe", typeof( GameWindow ).GetField( "mapDrawWireframe" ) );
 			InitCheckBox( "PostEffects", typeof( GameWindow ).GetField( "drawPostEffects" ) );
-			InitCheckBox( "PerformanceCounter", typeof( GameWindow ).GetField( "drawPerformanceCounter" ) );
 			InitCheckBox( "GameSpecificDebugGeometry", typeof( GameWindow ).GetField( "drawGameSpecificDebugGeometry" ) );
 
 			( (EButton)window.Controls[ "Defaults" ] ).Click += Defaults_Click;

@@ -71,31 +71,12 @@ namespace GameEntities
 		{
 			base.OnRender( camera );
 
-			//bool render;
-
-			//if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor )
-			//   render = true;
-			//else
-			//   render = Map.Instance.DrawRegions && camera == RendererWorld.Instance.DefaultCamera;
-
-			//if( render )
 			if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor &&
 				camera == RendererWorld.Instance.DefaultCamera && EditorLayer.Visible )
 			{
-				DebugGeometry.Instance.Color = new ColorValue( 0, 0, 1 );
-				DebugGeometry.Instance.AddBox( GetBox() );
+				camera.DebugGeometry.Color = new ColorValue( 0, 0, 1 );
+				camera.DebugGeometry.AddBox( GetBox() );
 			}
-
-			/*
-			if( PhysicsModel != null )
-			{
-				//PhysicsWorld.Instance.SetForceDebugRenderColor( new ColorValue( 0, 0, 1 ) );
-				foreach( Body body in PhysicsModel.Bodies )
-					body.DebugRender( 0, 1, true );
-				//PhysicsWorld.Instance.ResetForceDebugRenderColor();
-			}
-			*/
-
 		}
 
 	}

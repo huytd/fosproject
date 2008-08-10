@@ -52,7 +52,12 @@ namespace GameEntities
 
 	public class RTSUnit : Unit
 	{
+		[FieldSerialize]
+		[DefaultValue( false )]
 		bool moveEnabled;
+		
+		[FieldSerialize]
+		[DefaultValue( typeof( Vec3 ), "0 0 0" )]
 		Vec3 movePosition;
 
 		//
@@ -62,6 +67,7 @@ namespace GameEntities
 		public void Stop()
 		{
 			moveEnabled = false;
+			movePosition = Vec3.Zero;
 		}
 
 		public void Move( Vec3 pos )
@@ -89,7 +95,7 @@ namespace GameEntities
 			UpdateSkin();
 		}
 
-		protected override void OnDieObjectCreate( MapObjectCreateObject createObject, 
+		protected override void OnDieObjectCreate( MapObjectCreateObject createObject,
 			object objectCreated )
 		{
 			base.OnDieObjectCreate( createObject, objectCreated );
@@ -134,9 +140,7 @@ namespace GameEntities
 			if( InitialFaction == null )
 				return;
 
-			//!!!!!!temp not true
-			//!!!!!!temp not true
-			//!!!!!!temp not true
+			//!!!!!!temp. not universal
 
 			bool badFaction = InitialFaction.Name == "BadFaction";
 
@@ -161,7 +165,7 @@ namespace GameEntities
 
 						if( typeObject.ForceMaterial == "" )
 						{
-							meshAttachedObject.MeshObject.SetMaterialNameForAllSubObjects( 
+							meshAttachedObject.MeshObject.SetMaterialNameForAllSubObjects(
 								badFaction ? ( Type.Name + "2" ) : Type.Name );
 						}
 					}
@@ -178,7 +182,7 @@ namespace GameEntities
 
 						if( typeObject.ForceMaterial == "" )
 						{
-							meshAttachedObject.MeshObject.SetMaterialNameForAllSubObjects( 
+							meshAttachedObject.MeshObject.SetMaterialNameForAllSubObjects(
 								badFaction ? ( Type.Name + "2" ) : Type.Name );
 							break;
 						}
