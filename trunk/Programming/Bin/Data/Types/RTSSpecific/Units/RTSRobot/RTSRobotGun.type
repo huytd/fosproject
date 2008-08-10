@@ -9,19 +9,25 @@ type RTSRobotGun
 		bulletType = RTSRobotBullet
 		bulletExpense = 0
 		betweenFireTime = 2.1
-		soundFire = "Types\\Weapons\\SubmachineGun\\AlternativeFire.ogg"
+		soundFire = Types\Weapons\SubmachineGun\AlternativeFire.ogg
 		useDistanceRange = 0 40
-		fireTimes = ".1;.2;.3;.4;.5"
+		fireTimes = 0.1 0.2 0.3 0.4 0.5
+		fireAnimationName = fire
 		fireUnitAnimationName = attack
 		fireObjects
 		{
 			billboard
 			{
 				materialName = ItemParticle
-				size = "3 3"
+				size = 3 3
+				position = 1 0 0
 				lifeTime = 0.04
-				position = "1 0 0"
 			}
 		}
+	}
+	alternativeMode
+	{
+		fireTimes = 
+		fireAnimationName = fire
 	}
 }

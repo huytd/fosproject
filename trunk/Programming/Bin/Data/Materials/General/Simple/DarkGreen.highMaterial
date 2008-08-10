@@ -1,0 +1,5 @@
+highLevelMaterial DarkGreen
+{
+	template = ShaderBaseMaterial
+	diffuseScale = 0 0.5019608 0
+}
