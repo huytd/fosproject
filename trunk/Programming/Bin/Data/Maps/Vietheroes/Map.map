@@ -1,39 +1,12 @@
 type = GameMap
 uin = 2
 classPrompt = GameMap
-gameType = Action
 ambientLight = 0.2 0.2 0.2
-soundDistanceFactor = 10
-editorCameraPosition = 206.5037 96.59917 5.715837
-editorCameraDirection = 2.47101 -0.113647
-drawStaticPhysics = False
-drawDynamicPhysics = False
-drawSceneGraphInfo = False
-drawRegions = False
-drawMapObjectBounds = False
-drawSceneNodeBounds = False
-drawStaticMeshObjectBounds = False
-drawZonesPortalsOccluders = False
-drawLights = False
-drawStaticGeometry = True
-drawModels = True
-drawEffects = True
-drawGui = True
-drawWireframe = False
-drawGameSpecificDebugGeometry = False
-shadowTechnique = ShadowmapHigh
+editorCameraPosition = 146.4865 147.3429 10.72286
+editorCameraDirection = 5.877554 0.1233659
 shadowColor = 0.75 0.75 0.75
-shadowFarDistance = 30
-shadow2DTextureSize = 1024
-shadow2DTextureCount = 2
-shadowCubicTextureSize = 512
-shadowCubicTextureCount = 1
-frustumTest = False
 fov = 80
-nearFarClipDistance = 0 0
 logicSystemManager = 3
-sceneGraphDynamicTree = False
-sceneGraphType = Quadtree
 rootEditorLayer
 {
 }
@@ -113,9 +86,6 @@ entity
 	castShadows = True
 	allowStaticLighting = False
 	position = 8 12 100
-	rotation = 0 0 0 1
-	scale = 1 1 1
-	editorAlignmentMethod = None
 	name = Light_0
 }
 entity
@@ -139,9 +109,6 @@ entity
 	classPrompt = SpawnPoint
 	defaultPoint = False
 	position = -98 259 0
-	rotation = 0 0 0 1
-	scale = 1 1 1
-	editorAlignmentMethod = None
 	name = SpawnPoint_0
 }
 entity
@@ -151,9 +118,6 @@ entity
 	classPrompt = SpawnPoint
 	defaultPoint = False
 	position = -38 242 0
-	rotation = 0 0 0 1
-	scale = 1 1 1
-	editorAlignmentMethod = None
 	name = SpawnPoint_1
 }
 entity
@@ -188,9 +152,6 @@ entity
 	classPrompt = SpawnPoint
 	defaultPoint = False
 	position = -263.6492 -247.2401 7.482418
-	rotation = 0 0 0 1
-	scale = 1 1 1
-	editorAlignmentMethod = None
 	name = SpawnPoint_2
 }
 entity
