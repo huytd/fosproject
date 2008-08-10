@@ -4,32 +4,32 @@ control Gui\Controls\DefaultWindow.gui
 {
 	horizontalAlign = Center
 	verticalAlign = Center
-	size = Texture 685.5 500
-	text = Maps
+	size = Texture 685 500
+	text = World load/save
 	mouseCover = True
 	control Gui\Controls\DefaultListBox.gui
 	{
-		position = Texture 37 46.00001
-		size = Texture 380 334
+		position = Texture 38 46.00001
+		size = Texture 379 424
 		name = List
 	}
 	control Gui\Controls\DefaultButton.gui
 	{
-		position = Texture -32 46
+		position = Texture -35.5 46.00001
 		horizontalAlign = Right
-		name = Run
-		text = Run
+		name = Load
+		text = Load
 	}
 	control Gui\Controls\DefaultButton.gui
 	{
-		position = Texture -32 86.00002
+		position = Texture -35.5 136
 		horizontalAlign = Right
-		name = Quit
+		name = Close
 		text = Close
 	}
 	control Control
 	{
-		position = Texture -37 -49.99998
+		position = Texture -40.5 -30.00003
 		horizontalAlign = Right
 		verticalAlign = Bottom
 		size = Texture 204 154
@@ -47,18 +47,11 @@ control Gui\Controls\DefaultWindow.gui
 			anchor = Left, Bottom, Top, Right
 		}
 	}
-	control Gui\Controls\DefaultComboBox.gui
+	control Gui\Controls\DefaultButton.gui
 	{
-		position = Texture 38 426
-		size = Texture 380 30
-		name = autorunMap
-	}
-	control TextBox
-	{
-		textHorizontalAlign = Left
-		shadow = True
-		position = Texture 38 396.0001
-		size = Screen 0.12 0.025
-		text = Autorun map:
+		position = Texture -35.5 86.00002
+		horizontalAlign = Right
+		name = Save
+		text = Save
 	}
 }
