@@ -4,7 +4,7 @@ control Control
 {
 	control Gui\Controls\DefaultWindow.gui
 	{
-		position = Texture 840 60
+		position = Texture 730 60
 		size = Texture 270 400
 		name = Options
 		text = Options
@@ -21,12 +21,12 @@ control Control
 		pageButtonsPosition = Texture 740 110
 		pageButtonsOffset = Texture 0 40
 		position = Texture 20 40
-		size = Texture 750 710
+		size = Texture 700 710
 		name = TabControl
 		page0 Gui\Controls\DefaultWindow.gui
 		{
-			position = Texture 110 20
-			size = Texture 310 670
+			position = Texture 20 20
+			size = Texture 670 670
 			name = Video
 			text = Video
 			control TextBox
@@ -80,13 +80,13 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 210
+				position = Texture 40 238
 				size = Screen 0.1703135 0.025
 				text = Shadow technique
 			}
 			control Gui\Controls\DefaultComboBox.gui
 			{
-				position = Texture 320 202
+				position = Texture 320 230
 				name = ShadowTechnique
 			}
 			control TextBox
@@ -95,7 +95,7 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 246
+				position = Texture 40 274
 				size = Screen 0.192189 0.025
 				text = Shadow far distance
 			}
@@ -103,7 +103,7 @@ control Control
 			{
 				valueRange = 10 100
 				value = 30
-				position = Texture 320 272
+				position = Texture 320 300
 				name = ShadowFarDistance
 			}
 			control TextBox
@@ -112,13 +112,13 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 360
+				position = Texture 40 388
 				size = Screen 0.1906267 0.025
 				text = Shadow 2D texture size
 			}
 			control Gui\Controls\DefaultComboBox.gui
 			{
-				position = Texture 320 356
+				position = Texture 320 384
 				name = Shadow2DTextureSize
 			}
 			control TextBox
@@ -127,13 +127,13 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 590
+				position = Texture 40 593.9999
 				size = Screen 0.187502 0.025
 				text = Show system cursor
 			}
 			control Gui\Controls\DefaultCheckBox.gui
 			{
-				position = Texture 320 590.0001
+				position = Texture 320 594
 				name = ShowSystemCursor
 			}
 			control TextBox
@@ -142,13 +142,13 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 630
+				position = Texture 40 624
 				size = Screen 0.08906309 0.025
 				text = Show FPS
 			}
 			control Gui\Controls\DefaultCheckBox.gui
 			{
-				position = Texture 320 630
+				position = Texture 320 624
 				name = ShowFPS
 			}
 			control TextBox
@@ -157,13 +157,13 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 316
+				position = Texture 40 344
 				size = Screen 0.192189 0.025
 				text = Shadow color
 			}
 			control Gui\Controls\DefaultHScrollBar.gui
 			{
-				position = Texture 320 312
+				position = Texture 320 340
 				name = ShadowColor
 			}
 			control TextBox
@@ -172,13 +172,13 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 400
+				position = Texture 40 428
 				size = Screen 0.2199236 0.025
 				text = Shadow 2D texture count
 			}
 			control Gui\Controls\DefaultComboBox.gui
 			{
-				position = Texture 320 396
+				position = Texture 320 424
 				name = Shadow2DTextureCount
 			}
 			control TextBox
@@ -187,13 +187,13 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 550
+				position = Texture 40 564
 				size = Screen 0.1906267 0.02500006
 				text = Water reflection level
 			}
 			control Gui\Controls\DefaultComboBox.gui
 			{
-				position = Texture 320 546
+				position = Texture 320 560
 				name = WaterReflectionLevel
 			}
 			control Gui\Controls\DefaultHScrollBar.gui
@@ -230,14 +230,14 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 620 272
+				position = Texture 620 300
 				size = Screen 0.03593899 0.025
 				name = ShadowFarDistanceValue
 				text = 30
 			}
 			control Gui\Controls\DefaultCheckBox.gui
 			{
-				position = Texture 320 242
+				position = Texture 320 270
 				name = ShadowFarDistanceUseMapSettings
 				text = Use map settings
 			}
@@ -247,14 +247,14 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 439.9999
+				position = Texture 40 467.9999
 				size = Screen 0.1906267 0.025
 				text = Shadow cubic texture size
 				colorMultiplier = 1 1 1 0.3921569
 			}
 			control Gui\Controls\DefaultComboBox.gui
 			{
-				position = Texture 320 435.9998
+				position = Texture 320 463.9998
 				name = ShadowCubicTextureSize
 				colorMultiplier = 1 1 1 0.3921569
 			}
@@ -264,16 +264,32 @@ control Control
 				textVerticalAlign = Top
 				shadow = True
 				shadowOffset = Texture 2 2
-				position = Texture 40 479.9999
+				position = Texture 40 507.9999
 				size = Screen 0.2199236 0.025
 				text = Shadow cubic texture count
 				colorMultiplier = 1 1 1 0.3921569
 			}
 			control Gui\Controls\DefaultComboBox.gui
 			{
-				position = Texture 320 475.9999
+				position = Texture 320 503.9999
 				name = ShadowCubicTextureCount
 				colorMultiplier = 1 1 1 0.3921569
+			}
+			control TextBox
+			{
+				textHorizontalAlign = Left
+				textVerticalAlign = Top
+				shadow = True
+				shadowOffset = Texture 2 2
+				position = Texture 40 198
+				size = Screen 0.1703135 0.025
+				text = Material scheme
+			}
+			control Gui\Controls\DefaultComboBox.gui
+			{
+				position = Texture 320 190
+				name = MaterialScheme
+				text = 
 			}
 		}
 		page1 Gui\Controls\DefaultWindow.gui
