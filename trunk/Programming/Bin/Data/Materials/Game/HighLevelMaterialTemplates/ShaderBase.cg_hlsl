@@ -1,4 +1,4 @@
-// Copyright (C) 2006-2008 NeoAxis Group
+// Copyright (C) 2006-2008 NeoAxis Group Ltd.
 
 //!!!!!temp. real file path
 #include "Data/Materials/General/Common/getFogValue.cg_hlsl"
@@ -514,8 +514,8 @@ void main_fp(
 #endif
 
 	//Emission
+#ifdef EMISSION
 #ifdef AMBIENT_PASS
-
 	half3 emission;
 	#ifdef DYNAMIC_EMISSION_SCALE
 		emission = dynamicEmissionScale;
@@ -527,13 +527,13 @@ void main_fp(
 		emission *= (half3)tex2D(emissionMap, EMISSION_MAP_TEXCOORD).rgb;
 	#endif
 	color.xyz += emission;
-
+#endif
 #endif
 
 	//Specular
+#ifdef SPECULAR
 #ifdef LIGHT_PASS
 #ifdef USE_NORMALS
-
 	half3 specular;
 	#ifdef DYNAMIC_SPECULAR_SCALE
 		specular = dynamicSpecularScaleAndShininess.rgb;
@@ -556,6 +556,7 @@ void main_fp(
 		color.rgb += specular * lightSpecularColorArray[0].rgb * 
 			(pow(normalSpecCoef0, dynamicSpecularScaleAndShininess.a) * objectLightAttenuation0);
 	#endif
+#endif
 #endif
 #endif
 
