@@ -1,4 +1,4 @@
-// Copyright (C) 2006-2008 NeoAxis Group
+// Copyright (C) 2006-2008 NeoAxis Group Ltd.
 
 void main_vp(
 	uniform float4x4 worldViewProjMatrix,

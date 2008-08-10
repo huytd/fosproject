@@ -1,4 +1,4 @@
-// Copyright (C) 2006-2008 NeoAxis Group
+// Copyright (C) 2006-2008 NeoAxis Group Ltd.
 
 float3 getLightColor(float3 vertexPosition, float3 vertexNormal, 
 	float4 lightPosition, float3 lightDiffuse, float4 lightAttenuation)

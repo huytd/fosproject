@@ -1,4 +1,4 @@
-// Copyright (C) 2006-2008 NeoAxis Group
+// Copyright (C) 2006-2008 NeoAxis Group Ltd.
 
 //!!!!!temp. real file path
 #include "Data/Materials/General/Common/getFogValue.cg_hlsl"
