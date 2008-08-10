@@ -92,6 +92,24 @@ namespace Game
 				};
 				pageVideo.Controls[ "GammaValue" ].Text = GameEngineApp._Gamma.ToString( "F1" );
 
+				//MaterialScheme
+				{
+					comboBox = (EComboBox)pageVideo.Controls[ "MaterialScheme" ];
+					foreach( MaterialSchemes materialScheme in
+						Enum.GetValues( typeof( MaterialSchemes ) ) )
+					{
+						comboBox.Items.Add( materialScheme.ToString() );
+
+						if( GameEngineApp.MaterialScheme == materialScheme )
+							comboBox.SelectedIndex = comboBox.Items.Count - 1;
+					}
+					comboBox.SelectedIndexChange += delegate( EComboBox sender )
+					{
+						if( sender.SelectedIndex != -1 )
+							GameEngineApp.MaterialScheme = (MaterialSchemes)sender.SelectedIndex;
+					};
+				}
+
 				//ShadowTechnique
 				comboBox = (EComboBox)pageVideo.Controls[ "ShadowTechnique" ];
 				foreach( ShadowTechniques shadowTechnique in
@@ -461,7 +479,7 @@ namespace Game
 						case GameControlsManager.SystemJoystickValue.Types.Axis:
 							if( joystickInputDevice.GetAxisByName( value.Axis ) != null )
 							{
-								text += string.Format( "Axis: {0}({1}),  ", 
+								text += string.Format( "Axis: {0}({1}),  ",
 									value.Axis, value.AxisFilter );
 							}
 							break;

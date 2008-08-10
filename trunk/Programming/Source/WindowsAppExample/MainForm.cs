@@ -9,184 +9,139 @@ using Engine;
 using Engine.EntitySystem;
 using Engine.MapSystem;
 using Engine.Renderer;
+using Engine.MathEx;
+using Engine.SoundSystem;
+using WindowsAppFramework;
 
 namespace WindowsAppExample
 {
 	public partial class MainForm : Form
 	{
-		static MainForm instance;
-
-		float lastRenderTime;
-
-		//
-
 		public MainForm()
 		{
-			instance = this;
 			InitializeComponent();
-
-			labelEngineVersion.Text += " " + EngineVersionInformation.Version;
-		}
-
-		public static MainForm Instance
-		{
-			get { return instance; }
 		}
 
 		private void MainForm_Load( object sender, EventArgs e )
 		{
-			EngineApp.Instance.ParentWindowControl = panelEngine;
-			if( !EngineApp.Instance.Create() )
+			//NeoAxis initialization
+			if( !WindowsAppWorld.Init( this, "Logs/WindowsAppExample.log" ) )
 			{
 				Close();
 				return;
 			}
 
-			timer1.Start();
-
-			trackBarSoundVolume.Value = (int)( WindowsAppEngineApp.SoundVolume * 1000 );
-
 			//load map
-			MapLoad( "Maps\\WindowsAppExample\\Map.map" );
+			WindowsAppWorld.MapLoad( "Maps\\WindowsAppExample\\Map.map", true );
+
+			renderTargetUserControl1.AutomaticUpdateFPS = 60;
+			renderTargetUserControl1.Render += renderTargetUserControl1_Render;
+			renderTargetUserControl1.RenderUI += renderTargetUserControl1_RenderUI;
 		}
 
-		private void MainForm_FormClosing( object sender, FormClosingEventArgs e )
+		private void MainForm_FormClosed( object sender, FormClosedEventArgs e )
 		{
-			EngineApp.Instance.Destroy();
-
-			instance = null;
+			//NeoAxis shutdown
+			WindowsAppWorld.Shutdown();
 		}
 
 		private void buttonExit_Click( object sender, EventArgs e )
 		{
 			Close();
 		}
-				
-		internal bool IsAllowRenderScene()
-		{
-			Form activeForm = ActiveForm;
-			if( activeForm == null )
-				return false;
 
-			Form form = activeForm;
-			while( form != null )
+		MapCamera GetMapCamera()
+		{
+			MapCamera mapCamera = null;
+			foreach( Entity entity in Map.Instance.Children )
 			{
-				if( form == this )
-					return true;
-				if( form.Modal )
-					return false;
-				form = form.Owner;
+				mapCamera = entity as MapCamera;
+				if( mapCamera != null )
+					break;
 			}
-
-			return false;
+			return mapCamera;
 		}
 
-		private void timer1_Tick( object sender, EventArgs e )
+		void renderTargetUserControl1_Render( Camera camera )
 		{
-			//render via timer only for modal dialog in main form
-			if( Visible && WindowState != FormWindowState.Minimized && IsAllowRenderScene() )
-				if( ActiveForm != this )
-					RenderScene();
-
-			if( !Visible || WindowState == FormWindowState.Minimized )
-				UnloadAllLoadableResources();
-
-			if( !Visible || WindowState == FormWindowState.Minimized || !IsAllowRenderScene() )
-				EngineApp.Instance.KeysAndMouseButtonUpAll();
-		}
-
-		private void panelEngine_Paint( object sender, PaintEventArgs e )
-		{
-			if( Visible && WindowState != FormWindowState.Minimized && !IsAllowRenderScene() )
-				RenderScene();
-		}
-
-		internal void RenderScene()
-		{
-			if( RenderSystem.Instance.IsDeviceLostByTestCooperativeLevel() )
-				return;
-			if( !Visible || WindowState == FormWindowState.Minimized )
-				return;
-
-			//max fps
-			const float maxFPS = 50.0f;
-			float renderTime = EngineApp.Instance.Time;
-			if( renderTime < lastRenderTime + 1.0f / maxFPS )
-				return;
-			lastRenderTime = renderTime;
-
-			//render
-			if( EngineApp.Instance.WindowControl != null )
+			//update camera
+			if( Map.Instance != null )
 			{
-				Rectangle clientRect = panelEngine.ClientRectangle;
+				Vec3 position;
+				Vec3 forward;
+				Degree fov;
 
-				if( EngineApp.Instance.WindowControl.Location != clientRect.Location ||
-					EngineApp.Instance.WindowControl.Size != clientRect.Size )
+				MapCamera mapCamera = GetMapCamera();
+				if( mapCamera != null )
 				{
-					EngineApp.Instance.WindowControl.Location = clientRect.Location;
-					EngineApp.Instance.WindowControl.Size = clientRect.Size;
-					EngineApp.Instance.OnResize();
+					position = mapCamera.Position;
+					forward = mapCamera.Rotation * new Vec3( 1, 0, 0 );
+					fov = mapCamera.Fov;
+				}
+				else
+				{
+					position = Map.Instance.EditorCameraPosition;
+					forward = Map.Instance.EditorCameraDirection.GetVector();
+					fov = Map.Instance.Fov;
 				}
 
-				EngineApp.Instance.DoTick();
-				EngineApp.Instance.RenderScene();
-			}
-		}
+				if( fov == 0 )
+					fov = Map.Instance.Fov;
+				if( fov == 0 )
+					fov = Map.Instance.Type.DefaultFov;
 
-		WorldType GetWorldType()
-		{
-			List<EntityType> list = EntityTypes.Instance.GetTypesBasedOnClass(
-				EntityTypes.Instance.GetClassInfoByEntityClassName( "World" ) );
-			if( list.Count == 0 )
+				renderTargetUserControl1.CameraNearFarClipDistance =
+					Map.Instance.GetRealNearFarClipDistance();
+				renderTargetUserControl1.CameraFixedUp = Vec3.ZAxis;
+				renderTargetUserControl1.CameraFov = fov;
+				renderTargetUserControl1.CameraPosition = position;
+				renderTargetUserControl1.CameraDirection = forward;
+			}
+
+			//update sound listener
+			if( SoundWorld.Instance != null )
 			{
-				Log.Error( "World type not defined." );
-				return null;
+				SoundWorld.Instance.SetListener( camera.Position, Vec3.Zero,
+					camera.Direction, camera.Up );
 			}
-			if( list.Count != 1 )
+
+			RenderEntityOverCursor( camera );
+		}
+
+		void RenderEntityOverCursor( Camera camera )
+		{
+			Vec2 mouse = renderTargetUserControl1.GetFloatMousePosition();
+
+			Ray ray = camera.GetCameraToViewportRay( mouse );
+
+			MapObject mapObject = null;
+
+			Map.Instance.GetObjects( ray, delegate( MapObject obj, float scale )
 			{
-				Log.Error( "World type need alone." );
-				return null;
-			}
-			return (WorldType)list[ 0 ];
-		}
-
-		bool MapLoad( string fileName )
-		{
-			//Destroy old
-			MapDestroy();
-
-			//New
-			WorldType worldType = GetWorldType();
-			if( worldType == null )
+				if( obj is StaticMesh )
+					return true;
+				mapObject = obj;
 				return false;
-			if( !EntitySystemWorld.Instance.WorldCreate( WorldSimulationType.Single, worldType ) )
+			} );
+
+			if( mapObject != null )
 			{
-				Log.Error( "EntitySystemWorld: WorldCreate failed." );
-				return false;
+				camera.DebugGeometry.Color = new ColorValue( 1, 1, 0 );
+				camera.DebugGeometry.AddBounds( mapObject.MapBounds );
 			}
-
-			if( !MapSystemWorld.MapLoad( fileName, false ) )
-				return false;
-
-			//run simulation
-			EntitySystemWorld.Instance.Simulation = true;
-
-			return true;
 		}
 
-		void MapDestroy()
+		void renderTargetUserControl1_RenderUI( GuiRenderer renderer )
 		{
-			MapSystemWorld.MapDestroy();
+			string text = "NeoAxis Engine " + EngineVersionInformation.Version;
+			renderer.AddText( text, new Vec2( .01f, .01f ), HorizontalAlign.Left,
+				VerticalAlign.Top, new ColorValue( 1, 1, 1 ) );
 		}
 
-		void UnloadAllLoadableResources()
+		private void buttonAdditionalForm_Click( object sender, EventArgs e )
 		{
-			TextureManager.Instance.UnloadAll( true );
-		}
-
-		private void trackBarSoundVolume_Scroll( object sender, EventArgs e )
-		{
-			WindowsAppEngineApp.SoundVolume = (float)( trackBarSoundVolume.Value + .5f ) / 1000.0f;
+			AdditionalForm form = new AdditionalForm();
+			form.ShowDialog();
 		}
 	}
 }

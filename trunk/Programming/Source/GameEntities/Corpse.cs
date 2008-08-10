@@ -53,8 +53,11 @@ namespace GameEntities
 	/// </summary>
 	public class Corpse : Dynamic
 	{
-		MapObjectAttachedMesh mainMeshObject;
+		[FieldSerialize]
+		bool duringDeathAnimation;
+		[FieldSerialize]
 		bool deadAnimation;
+		[FieldSerialize]
 		int deathAnimationNumber;
 
 		//
@@ -65,32 +68,7 @@ namespace GameEntities
 		protected override void OnPostCreate( bool loaded )
 		{
 			base.OnPostCreate( loaded );
-
-			foreach( MapObjectAttachedObject attachedObject in AttachedObjects )
-			{
-				MapObjectAttachedMesh attachedMeshObject = attachedObject as MapObjectAttachedMesh;
-				if( attachedMeshObject != null )
-				{
-					if( mainMeshObject == null )
-						mainMeshObject = attachedMeshObject;
-				}
-			}
-
 			AddTimer();
-		}
-
-		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnShouldDelete()"/>.</summary>
-		protected override bool OnShouldDelete()
-		{
-			mainMeshObject = null;
-			return base.OnShouldDelete();
-		}
-
-		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnDestroy()"/>.</summary>
-		protected override void OnDestroy()
-		{
-			mainMeshObject = null;
-			base.OnDestroy();
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnTick()"/>.</summary>
@@ -113,54 +91,51 @@ namespace GameEntities
 					}
 				}
 			}
+		}
 
-			if( mainMeshObject != null && mainMeshObject.MeshObject != null )
+		protected override void OnUpdateAnimation( ref string animationName,
+			ref float animationVelocity, ref bool animationLoop, ref bool allowRandomAnimationNumber )
+		{
+			base.OnUpdateAnimation( ref animationName, ref animationVelocity, ref animationLoop,
+				ref allowRandomAnimationNumber );
+
+			//check for end of death animation
+			if( duringDeathAnimation )
 			{
-				MeshObject.AnimationState animationState = null;
-				float animationVelocity = 1.0f;
-				bool animationLoop = false;
-
-				if( !deadAnimation )
+				if( CurrentAnimationState == null )
 				{
-					//Choose animation number: death, death2, death3
-					if( deathAnimationNumber == 0 )
-					{
-						int maxAnimationNumber = 1;
-						for( int number = 2; ; number++ )
-						{
-							if( mainMeshObject.MeshObject.GetAnimationState( 
-								Type.DeathAnimationName + number.ToString() ) != null )
-								maxAnimationNumber++;
-							else
-								break;
-						}
-						deathAnimationNumber = World.Instance.Random.Next( maxAnimationNumber ) + 1;
-					}
-
-					string animationName = Type.DeathAnimationName +
-						( deathAnimationNumber != 1 ? deathAnimationNumber.ToString() : "" );
-
-					animationState = mainMeshObject.MeshObject.GetAnimationState( animationName );
-
-					if( animationState != null && animationState.TimePosition >= animationState.Length )
-					{
-						animationState = null;
-						animationLoop = false;
-						deadAnimation = true;
-					}
+					duringDeathAnimation = false;
+					deadAnimation = true;
 				}
+			}
 
-				if( animationState == null )
-				{
-					string animationName = Type.DeadAnimationName +
-						( deathAnimationNumber != 1 ? deathAnimationNumber.ToString() : "" );
+			//death animation
+			if( !deadAnimation )
+			{
+				//Choose animation number: death, death2, death3
+				if( deathAnimationNumber == 0 )
+					deathAnimationNumber = GetRandomAnimationNumber( Type.DeathAnimationName, false );
 
-					animationState = mainMeshObject.MeshObject.GetAnimationState( animationName );
-					animationLoop = true;
-				}
+				animationName = Type.DeathAnimationName +
+					( deathAnimationNumber != 1 ? deathAnimationNumber.ToString() : "" );
+				animationVelocity = 1;
+				animationLoop = false;
+				allowRandomAnimationNumber = false;
 
-				mainMeshObject.ChangeCurrentAnimationState(
-					animationState, animationVelocity, animationLoop, 0 );
+				duringDeathAnimation = true;
+
+				return;
+			}
+
+			//dead animation
+			if( deadAnimation )
+			{
+				animationName = Type.DeadAnimationName +
+					( deathAnimationNumber != 1 ? deathAnimationNumber.ToString() : "" );
+				animationVelocity = 1;
+				animationLoop = true;
+				allowRandomAnimationNumber = false;
+				return;
 			}
 		}
 	}

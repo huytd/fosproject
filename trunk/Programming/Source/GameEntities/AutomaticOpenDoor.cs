@@ -50,9 +50,9 @@ namespace GameEntities
 		[FieldSerialize]
 		bool noAutomaticOpen;
 
-		//Region region;
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float needCloseRemainingTime;
-
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float nextCheckRemainingTime;
 
 		//
@@ -86,7 +86,6 @@ namespace GameEntities
 				{
 					needCloseRemainingTime = 0;
 					Opened = false;
-					//RemoveTimer();
 				}
 			}
 		}
@@ -153,10 +152,7 @@ namespace GameEntities
 
 		public override bool Opened
 		{
-			get
-			{
-				return base.Opened;
-			}
+			get { return base.Opened; }
 			set
 			{
 				needCloseRemainingTime = 0;

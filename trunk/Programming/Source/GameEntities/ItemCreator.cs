@@ -19,10 +19,14 @@ namespace GameEntities
 
 	public class ItemCreator : MapObject
 	{
+		[FieldSerialize]
 		ItemType itemType;
+		[FieldSerialize]
 		float createRemainingTime;
 
+		[FieldSerialize]
 		float remainingTime;
+		[FieldSerialize]
 		Item item;
 
 		//

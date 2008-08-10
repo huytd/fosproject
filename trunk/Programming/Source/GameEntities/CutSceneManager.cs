@@ -8,6 +8,7 @@ using Engine.EntitySystem;
 using Engine.MapSystem;
 using Engine.MathEx;
 using Engine.UISystem;
+using Engine.Renderer;
 
 namespace GameEntities
 {
@@ -34,17 +35,22 @@ namespace GameEntities
 	{
 		static CutSceneManager instance;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		bool cutSceneEnable;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		MapCamera camera;
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		MapCameraCurve cameraCurve;
 
 		float lastTickTime;
 
 		float oldCameraCurveTime;
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float cameraCurveTime;
 
 		//fading
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float fadeCoefficient;
 
 		enum FadeTask
@@ -54,13 +60,19 @@ namespace GameEntities
 			Out,
 			InOut
 		}
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		FadeTask fadeTask = FadeTask.None;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float fadeTimeIn;
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float fadeTimeOut;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		string messageText;
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		float messageRemainingTime;
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		ColorValue messageColor;
 
 		//
@@ -126,27 +138,11 @@ namespace GameEntities
 			oldCameraCurveTime = cameraCurveTime;
 		}
 
-		/*
-		[LogicSystemBrowsable( true )]
-		public void SetCameraTarget( MapObject target, float timeVelocity )
-		{
-			cameraTarget = target;
-			cameraTargetTimeVelocity = timeVelocity;
-			cameraTargetTime = 0;
-		}
-
-		[LogicSystemBrowsable( true )]
-		public void SetCameraTarget( MapObject target )
-		{
-			SetCameraTarget( target, 1 );
-		}*/
-
 		[LogicSystemBrowsable( true )]
 		public void ResetCamera()
 		{
 			camera = null;
 			cameraCurve = null;
-			//cameraTarget = null;
 		}
 
 		float GetCameraCurveInterpolatedTime()
@@ -156,7 +152,7 @@ namespace GameEntities
 
 			float t;
 
-			float renderTime = EngineApp.Instance.RenderTime;
+			float renderTime = RendererWorld.Instance.FrameRenderTime;
 			float time = ( renderTime - lastTickTime ) * EntitySystemWorld.Instance.GameFPS;
 			if( time < 0 ) time = 0;
 			if( time < 1.0f )
@@ -215,7 +211,7 @@ namespace GameEntities
 					fadeTask = FadeTask.None;
 				}
 				break;
-				
+
 			case FadeTask.InOut:
 				fadeCoefficient += ( 1.0f / fadeTimeIn ) * TickDelta;
 				if( fadeCoefficient >= 1 )
@@ -250,7 +246,7 @@ namespace GameEntities
 
 			if( cameraCurve != null )
 			{
-				cameraCurve.CalculateCamepaPositionByTime( GetCameraCurveInterpolatedTime(), out position, 
+				cameraCurve.CalculateCamepaPositionByTime( GetCameraCurveInterpolatedTime(), out position,
 					out forward, out up, out fov );
 				return true;
 			}
@@ -340,7 +336,7 @@ namespace GameEntities
 			Dynamic dynamic = obj as Dynamic;
 			if( dynamic != null )
 			{
-				dynamic.SetForceAnimationState( animationName );
+				dynamic.SetForceAnimation( animationName, true );
 				return;
 			}
 

@@ -25,17 +25,23 @@ namespace GameEntities
 
 		float updateTaskTimer;
 
+		[FieldSerialize]
 		TaskMoveValue taskMove = new TaskMoveValue( null );
+		[FieldSerialize]
 		Dynamic taskAttack;
 
+		[FieldSerialize]
 		TaskMoveValue forceTaskMove = new TaskMoveValue( null );
+		[FieldSerialize]
 		Dynamic forceTaskAttack;
 
 		///////////////////////////////////////////
 
 		public struct TaskMoveValue
 		{
+			[FieldSerialize]
 			internal Vec3 position;
+			[FieldSerialize]
 			internal Dynamic dynamic;
 
 			public Vec3 Position
@@ -97,25 +103,8 @@ namespace GameEntities
 				ForceTaskAttack = null;
 		}
 
-		protected float GetTaskMoveObjectPriority( Unit/*Dynamic */obj )
+		protected float GetTaskMoveObjectPriority( Unit obj )
 		{
-			/*
-			if( ControlledObject == obj )
-				return 0;
-
-			if( obj is Item )
-			{
-				if( obj is HealthItem )
-				{
-					if( controlledObj.Life == ControlledObject.Type.LifeMax )
-						return 0;
-				}
-
-				Vec3 distance = obj.Position - ControlledObject.Position;
-				float len = distance.LengthFast();
-				return 1.0f / len + 1.0f;
-			}
-			*/
 			return 0;
 		}
 
@@ -152,7 +141,7 @@ namespace GameEntities
 			float attackObjectPriority = 0;
 
 			Vec3 controlledObjPos = controlledObj.Position;
-			float radius = controlledObj./*Type.*/ViewRadius;
+			float radius = controlledObj.ViewRadius;
 
 			Map.Instance.GetObjects( new Sphere( controlledObjPos, radius ),
 				GameFilterGroups.UnitFilterGroup, delegate( MapObject mapObject )
@@ -181,7 +170,7 @@ namespace GameEntities
 
 				//Attack task
 				{
-					if( initialWeapons.Count != 0 )//controlledObj.ActiveWeapon != null )
+					if( initialWeapons.Count != 0 )
 					{
 						priority = GetTaskAttackObjectPriority( obj );
 						if( priority != 0 && priority > attackObjectPriority )
@@ -376,29 +365,41 @@ namespace GameEntities
 		{
 			base.OnRender( camera );
 
-			/*
-			Character controlledObj = ControlledObject;
-
-			if( controlledObj == null )
-				return;
-
-			if( taskMove != null )
+			if( Map.Instance.DrawGameSpecificDebugGeometry )
 			{
-				Vec3 pos = taskMove.Position;
-				DebugGeometry.Instance.Color = new ColorValue( 0, 1, 0 );
-				DebugGeometry.Instance.AddLine( controlledObj.Position, pos );
-				DebugGeometry.Instance.AddSphere( new Sphere( pos, 1 ) );
-			}
+				GameCharacter controlledObj = ControlledObject;
 
-			if( taskAttack != null )
-			{
-				Vec3 pos = taskAttack.Position;
-				DebugGeometry.Instance.Color = new ColorValue( 1, 0, 0 );
-				DebugGeometry.Instance.AddLine( controlledObj.Position, pos );
-				DebugGeometry.Instance.AddSphere( new Sphere( pos, 1 ) );
-			}
-			*/
+				if( controlledObj != null )
+				{
+					if( taskMove.IsInitialized )
+					{
+						Vec3 pos;
+						if( taskMove.Dynamic != null )
+							pos = taskMove.Dynamic.Position;
+						else
+							pos = taskMove.Position;
 
+						bool ignore = false;
+						if( taskAttack != null && taskAttack == taskMove.Dynamic )
+							ignore = true;
+
+						if( !ignore )
+						{
+							camera.DebugGeometry.Color = new ColorValue( 0, 1, 0, .5f );
+							camera.DebugGeometry.AddLine( controlledObj.Position, pos );
+							camera.DebugGeometry.AddSphere( new Sphere( pos, 1 ) );
+						}
+					}
+
+					if( taskAttack != null )
+					{
+						Vec3 pos = taskAttack.Position;
+						camera.DebugGeometry.Color = new ColorValue( 1, 0, 0, .5f );
+						camera.DebugGeometry.AddLine( controlledObj.Position, pos );
+						camera.DebugGeometry.AddSphere( new Sphere( pos, 1 ) );
+					}
+				}
+			}
 		}
 
 		[Browsable( false )]
@@ -415,7 +416,6 @@ namespace GameEntities
 
 				if( forceTaskMove.IsInitialized )
 					TaskMove = forceTaskMove;
-				//TaskAttack = forceTaskAttack;
 			}
 		}
 
@@ -431,7 +431,6 @@ namespace GameEntities
 				if( forceTaskAttack != null )
 					AddRelationship( forceTaskAttack );
 
-				//TaskMove = forceTaskMove;
 				TaskAttack = forceTaskAttack;
 			}
 		}

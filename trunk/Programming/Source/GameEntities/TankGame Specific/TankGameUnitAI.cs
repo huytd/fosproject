@@ -35,20 +35,27 @@ namespace GameEntities
 		Region activationRegion;
 
 		//general task
+		[FieldSerialize]
 		GeneralTaskTypes generalTaskType;
+		[FieldSerialize]
 		MapCurve generalTaskWay;
+		[FieldSerialize]
 		MapCurvePoint generalTaskCurrentWayPoint;
 		float generalTaskUpdateTimer;
 
 		//move task
+		[FieldSerialize]
 		bool moveTaskEnabled;
+		[FieldSerialize]
 		Vec3 moveTaskPosition;
 
 		//attack tasks
+		//we not serialize AttackTack because Weapon in the class can't be serialized
+		//(weapon will recreated after map loading)
 		List<AttackTask> attackTasks = new List<AttackTask>();
 		float attackTasksUpdateTimer;
 
-		List<Weapon> unitWeapons = new List<Weapon>();
+		List<Weapon> unitWeapons;
 
 		///////////////////////////////////////////
 
@@ -66,6 +73,8 @@ namespace GameEntities
 			Weapon weapon;
 			Vec3 targetPosition;
 			Dynamic targetEntity;
+
+			//
 
 			public AttackTask( Weapon weapon, Vec3 target )
 			{
@@ -122,8 +131,6 @@ namespace GameEntities
 			//listen activationRegion
 			if( activationRegion != null )
 				activationRegion.ObjectIn += ActivationRegion_ObjectIn;
-
-			FindUnitWeapons();
 		}
 
 		protected override void OnDestroy()
@@ -173,11 +180,11 @@ namespace GameEntities
 				{
 					ReadOnlyCollection<MapCurvePoint> points = generalTaskWay.Points;
 
-					DebugGeometry.Instance.Color = new ColorValue( 0, 1, 0, .5f );
+					camera.DebugGeometry.Color = new ColorValue( 0, 1, 0, .5f );
 					int index = points.IndexOf( generalTaskCurrentWayPoint );
 					for( ; index < points.Count - 1; index++ )
 					{
-						DebugGeometry.Instance.AddArrow(
+						camera.DebugGeometry.AddArrow(
 							points[ index ].Position, points[ index + 1 ].Position, 1 );
 					}
 				}
@@ -185,21 +192,23 @@ namespace GameEntities
 				//view radius
 				if( ControlledObject.ViewRadius != 0 )
 				{
-					DebugGeometry.Instance.Color = new ColorValue( 0, 1, 0, .5f );
+					camera.DebugGeometry.Color = new ColorValue( 0, 1, 0, .5f );
 					Vec3 lastPos = Vec3.Zero;
 					for( float angle = 0; angle <= MathFunctions.PI * 2 + .001f;
 						angle += MathFunctions.PI / 16 )
 					{
-						Vec3 pos = ControlledObject.Position +
-							new Vec3( MathFunctions.Cos( angle ), MathFunctions.Sin( angle ), 0 ) *
-							ControlledObject.ViewRadius;
+						Vec3 pos = ControlledObject.Position + new Vec3( MathFunctions.Cos( angle ),
+							MathFunctions.Sin( angle ), 0 ) * ControlledObject.ViewRadius;
 
 						if( angle != 0 )
-							DebugGeometry.Instance.AddLine( lastPos, pos );
+							camera.DebugGeometry.AddLine( lastPos, pos );
 
 						lastPos = pos;
 					}
 				}
+
+				if( unitWeapons == null )
+					FindUnitWeapons();
 
 				//weapons
 				foreach( Weapon weapon in unitWeapons )
@@ -211,7 +220,7 @@ namespace GameEntities
 					if( weapon.Type.WeaponAlternativeMode.IsInitialized )
 						radius = Math.Max( radius, weapon.Type.WeaponAlternativeMode.UseDistanceRange.Maximum );
 
-					DebugGeometry.Instance.Color = new ColorValue( 1, 0, 0, .5f );
+					camera.DebugGeometry.Color = new ColorValue( 1, 0, 0, .5f );
 					Vec3 lastPos = Vec3.Zero;
 					for( float angle = 0; angle <= MathFunctions.PI * 2 + .001f;
 						angle += MathFunctions.PI / 16 )
@@ -220,7 +229,7 @@ namespace GameEntities
 							new Vec3( MathFunctions.Cos( angle ), MathFunctions.Sin( angle ), 0 ) * radius;
 
 						if( angle != 0 )
-							DebugGeometry.Instance.AddLine( lastPos, pos );
+							camera.DebugGeometry.AddLine( lastPos, pos );
 
 						lastPos = pos;
 					}
@@ -229,8 +238,8 @@ namespace GameEntities
 				//move task
 				if( moveTaskEnabled )
 				{
-					DebugGeometry.Instance.Color = new ColorValue( 0, 1, 0 );
-					DebugGeometry.Instance.AddArrow( ControlledObject.Position, moveTaskPosition, 1 );
+					camera.DebugGeometry.Color = new ColorValue( 0, 1, 0 );
+					camera.DebugGeometry.AddArrow( ControlledObject.Position, moveTaskPosition, 1 );
 				}
 
 				//attack tasks
@@ -239,10 +248,10 @@ namespace GameEntities
 					Vec3 targetPos = ( attackTask.TargetEntity != null ) ?
 						attackTask.TargetEntity.Position : attackTask.TargetPosition;
 
-					DebugGeometry.Instance.Color = IsWeaponDirectedToTarget( attackTask ) ?
+					camera.DebugGeometry.Color = IsWeaponDirectedToTarget( attackTask ) ?
 						new ColorValue( 1, 1, 0 ) : new ColorValue( 1, 0, 0 );
-					DebugGeometry.Instance.AddArrow( attackTask.Weapon.Position, targetPos, 1 );
-					DebugGeometry.Instance.AddSphere( new Sphere( targetPos, 3 ), 10 );
+					camera.DebugGeometry.AddArrow( attackTask.Weapon.Position, targetPos, 1 );
+					camera.DebugGeometry.AddSphere( new Sphere( targetPos, 3 ), 10 );
 				}
 			}
 		}
@@ -409,6 +418,9 @@ namespace GameEntities
 
 		void TickAttackTasks()
 		{
+			if( unitWeapons == null )
+				FindUnitWeapons();
+
 			foreach( Weapon weapon in unitWeapons )
 			{
 				float radius = 0;
@@ -681,9 +693,12 @@ namespace GameEntities
 			}
 
 			//remove deleted weapon
-			Weapon weapon = entity as Weapon;
-			if( weapon != null )
-				unitWeapons.Remove( weapon );
+			if( unitWeapons != null )
+			{
+				Weapon weapon = entity as Weapon;
+				if( weapon != null )
+					unitWeapons.Remove( weapon );
+			}
 		}
 
 		void DoAttackTask( Weapon weapon, Vec3 target )
@@ -735,6 +750,8 @@ namespace GameEntities
 
 		void FindUnitWeapons()
 		{
+			unitWeapons = new List<Weapon>();
+
 			foreach( MapObjectAttachedObject attachedObject in ControlledObject.AttachedObjects )
 			{
 				MapObjectAttachedMapObject attachedMapObject =

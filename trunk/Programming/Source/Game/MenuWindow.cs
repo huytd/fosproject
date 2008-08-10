@@ -23,6 +23,7 @@ namespace Game
 			Controls.Add( window );
 
 			( (EButton)window.Controls[ "Maps" ] ).Click += mapsButton_Click;
+			( (EButton)window.Controls[ "LoadSave" ] ).Click += loadSaveButton_Click;
 			( (EButton)window.Controls[ "Options" ] ).Click += optionsButton_Click;
 			( (EButton)window.Controls[ "PostEffects" ] ).Click += postEffectsButton_Click;
 			( (EButton)window.Controls[ "Debug" ] ).Click += debugButton_Click;
@@ -47,6 +48,13 @@ namespace Game
 			foreach( EControl control in Controls )
 				control.Visible = false;
 			Controls.Add( new MapsWindow() );
+		}
+
+		void loadSaveButton_Click( object sender )
+		{
+			foreach( EControl control in Controls )
+				control.Visible = false;
+			Controls.Add( new WorldLoadSaveWindow() );
 		}
 
 		void optionsButton_Click( object sender )
@@ -85,6 +93,7 @@ namespace Game
 				( control as PostEffectsWindow ) != null ||
 				( control as DebugDrawOptionsWindow ) != null ||
 				( control as MapsWindow ) != null ||
+				( control as WorldLoadSaveWindow ) != null ||
 				( control as AboutWindow ) != null )
 			{
 				foreach( EControl c in Controls )

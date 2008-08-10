@@ -91,20 +91,16 @@ namespace GameEntities
 	{
 		Body mainBody;
 
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		Vec2 pathFoundedToPosition = new Vec2( float.NaN, float.NaN );
+
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
 		List<Vec2> path = new List<Vec2>();
 
 		float pathFindWaitTime;
 
-		MapObjectAttachedMesh mainMeshObject;
-
-		//for animations
-		const float animationsBlendTime = .1f;
-		//key: animation name; value: maximum index (walk, walk2, walk3)
-		Dictionary<string, int> maxAnimationIndices = new Dictionary<string, int>();
-		MeshObject.AnimationState forceAnimationState;
-		float lastAnimationTimePosition;
 		Vec3 oldMainBodyPosition;
+		Vec3 mainBodyVelocity;
 
 		//
 
@@ -132,47 +128,22 @@ namespace GameEntities
 				Log.Error( "Length < 0" );
 				return;
 			}
-			CapsuleShape shape = body.CreateCapsuleShape();// new CapsuleShape( length, Type.Radius );
+			CapsuleShape shape = body.CreateCapsuleShape();
 			shape.Length = length;
 			shape.Radius = Type.Radius;
 			shape.ContactGroup = (int)ContactGroup.Dynamic;
-			//body.AddShape( shape );
 
 			AddTimer();
 
+			//!!!!!need?
 			//for update in GridPathFindSystem
 			Vec3 p = Position;
 			Position = p;
 
 			PhysicsModel.PushToWorld();
 
-
-			//get mainMeshObject
-			foreach( MapObjectAttachedObject attachedObject in AttachedObjects )
-			{
-				MapObjectAttachedMesh attachedMeshObject = attachedObject as MapObjectAttachedMesh;
-				if( attachedMeshObject != null )
-				{
-					if( mainMeshObject == null )
-						mainMeshObject = attachedMeshObject;
-				}
-			}
-
-			oldMainBodyPosition = mainBody.Position;
-		}
-
-		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnShouldDelete()"/>.</summary>
-		protected override bool OnShouldDelete()
-		{
-			mainMeshObject = null;
-			return base.OnShouldDelete();
-		}
-
-		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnDestroy()"/>.</summary>
-		protected override void OnDestroy()
-		{
-			mainMeshObject = null;
-			base.OnDestroy();
+			if( mainBody != null )
+				oldMainBodyPosition = mainBody.Position;
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnTick()"/>.</summary>
@@ -185,12 +156,11 @@ namespace GameEntities
 			else
 				path.Clear();
 
-			TickAnimations();
-
+			mainBodyVelocity = ( mainBody.Position - oldMainBodyPosition ) *
+				EntitySystemWorld.Instance.GameFPS;
 			oldMainBodyPosition = mainBody.Position;
 		}
 
-		//!!!!!mb temp
 		public void SetLookDirection( Vec3 pos )
 		{
 			Vec2 diff = pos.ToVec2() - Position.ToVec2();
@@ -246,9 +216,11 @@ namespace GameEntities
 		{
 			base.OnRender( camera );
 
-			if( path.Count != 0 )
-				if( GridPathFindSystem.Instance.DebugDraw )
-					GridPathFindSystem.Instance.DebugDrawPath( Position.ToVec2(), path, new ColorValue( 0, 0, 1 ) );
+			if( path.Count != 0 && GridPathFindSystem.Instance.DebugDraw )
+			{
+				GridPathFindSystem.Instance.DebugDrawPath( camera,
+					Position.ToVec2(), path, new ColorValue( 0, 0, 1 ) );
+			}
 		}
 
 		void TickMove()
@@ -338,167 +310,30 @@ namespace GameEntities
 			}
 		}
 
-		/// <summary>
-		/// Returns animation with index addition. 
-		/// </summary>
-		/// <remarks>
-		/// Example: animationName: walk; return: walk or walk2 or walk3.
-		/// </remarks>
-		/// <param name="animationName"></param>
-		/// <returns></returns>
-		string GetRandomAnimationNumber( string animationName )
+		protected override void OnUpdateAnimation( ref string animationName,
+			ref float animationVelocity, ref bool animationLoop, ref bool allowRandomAnimationNumber )
 		{
-			int maxIndex;
-
-			if( !maxAnimationIndices.TryGetValue( animationName, out maxIndex ) )
-			{
-				//calculate max animation index
-				maxIndex = 1;
-				for( int n = 2; ; n++ )
-				{
-					if( mainMeshObject.MeshObject.GetAnimationState( animationName + n.ToString() ) != null )
-						maxIndex++;
-					else
-						break;
-				}
-				maxAnimationIndices.Add( animationName, maxIndex );
-			}
-
-			int number;
-
-			if( animationName == Type.IdleAnimationName || animationName == Type.WalkAnimationName )
-			{
-				//The first animation in 10 times more often
-				number = World.Instance.Random.Next( 10 + maxIndex ) + 1 - 10;
-				if( number < 1 )
-					number = 1;
-			}
-			else
-				number = World.Instance.Random.Next( maxIndex ) + 1;
-
-			return animationName + ( number != 1 ? number.ToString() : "" );
-		}
-
-		void TickAnimations()
-		{
-			if( mainMeshObject == null || mainMeshObject.MeshObject == null )
-				return;
-
-			Vec3 mainBodyVelocity = ( mainBody.Position - oldMainBodyPosition ) *
-				EntitySystemWorld.Instance.GameFPS;
-
-			MeshObject.AnimationState animationState = null;
-			float animationVelocity = 1.0f;
-			bool animationLoop = false;
-
-			//find current animation
-			MeshObject.AnimationState currentAnimationState = null;
-			{
-				foreach( MapObjectAttachedMesh.AnimationStateItem item in
-					mainMeshObject.CurrentAnimationStates )
-				{
-					if( item.FadeOutBlendTime == 0 )
-					{
-						currentAnimationState = item.AnimationState;
-						break;
-					}
-				}
-			}
-
-			//force set animation
-			if( forceAnimationState != null )
-			{
-				if( currentAnimationState == forceAnimationState )
-					animationState = forceAnimationState;
-				else
-					forceAnimationState = null;
-			}
+			base.OnUpdateAnimation( ref animationName, ref animationVelocity, ref animationLoop,
+				ref allowRandomAnimationNumber );
 
 			//walk animation
-			if( animationState == null )
+			if( mainBodyVelocity.ToVec2().LengthFast() > .1f )
 			{
-				if( mainBodyVelocity.ToVec2().LengthFast() > .1f )
-				{
-					bool allowChange = true;
-
-					if( currentAnimationState != null )
-					{
-						if( string.Compare( currentAnimationState.Name, 0,
-							Type.WalkAnimationName, 0, Type.WalkAnimationName.Length ) == 0 )
-						{
-							if( currentAnimationState.TimePosition >= lastAnimationTimePosition )
-								allowChange = false;
-						}
-					}
-
-					if( allowChange )
-					{
-						string animationName = GetRandomAnimationNumber( Type.WalkAnimationName );
-						animationState = mainMeshObject.MeshObject.GetAnimationState( animationName );
-					}
-					else
-						animationState = currentAnimationState;
-
-					animationLoop = true;
-
-					animationVelocity = ( Rotation.GetInverse() * mainBodyVelocity ).X;
-					animationVelocity *= Type.WalkAnimationVelocityMultiplier;
-				}
+				animationName = Type.WalkAnimationName;
+				animationVelocity = ( Rotation.GetInverse() * mainBodyVelocity ).X *
+					Type.WalkAnimationVelocityMultiplier;
+				animationLoop = true;
+				allowRandomAnimationNumber = true;
+				return;
 			}
 
 			//idle animation
-			if( animationState == null )
 			{
-				bool allowChange = true;
-
-				if( currentAnimationState != null )
-				{
-					if( string.Compare( currentAnimationState.Name, 0,
-						Type.IdleAnimationName, 0, Type.IdleAnimationName.Length ) == 0 )
-					{
-						if( currentAnimationState.TimePosition >= lastAnimationTimePosition )
-							allowChange = false;
-					}
-				}
-
-				if( allowChange )
-				{
-					string animationName = GetRandomAnimationNumber( Type.IdleAnimationName );
-					animationState = mainMeshObject.MeshObject.GetAnimationState( animationName );
-				}
-				else
-					animationState = currentAnimationState;
-
+				animationName = Type.IdleAnimationName;
+				animationVelocity = 1;
 				animationLoop = true;
-				animationVelocity = 1.0f + World.Instance.Random.NextFloatCenter() * .1f;
-			}
-
-			mainMeshObject.ChangeCurrentAnimationState(
-				animationState, animationVelocity, animationLoop, animationsBlendTime );
-
-			//update lastAnimationTimePosition
-			if( animationState != null )
-				lastAnimationTimePosition = animationState.TimePosition;
-			else
-				lastAnimationTimePosition = 0;
-		}
-
-		protected override void OnSetForceAnimationState( string animationName )
-		{
-			base.OnSetForceAnimationState( animationName );
-
-			if( mainMeshObject != null && mainMeshObject.MeshObject != null )
-			{
-				string numberedAnimationName = GetRandomAnimationNumber( animationName );
-				forceAnimationState = mainMeshObject.MeshObject.GetAnimationState( numberedAnimationName );
-
-				if( forceAnimationState != null )
-				{
-					//reset time for animation
-					mainMeshObject.RemoveCurrentAnimationState( forceAnimationState, 0 );
-					mainMeshObject.ChangeCurrentAnimationState( forceAnimationState, 
-						1, false, animationsBlendTime );
-				}
+				allowRandomAnimationNumber = true;
+				return;
 			}
 		}
 

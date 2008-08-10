@@ -9,6 +9,7 @@ using Engine.MapSystem;
 using Engine.PhysicsSystem;
 using Engine.Renderer;
 using Engine.MathEx;
+using Engine.Utils;
 
 namespace GameEntities
 {
@@ -78,6 +79,7 @@ namespace GameEntities
 	/// </summary>
 	public abstract class Unit : Dynamic
 	{
+		[FieldSerialize]
 		Intellect intellect;
 
 		[FieldSerialize]
@@ -89,8 +91,11 @@ namespace GameEntities
 		float takeItemsTimer;
 
 		//influences. only for optimization
+		[FieldSerialize]
 		FastMoveInfluence fastMoveInfluence;
+		[FieldSerialize]
 		FastAttackInfluence fastAttackInfluence;
+		[FieldSerialize]
 		BigDamageInfluence bigDamageInfluence;
 
 		float viewRadius;
@@ -120,7 +125,8 @@ namespace GameEntities
 		protected override void OnPostCreate( bool loaded )
 		{
 			base.OnPostCreate( loaded );
-			RestoreInitialIntellect();
+
+			InitializeIntellect( loaded );
 			AddTimer();
 
 			viewRadius = Type.ViewRadius;
@@ -140,28 +146,6 @@ namespace GameEntities
 				}
 			}
 		}
-
-		/*
-		protected override void OnPacket(ObjectSystemPacket& packet)
-		{
-			super::OnPacket(packet);
-
-			switch(packet.GetId())
-			{
-			case OSPT_RESET_INTELLECT:
-				{
-					ResetIntellect();
-				}
-				break;
-			case OSPT_SET_INTELLECT:
-				{
-					Intellect intellect = (Intellect)packet.ReadObject();
-					SetIntellect(intellect);
-				}
-				break;
-			}
-		}
-		*/
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnTick()"/>.</summary>
 		protected override void OnTick()
@@ -189,7 +173,7 @@ namespace GameEntities
 					if( item == null )
 						return;
 
-					//if( ( item.Position - Position ).LengthFast() > itemTakeRadius )
+					//if( ( item.Position - Position ).LengthFast() > radius )
 					if( ( item.Position - Position ).LengthSqr() > radius * radius )
 						return;
 
@@ -291,36 +275,23 @@ namespace GameEntities
 				//delete if not player intellect
 				if( i != null && i.Player == null )
 					i.SetShouldDelete();
-
-				//if( value != null )
-				//{
-				//   if( IsNetworkServerObject() )
-				//   {
-				//      ObjectSystemPacket packet = BeginPacket( OSPT_SET_INTELLECT );
-				//      packet.WriteObject( intellect );
-				//      packet.End();
-				//   }
-				//}
-				//else
-				//{
-				//   if( IsNetworkServerObject() )
-				//   {
-				//      ObjectSystemPacket packet = BeginPacket( OSPT_RESET_INTELLECT );
-				//      packet.End();
-				//   }
-				//}
 			}
 		}
 
-		void RestoreInitialIntellect()
+		void InitializeIntellect( bool loaded )
 		{
-			AIType initAI = InitialAI;
-			if( initAI == null )
-				initAI = Type.InitialAI;
+			if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor )
+				return;
+			if( loaded && EntitySystemWorld.Instance.SerializationMode == SerializationModes.World )
+				return;
 
-			if( initAI != null )
+			if( Intellect == null )
 			{
-				if( EntitySystemWorld.Instance.WorldSimulationType != WorldSimulationType.Editor )
+				AIType initAI = InitialAI;
+				if( initAI == null )
+					initAI = Type.InitialAI;
+
+				if( initAI != null )
 				{
 					Intellect i = (Intellect)Entities.Instance.Create( initAI, World.Instance );
 					i.Faction = InitialFaction;
@@ -329,8 +300,6 @@ namespace GameEntities
 					Intellect = i;
 				}
 			}
-			else
-				Intellect = null;
 		}
 
 		protected virtual void OnIntellectCommand( Intellect.Command command ) { }

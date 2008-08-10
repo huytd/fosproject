@@ -28,34 +28,4 @@ namespace GameEntities
 	{
 		public const Map.FilterGroups UnitFilterGroup = Map.FilterGroups.Group1;
 	}
-
-	/*!!!!!!
-	enum
-	{
-		OSPT__FIX_ = 10000,
-
-		//Player
-		OSPT_PLAYER_UPDATE,
-
-		//PlayerManager (to server)
-		OSPT_PLAYER_MANAGER_NEED_UPDATE_FROM_SERVER,
-
-		//GameWorld
-		OSPT_SET_PLAYER_CONTROLLED_INTELLECT,//(BObject)
-
-		//Intellect (to server)
-		OSPT_CONTROL_KEY_PRESS, //(uint8 key !!!!! ÿþúð int)
-		OSPT_CONTROL_KEY_RELEASE, //(uint8 key !!!!! ÿþúð int)
-
-		//Unit
-		OSPT_RESET_INTELLECT, //
-		OSPT_SET_INTELLECT, //(Intellect)
-
-		//PlayerIntellect (to server)
-		OSPT_SET_LOOK_DIRECTION, //(Vec3)
-
-		//Dynamic
-		OSPT_SET_LIFE //(float)
-	};
-	*/
 }

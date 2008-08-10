@@ -28,6 +28,17 @@ namespace GameEntities
 		CraneType _type = null; public new CraneType Type { get { return _type; } }
 
 		//threads
+		List<ThreadItem> threads = new List<ThreadItem>();
+
+		//magnet
+		Body magnetBody;
+		Dictionary<Body, int> lastMagnetContactsCount = new Dictionary<Body, int>();
+
+		[FieldSerialize( FieldSerializeSerializationTypes.World )]
+		List<MagnetObjectItem> magnetAttachedObjects = new List<MagnetObjectItem>();
+
+		///////////////////////////////////////////
+
 		class ThreadItem
 		{
 			public MapObjectAttachedObject startObject;
@@ -35,19 +46,22 @@ namespace GameEntities
 			public MeshObject meshObject;
 			public SceneNode sceneNode;
 		}
-		List<ThreadItem> threads = new List<ThreadItem>();
 
+		///////////////////////////////////////////
 
-		//magnet
-		Body magnetBody;
-		Dictionary<Body, int> lastMagnetContactsCount = new Dictionary<Body, int>();
 		class MagnetObjectItem
 		{
+			[FieldSerialize]
 			public MapObject mapObject;
+
+			public Body body;
+			[FieldSerialize]
+			public int bodyIndex;//for world serialization
+
 			public FixedJoint fixedJoint;
 		}
-		Dictionary<Body, MagnetObjectItem> magnetAttachedObjects = new Dictionary<Body, MagnetObjectItem>();
 
+		///////////////////////////////////////////
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
 		protected override void OnPostCreate( bool loaded )
@@ -59,6 +73,25 @@ namespace GameEntities
 			magnetBody = PhysicsModel.GetBody( "magnet" );
 			if( magnetBody != null )
 				magnetBody.Collision += magnetBody_Collision;
+		}
+
+		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate2(Boolean)"/>.</summary>
+		protected override void OnPostCreate2( bool loaded )
+		{
+			base.OnPostCreate2( loaded );
+
+			//world serialization
+			if( loaded && EntitySystemWorld.Instance.SerializationMode == SerializationModes.World )
+			{
+				foreach( MagnetObjectItem item in magnetAttachedObjects )
+				{
+					//restore item.body
+					item.body = item.mapObject.PhysicsModel.Bodies[ item.bodyIndex ];
+
+					//recreate fixed joint
+					CreateFixedJointForAttachedObject( item );
+				}
+			}
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnDestroy()"/>.</summary>
@@ -77,14 +110,11 @@ namespace GameEntities
 			base.OnRelatedEntityDelete( entity );
 
 			again:
-			foreach( KeyValuePair<Body, MagnetObjectItem> pair in magnetAttachedObjects )
+			foreach( MagnetObjectItem item in magnetAttachedObjects )
 			{
-				Body mapObjectBody = pair.Key;
-				MagnetObjectItem item = pair.Value;
-
 				if( item.mapObject == entity )
 				{
-					MagnetDetachBody( mapObjectBody );
+					MagnetDetachObject( item );
 					goto again;
 				}
 			}
@@ -126,7 +156,7 @@ namespace GameEntities
 				if( motor != null )
 				{
 					Radian needAngle = motor.DesiredAngle;
-					
+
 					needAngle += Intellect.GetControlKeyStrength( GameControlKeys.Forward ) * .004f;
 					needAngle -= Intellect.GetControlKeyStrength( GameControlKeys.Backward ) * .004f;
 
@@ -209,27 +239,9 @@ namespace GameEntities
 
 				//update scene node transform
 				item.sceneNode.Position = ( start + end ) * .5f;
-
-				Quat rot = Quat.FromDirectionZAxisUp( dir );
-				//{
-				//   SphereDir sphereDir = SphereDir.FromVector( dir );
-
-				//   float halfAngle;
-				//   halfAngle = sphereDir.Horizontal * .5f;
-				//   rot = new Quat( new Vec3( 0, 0, MathFunctions.Sin( halfAngle ) ),
-				//      MathFunctions.Cos( halfAngle ) );
-				//   halfAngle = sphereDir.Vertical * .5f;
-				//   rot *= new Quat( new Vec3( 0, -MathFunctions.Sin( halfAngle ), 0 ),
-				//      MathFunctions.Cos( halfAngle ) );
-				//}
-				item.sceneNode.Rotation = rot;
-
+				item.sceneNode.Rotation = Quat.FromDirectionZAxisUp( dir );
 				item.sceneNode.Scale = new Vec3( length, threadThickness, threadThickness );
-
-				//DebugGeometry.Instance.Color = new ColorValue( 1, 1, 1 );
-				//DebugGeometry.Instance.AddLine( start, end );
 			}
-
 		}
 
 		void magnetBody_Collision( ref CollisionEvent collisionEvent )
@@ -256,10 +268,15 @@ namespace GameEntities
 
 		bool IsMagnetBodyAttached( Body body )
 		{
-			return magnetAttachedObjects.ContainsKey( body );
+			for( int n = 0; n < magnetAttachedObjects.Count; n++ )
+			{
+				if( magnetAttachedObjects[ n ].body == body )
+					return true;
+			}
+			return false;
 		}
 
-		void MagnetAttachBody( Body mapObjectBody )
+		void MagnetAttachObject( Body mapObjectBody )
 		{
 			if( mapObjectBody.IsDisposed )
 				return;
@@ -270,35 +287,39 @@ namespace GameEntities
 			if( mapObject == null )
 				return;
 
-			FixedJoint fixedJoint = PhysicsWorld.Instance.CreateFixedJoint( magnetBody, mapObjectBody );
-			fixedJoint.PushedToWorld = true;
-
 			MagnetObjectItem item = new MagnetObjectItem();
 			item.mapObject = mapObject;
-			item.fixedJoint = fixedJoint;
-			magnetAttachedObjects.Add( mapObjectBody, item );
+			item.body = mapObjectBody;
+			item.bodyIndex = Array.IndexOf<Body>( mapObject.PhysicsModel.Bodies, mapObjectBody );
 
 			AddRelationship( mapObject );
+
+			CreateFixedJointForAttachedObject( item );
+
+			magnetAttachedObjects.Add( item );
 		}
 
-		void MagnetDetachBody( Body mapObjectBody )
+		void CreateFixedJointForAttachedObject( MagnetObjectItem item )
 		{
-			MagnetObjectItem item;
-			if( !magnetAttachedObjects.TryGetValue( mapObjectBody, out item ) )
-				return;
+			FixedJoint fixedJoint = PhysicsWorld.Instance.CreateFixedJoint( magnetBody, item.body );
+			fixedJoint.PushedToWorld = true;
+			item.fixedJoint = fixedJoint;
+		}
 
+		void MagnetDetachObject( MagnetObjectItem item )
+		{
 			item.fixedJoint.Dispose();
 			RemoveRelationship( item.mapObject );
 
-			magnetAttachedObjects.Remove( mapObjectBody );
+			magnetAttachedObjects.Remove( item );
 		}
 
-		void MagnetDetachAllBodies()
+		void MagnetDetachAllObjects()
 		{
 			again:
-			foreach( Body mapObjectBody in magnetAttachedObjects.Keys )
+			foreach( MagnetObjectItem item in magnetAttachedObjects )
 			{
-				MagnetDetachBody( mapObjectBody );
+				MagnetDetachObject( item );
 				goto again;
 			}
 		}
@@ -312,11 +333,7 @@ namespace GameEntities
 			//attach new bodies
 			if( !userNeedDetach )
 			{
-				int needContacts = 3;// 4;
-				//{
-				//   float v = TickDelta / PhysicsWorld.Instance.StepSize + .01f;
-				//   needContacts = (int)v * 2;// 3;
-				//}
+				const int needContacts = 3;
 
 				foreach( KeyValuePair<Body, int> pair in lastMagnetContactsCount )
 				{
@@ -324,25 +341,22 @@ namespace GameEntities
 					int contactsCount = pair.Value;
 
 					if( contactsCount >= needContacts )
-						MagnetAttachBody( mapObjectBody );
+						MagnetAttachObject( mapObjectBody );
 				}
 			}
 			lastMagnetContactsCount.Clear();
 
 			//detach by user
 			if( userNeedDetach )
-				MagnetDetachAllBodies();
+				MagnetDetachAllObjects();
 
 			//detach if joint disposed
 			again:
-			foreach( KeyValuePair<Body, MagnetObjectItem> pair in magnetAttachedObjects )
+			foreach( MagnetObjectItem item in magnetAttachedObjects )
 			{
-				Body mapObjectBody = pair.Key;
-				MagnetObjectItem item = pair.Value;
-
 				if( item.fixedJoint.IsDisposed )
 				{
-					MagnetDetachBody( mapObjectBody );
+					MagnetDetachObject( item );
 					goto again;
 				}
 			}

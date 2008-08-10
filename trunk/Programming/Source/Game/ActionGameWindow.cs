@@ -14,6 +14,7 @@ using Engine.MapSystem;
 using Engine.PhysicsSystem;
 using Engine.FileSystem;
 using Engine.Utils;
+using GameCommon;
 using GameEntities;
 
 namespace Game
@@ -47,10 +48,8 @@ namespace Game
 		//For management of pressing of the player on switches and management ingame GUI
 		const float playerUseDistance = 3;
 		const float playerUseDistanceTPS = 10;
-
 		//Current ingame GUI which with which the player can cooperate
 		MapObjectAttachedGui currentAttachedGuiObject;
-
 		//Which player can switch the current switch
 		GameEntities.Switch currentSwitch;
 
@@ -60,15 +59,8 @@ namespace Game
 		//HUD screen
 		EControl hudControl;
 
-        //Minimap
-        bool minimapChangeCameraPosition;
-        EControl minimapControl;
-
 		//Data for an opportunity of the player to control other objects. (for Example: Turret control)
 		Unit currentSeeUnitAllowPlayerControl;
-		Unit mainNoActivedPlayerUnit;
-		Dictionary<Shape, int> mainNoActivedPlayerUnitShapeContactGroups;
-		Vec3 mainNoActivedPlayerUnitRestorePosition;
 
 		//For optimization of search of the nearest point on a map curve.
 		//only for GetNearestPointToMapCurve()
@@ -119,26 +111,12 @@ namespace Game
 
 			//accept commands of the player
 			GameControlsManager.Instance.GameControlsEvent += GameControlsManager_GameControlsEvent;
-
-            //minimap
-            minimapControl = hudControl.Controls["Game/Minimap"];
-            //string textureName = Map.Instance.GetVirtualFileDirectory() + "\\Minimap\\Minimap";
-            //Texture minimapTexture = TextureManager.Instance.Load(textureName, Texture.Type.Type2D, 0);
-            //minimapControl.BackTexture = minimapTexture;
-            minimapControl.RenderUI += new RenderUIDelegate(Minimap_RenderUI);
 		}
 
 		protected override void OnDetach()
 		{
 			//accept commands of the player
 			GameControlsManager.Instance.GameControlsEvent -= GameControlsManager_GameControlsEvent;
-
-            //minimap
-            if (minimapControl.BackTexture != null)
-            {
-                minimapControl.BackTexture.Dispose();
-                minimapControl.BackTexture = null;
-            }
 
 			base.OnDetach();
 		}
@@ -278,6 +256,10 @@ namespace Game
 			if( Controls.Count != 1 )
 				return ret;
 
+			//ignore mouse move events if DebugInformationWindow enabled without background mode
+			if( DebugInformationWindow.Instance != null && !DebugInformationWindow.Instance.Background )
+				return ret;
+
 			//GameControlsManager
 			if( EntitySystemWorld.Instance.Simulation )
 			{
@@ -358,12 +340,14 @@ namespace Game
 
 			//update mouse relative mode
 			{
-				//!!!!!!mb not here
 				if( GetRealCameraType() == CameraType.Free && !FreeCameraMouseRotating )
 					EngineApp.Instance.MouseRelativeMode = false;
 
 				if( EntitySystemWorld.Instance.Simulation && GetRealCameraType() != CameraType.Free )
 					EngineApp.Instance.MouseRelativeMode = true;
+
+				if( DebugInformationWindow.Instance != null && !DebugInformationWindow.Instance.Background )
+					EngineApp.Instance.MouseRelativeMode = false;
 			}
 
 			if( GetRealCameraType() == CameraType.TPS && !IsCutSceneEnabled() &&
@@ -426,8 +410,6 @@ namespace Game
 				}
 			}
 
-			TickCurrentUnitAllowPlayerControl();
-
 			//GameControlsManager
 			if( EntitySystemWorld.Instance.Simulation )
 			{
@@ -442,12 +424,14 @@ namespace Game
 		/// </summary>
 		void UpdateCurrentPlayerUseObjects()
 		{
+			Camera camera = RendererWorld.Instance.DefaultCamera;
+
 			Unit playerUnit = GetPlayerUnit();
 
 			float maxDistance = ( GetRealCameraType() == CameraType.FPS ) ?
 				playerUseDistance : playerUseDistanceTPS;
 
-			Ray ray = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay( new Vec2( .5f, .5f ) );
+			Ray ray = camera.GetCameraToViewportRay( new Vec2( .5f, .5f ) );
 			ray.Direction = ray.Direction.GetNormalize() * maxDistance;
 
 			//currentAttachedGuiObject
@@ -518,14 +502,14 @@ namespace Game
 				//draw border
 				if( overSwitch != null )
 				{
-					DebugGeometry.Instance.Color = new ColorValue( 1, 1, 1 );
+					camera.DebugGeometry.Color = new ColorValue( 1, 1, 1 );
 					if( overSwitch.UseAttachedMesh != null )
 					{
-						DebugGeometry.Instance.AddBounds( overSwitch.UseAttachedMesh.SceneNode.
+						camera.DebugGeometry.AddBounds( overSwitch.UseAttachedMesh.SceneNode.
 							GetWorldBounds() );
 					}
 					else
-						DebugGeometry.Instance.AddBounds( overSwitch.MapBounds );
+						camera.DebugGeometry.AddBounds( overSwitch.MapBounds );
 				}
 
 				if( overSwitch != currentSwitch )
@@ -543,7 +527,9 @@ namespace Game
 			{
 				currentSeeUnitAllowPlayerControl = null;
 
-				if( mainNoActivedPlayerUnit == null && GetRealCameraType() != CameraType.Free )
+				if( PlayerIntellect.Instance != null &&
+					PlayerIntellect.Instance.MainNoActivedPlayerUnit == null &&
+					GetRealCameraType() != CameraType.Free )
 				{
 					Ray unitFindRay = ray;
 
@@ -586,10 +572,9 @@ namespace Game
 				//draw border
 				if( currentSeeUnitAllowPlayerControl != null )
 				{
-					DebugGeometry.Instance.Color = new ColorValue( 1, 1, 1 );
-					DebugGeometry.Instance.AddBounds( currentSeeUnitAllowPlayerControl.MapBounds );
+					camera.DebugGeometry.Color = new ColorValue( 1, 1, 1 );
+					camera.DebugGeometry.AddBounds( currentSeeUnitAllowPlayerControl.MapBounds );
 				}
-
 			}
 
 			//draw "Press Use" text
@@ -656,9 +641,9 @@ namespace Game
 			hudControl.Visible = Map.Instance.DrawGui;
 
 			//Game
+
 			hudControl.Controls[ "Game" ].Visible = GetRealCameraType() != CameraType.Free &&
 				!IsCutSceneEnabled();
-			//cutSceneCurrentFadeTime < cutSceneFadeTime;// !IsCutScene();
 
 			//Player
 			string playerTypeName = playerUnit != null ? playerUnit.Type.Name : "";
@@ -755,11 +740,10 @@ namespace Game
 
 			//CutScene
 			{
-				hudControl.Controls[ "CutScene" ].Visible = IsCutSceneEnabled();// cutSceneCurrentFadeTime > cutSceneFadeTime;// IsCutScene();
+				hudControl.Controls[ "CutScene" ].Visible = IsCutSceneEnabled();
 
 				if( CutSceneManager.Instance != null )
 				{
-
 					//CutSceneFade
 					float fadeCoef = 0;
 					if( CutSceneManager.Instance != null )
@@ -793,14 +777,11 @@ namespace Game
 			Ray lookRay = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay(
 				new Vec2( .5f, .5f ) );
 
-			//Vec3 lookTo;
 			Body body = null;
 
 			Vec3 lookFrom = lookRay.Origin;
 			Vec3 lookDir = Vec3.Normalize( lookRay.Direction );
-			float distance = 1000.0f;// RendererWorld.Instance.DefaultCamera.FarClipDistance;
-
-			//lookTo = lookFrom + lookDir * distance;
+			float distance = 1000.0f;
 
 			Unit playerUnit = GetPlayerUnit();
 
@@ -816,12 +797,9 @@ namespace Game
 				Dynamic dynamic = obj as Dynamic;
 				if( dynamic != null && playerUnit != null && dynamic.GetParentUnit() == GetPlayerUnit() )
 					ignore = true;
-				//if( obj == GetPlayerUnit() )
-				//   ignore = true;
 
 				if( !ignore )
 				{
-					//lookTo = result.Position;
 					body = result.Shape.Body;
 					break;
 				}
@@ -832,7 +810,7 @@ namespace Game
 			if( body != null )
 			{
 				MapObject obj = MapSystemWorld.GetMapObjectByBody( body );
-				if( obj != null && ( obj as GameGuiObject ) == null )
+				if( obj != null && !( obj is StaticMesh ) && !( obj is GameGuiObject ) )
 				{
 					renderer.AddText( obj.Type.Name, new Vec2( .5f, .525f ),
 						HorizontalAlign.Center, VerticalAlign.Center );
@@ -992,100 +970,6 @@ namespace Game
 		//   }
 		//}
 
-        //Draw minimap
-        void Minimap_RenderUI(EControl sender, GuiRenderer renderer)
-        {
-            Rect screenMapRect = sender.GetScreenRectangle();
-
-            //Map.Instance.PhysicsBounds
-            Rect mapRect = new Rect(PhysicsWorld.Instance.InitialBounds.Minimum.ToVec2(),
-                PhysicsWorld.Instance.InitialBounds.Maximum.ToVec2());
-
-            Vec2 mapSizeInv = new Vec2(1, 1) / mapRect.Size;
-
-            //draw units
-            Vec2 screenPixel = new Vec2(1, 1) / new Vec2(EngineApp.Instance.VideoMode.Size.ToVec2());
-
-            foreach (Entity entity in Map.Instance.Children)
-            {
-                GameCharacter unit = entity as GameCharacter;
-                if (unit == null)
-                    continue;
-
-                Rect rect = new Rect(unit.MapBounds.Minimum.ToVec2(), unit.MapBounds.Maximum.ToVec2());
-
-                rect -= mapRect.Minimum;
-                rect.Minimum *= mapSizeInv;
-                rect.Maximum *= mapSizeInv;
-                rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
-                rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
-                rect.Minimum *= screenMapRect.Size;
-                rect.Maximum *= screenMapRect.Size;
-                rect += screenMapRect.Minimum;
-
-                //increase 1 pixel
-                rect.Maximum += new Vec2(screenPixel.X, -screenPixel.Y);
-
-                ColorValue color;
-
-                if (unit.Intellect == null || unit.Intellect.Faction == null)
-                    color = new ColorValue(1, 1, 0);
-                else
-                    color = new ColorValue(1, 0, 0);
-
-                renderer.AddQuad(rect, color);
-            }
-
-            //Draw camera borders
-            {
-            //    Camera camera = RendererWorld.Instance.DefaultCamera;
-
-            //    if (camera.Position.Z > 0)
-            //    {
-
-            //        Plane groundPlane = new Plane(0, 0, 1, 0);
-
-            //        Vec2[] points = new Vec2[4];
-
-            //        for (int n = 0; n < 4; n++)
-            //        {
-            //            Vec2 p = Vec2.Zero;
-
-            //            switch (n)
-            //            {
-            //                case 0: p = new Vec2(0, 0); break;
-            //                case 1: p = new Vec2(1, 0); break;
-            //                case 2: p = new Vec2(1, 1); break;
-            //                case 3: p = new Vec2(0, 1); break;
-            //            }
-
-            //            Ray ray = camera.GetCameraToViewportRay(p);
-
-            //            float scale;
-            //            groundPlane.RayIntersection(ray, out scale);
-
-            //            Vec3 pos = ray.GetPointOnRay(scale);
-            //            if (ray.Direction.Z > 0)
-            //                pos = ray.Origin + ray.Direction.GetNormalize() * 10000;
-
-            //            Vec2 point = pos.ToVec2();
-
-            //            point -= mapRect.Minimum;
-            //            point *= mapSizeInv;
-            //            point = new Vec2(point.X, 1.0f - point.Y);
-            //            point *= screenMapRect.Size;
-            //            point += screenMapRect.Minimum;
-
-            //            points[n] = point;
-            //        }
-
-            //        for (int n = 0; n < 4; n++)
-            //            renderer.AddLine(points[n], points[(n + 1) % 4], new ColorValue(1, 1, 1),
-            //                screenMapRect);
-            //    }
-            }
-        }
-
 		protected override void OnRenderUI( GuiRenderer renderer )
 		{
 			base.OnRenderUI( renderer );
@@ -1179,149 +1063,24 @@ namespace Game
 
 		bool CurrentUnitAllowPlayerControlUse()
 		{
-			if( currentSeeUnitAllowPlayerControl != null )
+			if( PlayerIntellect.Instance != null )
 			{
-				//Change player controlled unit
-				mainNoActivedPlayerUnit = PlayerIntellect.Instance.ControlledObject;
-				if( mainNoActivedPlayerUnit != null )
+				//change player unit
+				if( currentSeeUnitAllowPlayerControl != null )
 				{
-					mainNoActivedPlayerUnit.Intellect = null;
-					mainNoActivedPlayerUnitRestorePosition = mainNoActivedPlayerUnit.Position;
-					PlayerIntellect.Instance.ControlledObject = currentSeeUnitAllowPlayerControl;
-					currentSeeUnitAllowPlayerControl.Intellect = PlayerIntellect.Instance;
-					currentSeeUnitAllowPlayerControl.Destroying +=
-						AlternativeUnitAllowPlayerControl_Destroying;
+					PlayerIntellect.Instance.ChangeMainControlledUnit(
+						currentSeeUnitAllowPlayerControl );
+					return true;
+				}
 
-					//disable collision for shapes and save contract groups
-					mainNoActivedPlayerUnitShapeContactGroups = new Dictionary<Shape, int>();
-					foreach( Body body in mainNoActivedPlayerUnit.PhysicsModel.Bodies )
-					{
-						foreach( Shape shape in body.Shapes )
-						{
-							mainNoActivedPlayerUnitShapeContactGroups.Add( shape, shape.ContactGroup );
-							shape.ContactGroup = (int)ContactGroup.NoContact;
-						}
-					}
-
+				//restore player unit
+				if( PlayerIntellect.Instance.MainNoActivedPlayerUnit != null )
+				{
+					PlayerIntellect.Instance.RestoreMainControlledUnit();
 					return true;
 				}
 			}
-
-			if( mainNoActivedPlayerUnit != null )
-			{
-				//Restore main player controlled unit
-				PlayerIntellect.Instance.ControlledObject.Intellect = null;
-				RestoreMainPlayerControlledUnit();
-				return true;
-			}
 			return false;
-		}
-
-		void AlternativeUnitAllowPlayerControl_Destroying( Entity entity )
-		{
-			if( GetPlayerUnit() == entity && mainNoActivedPlayerUnit != null )
-			{
-				//Restore main player controlled unit
-				RestoreMainPlayerControlledUnit();
-			}
-		}
-
-		void RestoreMainPlayerControlledUnit()
-		{
-			mainNoActivedPlayerUnit.Position = mainNoActivedPlayerUnitRestorePosition;
-			//find free position for moving player controlled units
-			Unit currentUnit = GetPlayerUnit();
-			if( currentUnit != null )
-			{
-				if( currentUnit is Tank )
-				{
-					mainNoActivedPlayerUnit.Position = FindFreePositionForUnit(
-						mainNoActivedPlayerUnit, currentUnit.Position );
-				}
-			}
-
-			mainNoActivedPlayerUnit.OldPosition = mainNoActivedPlayerUnit.Position;
-
-			mainNoActivedPlayerUnit.Visible = true;
-
-			//restore collision for shapes
-			if( mainNoActivedPlayerUnitShapeContactGroups != null )
-			{
-				foreach( Body body in mainNoActivedPlayerUnit.PhysicsModel.Bodies )
-				{
-					foreach( Shape shape in body.Shapes )
-					{
-						int group;
-						if( mainNoActivedPlayerUnitShapeContactGroups.TryGetValue( shape, out group ) )
-							shape.ContactGroup = group;
-					}
-				}
-				mainNoActivedPlayerUnitShapeContactGroups.Clear();
-				mainNoActivedPlayerUnitShapeContactGroups = null;
-			}
-
-			PlayerIntellect.Instance.ControlledObject.Destroying -=
-				AlternativeUnitAllowPlayerControl_Destroying;
-			PlayerIntellect.Instance.ControlledObject = mainNoActivedPlayerUnit;
-			mainNoActivedPlayerUnit.Intellect = PlayerIntellect.Instance;
-			mainNoActivedPlayerUnit = null;
-		}
-
-		Vec3 FindFreePositionForUnit( Unit unit, Vec3 center )
-		{
-			Vec3 volumeSize = unit.MapBounds.GetSize() + new Vec3( 2, 2, 0 );
-
-			for( float zOffset = 0; ; zOffset += .3f )
-			{
-				for( float radius = 3; radius < 8; radius += .6f )
-				{
-					for( float angle = 0; angle < MathFunctions.PI * 2; angle += MathFunctions.PI / 32 )
-					{
-						Vec3 pos = center + new Vec3( MathFunctions.Cos( angle ),
-							MathFunctions.Sin( angle ), 0 ) * radius + new Vec3( 0, 0, zOffset );
-
-						Bounds volume = new Bounds( pos );
-						volume.Expand( volumeSize * .5f );
-
-						Body[] bodies = PhysicsWorld.Instance.VolumeCast(
-							volume, (int)ContactGroup.CastOnlyContact );
-
-						if( bodies.Length == 0 )
-							return pos;
-					}
-				}
-			}
-		}
-
-		void TickCurrentUnitAllowPlayerControl()
-		{
-			if( mainNoActivedPlayerUnit != null )
-			{
-				//main player unit is dead
-				if( mainNoActivedPlayerUnit.IsSetDeleted )
-				{
-					mainNoActivedPlayerUnit = null;
-					if( PlayerIntellect.Instance.ControlledObject != null )
-					{
-						if( !PlayerIntellect.Instance.ControlledObject.IsSetDeleted )
-							PlayerIntellect.Instance.ControlledObject.Intellect = null;
-						PlayerIntellect.Instance.ControlledObject = null;
-					}
-					return;
-				}
-
-				mainNoActivedPlayerUnit.Position = GetPlayerUnit().Position;
-				mainNoActivedPlayerUnit.OldPosition = mainNoActivedPlayerUnit.Position;
-
-				mainNoActivedPlayerUnit.Visible = false;
-
-				//reset velocities
-				foreach( Body body in mainNoActivedPlayerUnit.PhysicsModel.Bodies )
-				{
-					body.LinearVelocity = Vec3.Zero;
-					body.AngularVelocity = Vec3.Zero;
-				}
-			}
 		}
 
 		bool IsCutSceneEnabled()

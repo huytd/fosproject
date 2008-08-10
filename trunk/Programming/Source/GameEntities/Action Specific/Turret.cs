@@ -32,9 +32,6 @@ namespace GameEntities
 		Gun mainGun;
 		Vec3 mainGunOffsetPosition;
 
-		//bool momentaryTurnToPositionEnabled;
-		//Vec3 turnToPosition;
-
 		//
 
 		TurretType _type = null; public new TurretType Type { get { return _type; } }
@@ -85,17 +82,7 @@ namespace GameEntities
 				pos += dir * 10;
 			}
 
-			//if( !momentaryTurnToPositionEnabled )
-			//   ResetTurnToPosition();
-			//momentaryTurnToPositionEnabled = true;
-			//turnToPosition = pos;
-
 			MomentaryTurnToPositionUpdate( pos );
-		}
-
-		public void ResetTurnToPosition()
-		{
-			//momentaryTurnToPositionEnabled = false;
 		}
 
 		void MomentaryTurnToPositionUpdate( Vec3 turnToPosition )

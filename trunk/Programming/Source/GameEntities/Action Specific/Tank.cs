@@ -125,16 +125,6 @@ namespace GameEntities
 
 		///////////////////////////////////////////
 
-		[EditorBrowsable( EditorBrowsableState.Never )]
-		public class GearsCollectionEditor : PropertyGridUtils.ModalDialogCollectionEditor
-		{
-			public GearsCollectionEditor()
-				: base( typeof( List<Gear> ) )
-			{ }
-		}
-
-		///////////////////////////////////////////
-
 		[DefaultValue( 20.0f )]
 		public float MaxForwardSpeed
 		{
@@ -185,7 +175,6 @@ namespace GameEntities
 			set { optimalAttackDistanceRange = value; }
 		}
 
-		[Editor( typeof( GearsCollectionEditor ), typeof( UITypeEditor ) )]
 		public List<Gear> Gears
 		{
 			get { return gears; }
@@ -367,9 +356,9 @@ namespace GameEntities
 				return gear.Number == 0;
 			} );
 
-			//That the body did not fall after loading a map. 
+			//That the body did not fall after loading a map.
 			//After loading a map, the physics simulate 5 seconds, that bodies have fallen asleep.
-			if( loaded && EntitySystemWorld.Instance.WorldSimulationType != WorldSimulationType.Editor )
+			if( loaded && EntitySystemWorld.Instance.SerializationMode == SerializationModes.Map )
 			{
 				if( chassisBody != null )
 					chassisBody.Static = true;
@@ -411,15 +400,9 @@ namespace GameEntities
 			if( firstTick )
 			{
 				if( chassisBody != null )
-				{
 					chassisBody.Static = false;
-					chassisBody.Sleeping = true;
-				}
 				if( towerBody != null )
-				{
 					towerBody.Static = false;
-					chassisBody.Sleeping = true;
-				}
 			}
 
 			TickChassisGround();
@@ -436,11 +419,6 @@ namespace GameEntities
 				if( Intellect.IsControlKeyPressed( GameControlKeys.Fire2 ) )
 					GunsTryFire( true );
 			}
-
-			//Log.Info( "leftTrack.onGround: " + leftTrack.onGround.ToString() );
-			//Log.Info( "leftTrack.onGround: " + leftTrack.onGround.ToString() );
-			//Log.Info( "Speed: {0} km/h", chassisBody.LinearVelocity.Length() * 3600.0f / 1000.0f );
-			//Log.Info( "Speed: {0} m/s", chassisBody.LinearVelocity.Length() );
 
 			TickCurrentGear();
 			TickMotorSound();
@@ -591,7 +569,6 @@ namespace GameEntities
 
 			float verticalVelocity =
 				( chassisBody.Rotation.GetInverse() * chassisBody.LinearVelocity ).Z;
-			//Log.Info( "verticalVelocity: " + verticalVelocity.ToString() );
 
 			for( int side = 0; side < 2; side++ )
 			{
@@ -612,12 +589,6 @@ namespace GameEntities
 					RayCastResult[] piercingResult = PhysicsWorld.Instance.RayCastPiercing(
 						ray, (int)ContactGroup.CastOnlyContact );
 
-					////!!!!!
-					//DebugGeometry.Instance.DepthTest = false;
-					//DebugGeometry.Instance.Color = new ColorValue( 1, 1, 0 );
-					//DebugGeometry.Instance.AddArrow( ray.Origin, ray.Origin + ray.Direction );
-					//DebugGeometry.Instance.DepthTest = true;
-
 					bool collision = false;
 					Vec3 collisionPos = Vec3.Zero;
 
@@ -625,8 +596,6 @@ namespace GameEntities
 					{
 						if( Array.IndexOf( PhysicsModel.Bodies, result.Shape.Body ) != -1 )
 							continue;
-						//if( PhysicsModel.Bodies.Contains( result.Shape.Body ) )
-						//	continue;
 						collision = true;
 						collisionPos = result.Position;
 						break;
@@ -703,8 +672,6 @@ namespace GameEntities
 			{
 				Vec3 dir = chassisBody.Rotation.GetForward();
 				Radian slopeAngle = MathFunctions.ATan( dir.Z, dir.ToVec2().Length() );
-				//if( Intellect != null && Intellect is PlayerIntellect )
-				//   Log.Info( new Degree( slopeAngle ).ToString() );
 
 				Radian maxAngle = MathFunctions.PI / 4;//new Degree(45)
 
@@ -1074,7 +1041,7 @@ namespace GameEntities
 			Track track = leftTrack.meshObject == sender ? leftTrack : rightTrack;
 
 			Vec2 value = track.materialScrollValue + Type.TracksAnimationMultiplier *
-				( speed * EngineApp.Instance.RenderTimeStep );
+				( speed * RendererWorld.Instance.FrameRenderTimeStep );
 
 			while( value.X < 0 ) value.X++;
 			while( value.X >= 1 ) value.X--;

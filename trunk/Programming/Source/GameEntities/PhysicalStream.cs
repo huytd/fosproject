@@ -267,10 +267,10 @@ namespace GameEntities
 				modeAttachedParticle = null;
 			}
 
-			if( mode.ParticleName != null && mode.ParticleName != "" )
+			if( !string.IsNullOrEmpty( mode.ParticleName ) )
 			{
 				modeAttachedParticle = new MapObjectAttachedParticle();
-				modeAttachedParticle.SetParticleSystem( mode.ParticleName );
+				modeAttachedParticle.ParticleName = mode.ParticleName;
 				modeAttachedParticle.OwnerRotation = true;
 				Attach( modeAttachedParticle );
 			}

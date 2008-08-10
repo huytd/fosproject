@@ -102,8 +102,10 @@ namespace GameEntities
 		[FieldSerialize]
 		Dynamic reasonObject;
 
+		[FieldSerialize]
 		float damageCoefficient = 1.0f;
 
+		[FieldSerialize]
 		Unit sourceUnit;
 
 		//only for optimization

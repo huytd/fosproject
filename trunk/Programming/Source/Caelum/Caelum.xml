@@ -4,6 +4,16 @@
         <name>Caelum</name>
     </assembly>
     <members>
+        <member name="T:Caelum.CaelumClouds">
+            <summary>
+            Class for layered clouds.</summary>
+            <remarks>This is tighly integrated with CaelumShaders.cg and LayeredClouds.material.
+            There are two "cloud mass" layers blended to create animating clouds and an extra
+            detailLayer.
+            Most of the parameters in this class are direct wrappers from GPU shader params.
+            Cloud offsets and speeds are not in any meaningful world units. Maybe they should
+            be in radians or something?</remarks>
+        </member>
         <member name="T:Caelum.CaelumBaseMesh">
             <summary>
             Describes a base class for all elements of caelum wich are rendered with a mesh.
@@ -32,75 +42,6 @@
             <summary>
             Gets the main node's material.</summary>
             <remarks>Returns null if there isn't material</remarks>
-        </member>
-        <member name="T:Caelum.UniversalClock">
-            <summary>
-            The system's time model.
-            This class is responsible of keeping track of the current time, transform it to the system's time model, 
-            and return the values associated (time of day, day of year...)</summary>
-        </member>
-        <member name="F:Caelum.UniversalClock.mJulianDayBase">
-            <summary>
-            Astronomical julian day at mCurrentTime = 0;</summary>
-        </member>
-        <member name="F:Caelum.UniversalClock.mCurrentTime">
-            <summary>
-            Seconds since mJulianDayBase.</summary>
-        </member>
-        <member name="F:Caelum.UniversalClock.mLastTime">
-            <summary>
-            Seconds since mJulianDayBase at last update.</summary>
-        </member>
-        <member name="M:Caelum.UniversalClock.getJulianSecondDifference">
-            <summary>
-            Gets the difference in seconds between this and the last update.
-            This is what you want for per-frame updates.</summary>
-        </member>
-        <member name="M:Caelum.UniversalClock.SetGregorianDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double)">
-            <summary>
-            Sets the current time as a gregorian date.
-            This is here as an easy to use function.</summary>
-        </member>
-        <member name="M:Caelum.UniversalClock.Update">
-            <summary>
-            Updates the clock.</summary>
-            <remarks> The time to be added to the clock is automatically
-            calculated from the system clock. This will be affected 
-            by the time scale.</remarks>
-        </member>
-        <member name="P:Caelum.UniversalClock.JulianDay">
-            <summary>
-            The current time as a julian day.</summary>
-        </member>
-        <member name="T:Caelum.SolarSystemModel">
-            <summary>
-            Class which calculates sun and moon positions on the sky. 
-            Most of the calculations are done in the astronomy class.</summary>
-        </member>
-        <member name="M:Caelum.SolarSystemModel.GetSunDirection">
-            <summary>
-            Returns the updated sun's position.</summary>
-        </member>
-        <member name="M:Caelum.SolarSystemModel.GetMoonDirection">
-            <summary>
-            Returns the updated moon's position.</summary>
-        </member>
-        <member name="M:Caelum.SolarSystemModel.GetMoonPhase">
-            <summary>
-            Fake function to get the phase of the moon</summary>
-            <remarks>The calculations performed by this function are completely fake.
-            It's a triangle wave with a period of 28.5 days.</remarks>
-            <returns>The phase of the moon; ranging from 0(full moon) to 2(new moon).</returns>
-        </member>
-        <member name="T:Caelum.CaelumClouds">
-            <summary>
-            Class for layered clouds.</summary>
-            <remarks>This is tighly integrated with CaelumShaders.cg and LayeredClouds.material.
-            There are two "cloud mass" layers blended to create animating clouds and an extra
-            detailLayer.
-            Most of the parameters in this class are direct wrappers from GPU shader params.
-            Cloud offsets and speeds are not in any meaningful world units. Maybe they should
-            be in radians or something?</remarks>
         </member>
         <member name="F:Caelum.CaelumClouds.mCloudMassBlend">
             <summary>
@@ -169,6 +110,95 @@
             <summary>
             Shortcut function for texture unit state parameters</summary>
             <remarks>Doesn't check if there is a material, can throws an exception.</remarks>
+        </member>
+        <member name="T:Caelum.UniversalClock">
+            <summary>
+            The system's time model.
+            This class is responsible of keeping track of the current time, transform it to the system's time model, 
+            and return the values associated (time of day, day of year...)</summary>
+        </member>
+        <member name="F:Caelum.UniversalClock.mJulianDayBase">
+            <summary>
+            Astronomical julian day at mCurrentTime = 0;</summary>
+        </member>
+        <member name="F:Caelum.UniversalClock.mCurrentTime">
+            <summary>
+            Seconds since mJulianDayBase.</summary>
+        </member>
+        <member name="F:Caelum.UniversalClock.mLastTime">
+            <summary>
+            Seconds since mJulianDayBase at last update.</summary>
+        </member>
+        <member name="M:Caelum.UniversalClock.getJulianSecondDifference">
+            <summary>
+            Gets the difference in seconds between this and the last update.
+            This is what you want for per-frame updates.</summary>
+        </member>
+        <member name="M:Caelum.UniversalClock.SetGregorianDateTime(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double)">
+            <summary>
+            Sets the current time as a gregorian date.
+            This is here as an easy to use function.</summary>
+        </member>
+        <member name="M:Caelum.UniversalClock.Update">
+            <summary>
+            Updates the clock.</summary>
+            <remarks> The time to be added to the clock is automatically
+            calculated from the system clock. This will be affected 
+            by the time scale.</remarks>
+        </member>
+        <member name="P:Caelum.UniversalClock.JulianDay">
+            <summary>
+            The current time as a julian day.</summary>
+        </member>
+        <member name="T:Caelum.CaelumBaseSkyLight">
+            <summary>
+            Describes a base class for all elements of caelum wich are rendered with a 
+            billboard and wich are a source of light.</summary>
+        </member>
+        <member name="M:Caelum.CaelumBaseSkyLight.Initialise(Engine.Renderer.RenderQueueGroupID,System.String,Engine.MathEx.Vec3)">
+            <summary>
+            Creates the element in the world. It automatically
+            sets up the mesh and the node.</summary>
+        </member>
+        <member name="M:Caelum.CaelumBaseSkyLight.setBodyColor(Engine.MathEx.ColorValue)">
+            <summary>
+            Sets the billboard body color.</summary>
+        </member>
+        <member name="M:Caelum.CaelumBaseSkyLight.setLighting(Engine.MathEx.ColorValue,Engine.MathEx.Vec3)">
+            <summary>
+            Sets up the directional lightning</summary>
+            <param name="color">The color of the light</param>
+            <param name="direction">The direction of the light</param>
+        </member>
+        <member name="P:Caelum.CaelumBaseSkyLight.MainMaterial">
+            <summary>
+            Gets the main node's material.</summary>
+            <remarks>Returns null if there isn't material</remarks>
+        </member>
+        <member name="P:Caelum.CaelumBaseSkyLight.FarDistance">
+            <summary>
+            The distance used to orbiting.</summary>
+        </member>
+        <member name="T:Caelum.ImageHelper">
+            <summary>
+            Defines some bitmap tools</summary>
+        </member>
+        <member name="M:Caelum.ImageHelper.GetInterpolatedColour(System.Single,System.Single,System.Drawing.Bitmap,System.Boolean)">
+            <summary>
+            Gets the interpolated colour between two pixels from an image.
+            Interpolate a texture pixel by hand. (fx, fy) are in texture coordinates,
+            ranging [0-1] across the entire texture.
+            Smooth blending is only done on the x coordinate.
+            Wrapping is only supported on X as well.</summary>
+        </member>
+        <member name="T:Caelum.CaelumMoon">
+            <summary>
+            Class representing the moon.</summary>
+        </member>
+        <member name="T:Caelum.CaelumSkydome">
+            <summary>
+             Class for skydome.</summary>
+            <remarks>This is tighly integrated with CG script and Skydome.material.</remarks>
         </member>
         <member name="T:Caelum.Astronomy">
              <summary>
@@ -294,50 +324,9 @@
             <summary>
             Restore old floating point precission.</summary>
         </member>
-        <member name="T:Caelum.ImageHelper">
-            <summary>
-            Defines some bitmap tools</summary>
-        </member>
-        <member name="M:Caelum.ImageHelper.GetInterpolatedColour(System.Single,System.Single,System.Drawing.Bitmap,System.Boolean)">
-            <summary>
-            Gets the interpolated colour between two pixels from an image.
-            Interpolate a texture pixel by hand. (fx, fy) are in texture coordinates,
-            ranging [0-1] across the entire texture.
-            Smooth blending is only done on the x coordinate.
-            Wrapping is only supported on X as well.</summary>
-        </member>
         <member name="T:Caelum.CaelumSun">
             <summary>
             Class representing the sun.</summary>
-        </member>
-        <member name="T:Caelum.CaelumBaseSkyLight">
-            <summary>
-            Describes a base class for all elements of caelum wich are rendered with a 
-            billboard and wich are a source of light.</summary>
-        </member>
-        <member name="M:Caelum.CaelumBaseSkyLight.Initialise(Engine.Renderer.RenderQueueGroupID,System.String,Engine.MathEx.Vec3)">
-            <summary>
-            Creates the element in the world. It automatically
-            sets up the mesh and the node.</summary>
-        </member>
-        <member name="M:Caelum.CaelumBaseSkyLight.setBodyColor(Engine.MathEx.ColorValue)">
-            <summary>
-            Sets the billboard body color.</summary>
-        </member>
-        <member name="M:Caelum.CaelumBaseSkyLight.setLighting(Engine.MathEx.ColorValue,Engine.MathEx.Vec3)">
-            <summary>
-            Sets up the directional lightning</summary>
-            <param name="color">The color of the light</param>
-            <param name="direction">The direction of the light</param>
-        </member>
-        <member name="P:Caelum.CaelumBaseSkyLight.MainMaterial">
-            <summary>
-            Gets the main node's material.</summary>
-            <remarks>Returns null if there isn't material</remarks>
-        </member>
-        <member name="P:Caelum.CaelumBaseSkyLight.FarDistance">
-            <summary>
-            The distance used to orbiting.</summary>
         </member>
         <member name="M:Caelum.CaelumSun.SetAmbientLight(Engine.MathEx.ColorValue)">
             <summary>
@@ -346,15 +335,6 @@
         <member name="T:Caelum.CaelumStarfield">
             <summary>
             Class for starfield.</summary>
-        </member>
-        <member name="T:Caelum.CaelumMoon">
-            <summary>
-            Class representing the moon.</summary>
-        </member>
-        <member name="T:Caelum.CaelumSkydome">
-            <summary>
-             Class for skydome.</summary>
-            <remarks>This is tighly integrated with CG script and Skydome.material.</remarks>
         </member>
         <member name="T:Caelum.EnumListBoxEditor">
             <summary>
@@ -429,49 +409,6 @@
             <param name="item">The item which may contain <paramref name="type"/></param>
             <param name="type">The type to search</param>
             <returns>Returns true if this item contains</returns>
-        </member>
-        <member name="T:Caelum.SkyColorModel">
-            <summary>
-            Class which returns various sky colours.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetSunColor">
-            <summary>
-            Gets the colour of the sun sphere.
-            This colour is used to draw the sun sphere in the sky.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetSunLight">
-            <summary>
-            Gets the colour of sun light.
-            This color is used to illuminate the scene.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetMoonBodyColour">
-            <summary>
-            Gets the colour of moon's body.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetMoonLight">
-            <summary>
-            Gets the colour of moon's light.
-            This color is used to illuminate the scene.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetFogColor">
-            <summary>
-            Gets the fog colour for a certain daytime.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetFogDensity">
-            <summary>
-            Gets the fog density for a certain daytime.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetBMPFromPath(System.String)">
-            <summary>
-            Gets a bitmap from his virtual path</summary>
-        </member>
-        <member name="P:Caelum.SkyColorModel.GradientImage">
-            <summary>
-            Sets the name of the image used to calculate sun color</summary>
-        </member>
-        <member name="P:Caelum.SkyColorModel.SkyGradientImage">
-            <summary>
-            Sets the sky color gradients image's name.</summary>
         </member>
         <member name="T:Caelum.CaelumManagerType">
             <summary>
@@ -586,6 +523,69 @@
             <summary>
             The relative time scale. If negative, time will move backwards; 
             2.0 means double speed...</summary>
+        </member>
+        <member name="T:Caelum.SolarSystemModel">
+            <summary>
+            Class which calculates sun and moon positions on the sky. 
+            Most of the calculations are done in the astronomy class.</summary>
+        </member>
+        <member name="M:Caelum.SolarSystemModel.GetSunDirection">
+            <summary>
+            Returns the updated sun's position.</summary>
+        </member>
+        <member name="M:Caelum.SolarSystemModel.GetMoonDirection">
+            <summary>
+            Returns the updated moon's position.</summary>
+        </member>
+        <member name="M:Caelum.SolarSystemModel.GetMoonPhase">
+            <summary>
+            Fake function to get the phase of the moon</summary>
+            <remarks>The calculations performed by this function are completely fake.
+            It's a triangle wave with a period of 28.5 days.</remarks>
+            <returns>The phase of the moon; ranging from 0(full moon) to 2(new moon).</returns>
+        </member>
+        <member name="T:Caelum.SkyColorModel">
+            <summary>
+            Class which returns various sky colours.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetSunColor">
+            <summary>
+            Gets the colour of the sun sphere.
+            This colour is used to draw the sun sphere in the sky.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetSunLight">
+            <summary>
+            Gets the colour of sun light.
+            This color is used to illuminate the scene.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetMoonBodyColour">
+            <summary>
+            Gets the colour of moon's body.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetMoonLight">
+            <summary>
+            Gets the colour of moon's light.
+            This color is used to illuminate the scene.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetFogColor">
+            <summary>
+            Gets the fog colour for a certain daytime.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetFogDensity">
+            <summary>
+            Gets the fog density for a certain daytime.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetBMPFromPath(System.String)">
+            <summary>
+            Gets a bitmap from his virtual path</summary>
+        </member>
+        <member name="P:Caelum.SkyColorModel.GradientImage">
+            <summary>
+            Sets the name of the image used to calculate sun color</summary>
+        </member>
+        <member name="P:Caelum.SkyColorModel.SkyGradientImage">
+            <summary>
+            Sets the sky color gradients image's name.</summary>
         </member>
     </members>
 </doc>

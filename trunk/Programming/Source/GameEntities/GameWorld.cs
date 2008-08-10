@@ -57,9 +57,12 @@ namespace GameEntities
 			if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Server ||
 				EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Single )
 			{
-				PlayerManager manager = (PlayerManager)Entities.Instance.Create(
-					EntityTypes.Instance.GetByName( "PlayerManager" ), this );
-				manager.PostCreate();
+				if( PlayerManager.Instance == null )
+				{
+					PlayerManager manager = (PlayerManager)Entities.Instance.Create(
+						"PlayerManager", this );
+					manager.PostCreate();
+				}
 			}
 		}
 
@@ -76,10 +79,6 @@ namespace GameEntities
 		{
 			base.OnTick();
 
-			////!!!!!!!!test
-			//if( PlayerManager.Instance != null )
-			//   PlayerManager.Instance.NeedUpdateAllClients();
-
 			if( needDoActionsAfterMapCreated )
 			{
 				DoActionsAfterMapCreated();
@@ -90,7 +89,6 @@ namespace GameEntities
 			if( GameMap.Instance.GameType == GameMap.GameTypes.Action ||
 				GameMap.Instance.GameType == GameMap.GameTypes.TPSArcade )
 			{
-				//	if(ObjectSystem::GetWorldGameType() == WorldGameType_Server)
 				if( PlayerManager.Instance != null )
 				{
 					foreach( Entity entity in PlayerManager.Instance.Children )
@@ -113,9 +111,14 @@ namespace GameEntities
 				if( GameMap.Instance.GameType == GameMap.GameTypes.Action ||
 					GameMap.Instance.GameType == GameMap.GameTypes.TPSArcade )
 				{
-					//!!!!!!!double creation after "should change map"?
-					Player player = PlayerManager.Instance.AddSinglePlayer( "__PlayerName__" );
+					string playerName = "__PlayerName__";
 
+					//create Player
+					Player player = PlayerManager.Instance.GetPlayerByName( playerName );
+					if( player == null )
+						player = PlayerManager.Instance.AddSinglePlayer( playerName );
+
+					//create PlayerIntellect
 					PlayerIntellect intellect = PlayerIntellect.Instance;
 					if( intellect == null )
 					{
@@ -127,39 +130,46 @@ namespace GameEntities
 					player.Intellect = intellect;
 					intellect.Player = player;
 
-					SpawnPoint spawnPoint = null;
-					if( shouldChangeMapSpawnPointName != null )
+					//create unit
+					if( intellect.ControlledObject == null )
 					{
-						spawnPoint = Entities.Instance.GetByName( shouldChangeMapSpawnPointName )
-							as SpawnPoint;
-						if( spawnPoint == null )
+						SpawnPoint spawnPoint = null;
+						if( shouldChangeMapSpawnPointName != null )
 						{
-							Log.Error( "GameWorld: SpawnPoint with name \"{0}\" is not defined.",
-								shouldChangeMapSpawnPointName );
+							spawnPoint = Entities.Instance.GetByName( shouldChangeMapSpawnPointName )
+								as SpawnPoint;
+							if( spawnPoint == null )
+							{
+								Log.Error( "GameWorld: SpawnPoint with name \"{0}\" is not defined.",
+									shouldChangeMapSpawnPointName );
+							}
 						}
-					}
 
-					Unit unit;
-					if( spawnPoint != null )
-						unit = CreatePlayerUnit( player, spawnPoint );
-					else
-						unit = CreatePlayerUnit( player );
+						Unit unit;
+						if( spawnPoint != null )
+							unit = CreatePlayerUnit( player, spawnPoint );
+						else
+							unit = CreatePlayerUnit( player );
 
-					if( unit != null )
-					{
-						unit.Intellect = intellect;
-						intellect.ControlledObject = unit;
-					}
-
-					if( shouldChangeMapPlayerCharacterInformation != null )
-					{
-						( (PlayerCharacter)intellect.ControlledObject ).ApplyChangeMapInformation(
-							shouldChangeMapPlayerCharacterInformation, spawnPoint );
-					}
-					else
-					{
 						if( unit != null )
-							intellect.LookDirection = SphereDir.FromVector( unit.Rotation.GetForward() );
+						{
+							unit.Intellect = intellect;
+							intellect.ControlledObject = unit;
+						}
+
+						if( shouldChangeMapPlayerCharacterInformation != null )
+						{
+							( (PlayerCharacter)intellect.ControlledObject ).ApplyChangeMapInformation(
+								shouldChangeMapPlayerCharacterInformation, spawnPoint );
+						}
+						else
+						{
+							if( unit != null )
+							{
+								intellect.LookDirection = SphereDir.FromVector(
+									unit.Rotation.GetForward() );
+							}
+						}
 					}
 				}
 
@@ -208,84 +218,6 @@ namespace GameEntities
 				return null;
 			return CreatePlayerUnit( player, spawnPoint );
 		}
-
-		/*!!!!!!!
-		protected override void OnClientConnect( ServerClientEntry client )
-		{
-			base.OnClientConnect( client );
-
-			BASSERT( playerManager );
-
-			Player player = playerManager.AddPlayer( client );
-
-			PlayerIntellect intellect = (PlayerIntellect)Entities.Instance.Create(
-				EntityTypes.Instance.Find( "PlayerIntellect" ), player );
-			intellect.PostCreate();
-			player.SetIntellect( intellect );
-			intellect.SetPlayer( player );
-
-
-			//	intellect.SetClient(client);
-
-			ObjectSystemPacket packet = BeginPacket( OSPT_SET_PLAYER_CONTROLLED_INTELLECT, client );
-			packet.WriteObject( intellect );
-			packet.End();
-
-			CreatePlayerUnit( player );
-			//	unit.SetIntellect(intellect);
-		}
-
-		protected override void OnClientDisconnect( ServerClientEntry client )
-		{
-			base.OnClientDisconnect( client );
-
-			if( playerManager )
-			{
-				Player player = playerManager.GetPlayerByClient( client );
-				if( player )
-					playerManager.RemovePlayer( player );
-			}
-
-			//PlayerIntellect playerintellect;
-			//{
-			//   for(ObjectLinkListIterator iter = GetChildListIterator(); iter.IsValid(); iter.Next())
-			//   {
-			//      PlayerIntellect i = Cast<PlayerIntellect>(iter.GetValue());
-			//      if(!i)continue;
-			//      if(i.GetClient() == client)
-			//      {
-			//         playerintellect = i;
-			//         break;
-			//      }
-			//   }
-			//}
-
-			//if(playerintellect)
-			//{
-			//   Unit unit = playerintellect.GetControlledObject();
-			//   if(unit)
-			//   {
-			//      unit.ResetIntellect();
-			//      unit.SetShouldDelete();
-			//   }
-			//   playerintellect.SetShouldDelete();
-			//}
-
-		}*/
-
-		/*!!!!!!!
-		protected override void OnPacket(ObjectSystemPacket& packet)
-		{
-			base.OnPacket(packet);
-
-			switch(packet.GetId())
-			{
-			case OSPT_SET_PLAYER_CONTROLLED_INTELLECT:
-				playerIntellect = (PlayerIntellect)packet.ReadObject();
-				break;
-			}
-		}
-		*/
 
 		public string ShouldChangeMapName
 		{

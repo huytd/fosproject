@@ -19,15 +19,17 @@ namespace GameEntities
 		[FieldSerialize]
 		string defaultParticleName;
 
+		[FieldSerialize]
+		Substance allowSubstance;
+
+		//
+
 		[Editor( typeof( EditorParticleUITypeEditor ), typeof( UITypeEditor ) )]
 		public string DefaultParticleName
 		{
 			get { return defaultParticleName; }
 			set { defaultParticleName = value; }
 		}
-
-		[FieldSerialize]
-		Substance allowSubstance;
 
 		[DefaultValue( Substance.None )]
 		public Substance AllowSubstance
@@ -43,6 +45,7 @@ namespace GameEntities
 	/// </summary>
 	public class Influence : Entity
 	{
+		[FieldSerialize]
 		float remainingTime;
 		MapObjectAttachedParticle defaultAttachedParticle;
 
@@ -57,9 +60,12 @@ namespace GameEntities
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
-		protected override void OnPostCreate( bool loaded )
+		protected override void OnPostCreate2( bool loaded )
 		{
-			base.OnPostCreate( loaded );
+			base.OnPostCreate2( loaded );
+
+			//We has initialization into OnPostCreate2, because we need to intialize after
+			//parent entity initialized (Dynamic.OnPostCreate). It's need for world serialization.
 
 			AddTimer();
 
@@ -83,7 +89,7 @@ namespace GameEntities
 				if( !string.IsNullOrEmpty( Type.DefaultParticleName ) )
 				{
 					defaultAttachedParticle = new MapObjectAttachedParticle();
-					defaultAttachedParticle.SetParticleSystem( Type.DefaultParticleName );
+					defaultAttachedParticle.ParticleName = Type.DefaultParticleName;
 					parent.Attach( defaultAttachedParticle );
 				}
 			}

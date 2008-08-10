@@ -57,8 +57,8 @@ namespace GameEntities
 
 			if( editor && EditorLayer.Visible || Map.Instance.DrawGameSpecificDebugGeometry )
 			{
-				DebugGeometry.Instance.Color = new ColorValue( 1, 0, 0 );
-				DebugGeometry.Instance.AddBox( GetBox() );
+				camera.DebugGeometry.Color = new ColorValue( 1, 0, 0 );
+				camera.DebugGeometry.AddBox( GetBox() );
 			}
 		}
 
@@ -73,11 +73,11 @@ namespace GameEntities
 			return ret;
 		}
 
-		protected override void OnEditorSelectionDebugRender( bool bigBorder )
+		protected override void OnEditorSelectionDebugRender( Camera camera, bool bigBorder )
 		{
 			Box box = GetBox();
 			box.Expand( bigBorder ? .2f : .1f );
-			DebugGeometry.Instance.AddBox( box );
+			camera.DebugGeometry.AddBox( box );
 		}
 
 		public static Minefield GetMinefieldByPosition( Vec3 position )

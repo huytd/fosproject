@@ -16,6 +16,8 @@ namespace Game
 	/// </summary>
 	public class MapsWindow : EControl
 	{
+		const string dynamicMapExampleText = "[Dynamic created map example]";
+
 		EListBox listBox;
 		EControl window;
 		EComboBox comboBoxAutorunMap;
@@ -34,6 +36,9 @@ namespace Game
 			//maps listBox
 			{
 				listBox = (EListBox)window.Controls[ "List" ];
+
+				//dynamic map example
+				listBox.Items.Add( dynamicMapExampleText );
 
 				foreach( string name in mapList )
 				{
@@ -100,26 +105,30 @@ namespace Game
 
 			if( listBox.SelectedIndex != -1 )
 			{
-				string mapDirectory = /*"Maps\\" +*/ Path.GetDirectoryName( (string)listBox.SelectedItem );
-				string textureName = mapDirectory + "\\Description\\Preview";
-
-				string textureFileName = null;
-
-				bool finded = false;
-
-				string[] extensions = new string[] { "dds", "tga", "png", "jpg" };
-				foreach( string extension in extensions )
+				string mapName = (string)listBox.SelectedItem;
+				if( mapName != dynamicMapExampleText )
 				{
-					textureFileName = textureName + "." + extension;
-					if( VirtualFile.Exists( textureFileName ) )
-					{
-						finded = true;
-						break;
-					}
-				}
+					string mapDirectory = Path.GetDirectoryName( mapName );
+					string textureName = mapDirectory + "\\Description\\Preview";
 
-				if( finded )
-					texture = TextureManager.Instance.Load( textureFileName/*, Texture.Type.Type2D, 0*/ );
+					string textureFileName = null;
+
+					bool finded = false;
+
+					string[] extensions = new string[] { "dds", "tga", "png", "jpg" };
+					foreach( string extension in extensions )
+					{
+						textureFileName = textureName + "." + extension;
+						if( VirtualFile.Exists( textureFileName ) )
+						{
+							finded = true;
+							break;
+						}
+					}
+
+					if( finded )
+						texture = TextureManager.Instance.Load( textureFileName );
+				}
 			}
 
 			window.Controls[ "Preview" ].Controls[ "TexturePlacer" ].BackTexture = texture;
@@ -127,7 +136,10 @@ namespace Game
 
 		void RunMap( string name )
 		{
-			GameEngineApp.Instance.SetNeedMapLoad( name );
+			if( name == dynamicMapExampleText )
+				GameEngineApp.Instance.SetNeedMapCreateForDynamicMapExample();
+			else
+				GameEngineApp.Instance.SetNeedMapLoad( name );
 		}
 
 		protected override bool OnKeyDown( KeyEvent e )

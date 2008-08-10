@@ -32,10 +32,18 @@ namespace GameEntities
 	/// </remarks>
 	public abstract class Intellect : Entity
 	{
+		[FieldSerialize]
 		Unit controlledObject;
+
 		float[] controlKeysStrength;
+		
+		[FieldSerialize]
 		Player player;
+		
+		[FieldSerialize]
 		FactionType faction;
+		
+		[FieldSerialize]
 		bool allowTakeItems;
 
 		///////////////////////////////////////////

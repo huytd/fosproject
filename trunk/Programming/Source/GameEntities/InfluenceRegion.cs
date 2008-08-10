@@ -150,12 +150,10 @@ namespace GameEntities
 
 								float distanceCoef = GetDistanceCoefficient( body.Position );
 
-								//mb temp
 								float randomCoef = 1.0f + random.NextFloatCenter() * .1f;
 
 								float v = impulsePerSecond * force * distanceCoef * randomCoef * TickDelta;
 
-								//mb temp
 								Vec3 point = new Vec3(
 									random.NextFloat() * .1f,
 									random.NextFloat() * .1f,

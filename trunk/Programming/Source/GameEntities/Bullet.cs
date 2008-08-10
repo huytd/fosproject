@@ -35,9 +35,6 @@ namespace GameEntities
 		[FieldSerialize]
 		float gravity;
 
-		//[FieldSerialize]
-		//string soundHit;
-
 		//
 
 		public BulletType()
@@ -79,13 +76,6 @@ namespace GameEntities
 			get { return gravity; }
 			set { gravity = value; }
 		}
-
-		//[Editor( typeof( EditorSoundUITypeEditor ), typeof( UITypeEditor ) )]
-		//public string SoundHit
-		//{
-		//   get { return soundHit; }
-		//   set { soundHit = value; }
-		//}
 
 		//only for gravity bullets
 		//-1 - will not get
@@ -190,8 +180,10 @@ namespace GameEntities
 		[FieldSerialize]
 		float damageCoefficient = 1.0f;
 
+		[FieldSerialize]
 		Vec3 startPosition;
 
+		[FieldSerialize]
 		float flyDistance;
 
 		bool firstTick = true;
@@ -414,7 +406,7 @@ namespace GameEntities
 			firstTick = false;
 		}
 
-		protected override void OnDieObjectCreate( MapObjectCreateObject createObject, 
+		protected override void OnDieObjectCreate( MapObjectCreateObject createObject,
 			object objectCreated )
 		{
 			base.OnDieObjectCreate( createObject, objectCreated );

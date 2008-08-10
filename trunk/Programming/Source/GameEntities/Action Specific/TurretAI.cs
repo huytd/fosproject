@@ -24,6 +24,8 @@ namespace GameEntities
 		List<Weapon> unitWeapons = new List<Weapon>();
 
 		float updateTaskTimer;
+
+		[FieldSerialize]
 		Dynamic targetTask;
 
 		///////////////////////////////////////////
@@ -178,7 +180,7 @@ namespace GameEntities
 				//view radius
 				if( ControlledObject.ViewRadius != 0 )
 				{
-					DebugGeometry.Instance.Color = new ColorValue( 0, 1, 0, .5f );
+					camera.DebugGeometry.Color = new ColorValue( 0, 1, 0, .5f );
 					Vec3 lastPos = Vec3.Zero;
 					for( float angle = 0; angle <= MathFunctions.PI * 2 + .001f;
 						angle += MathFunctions.PI / 16 )
@@ -188,7 +190,7 @@ namespace GameEntities
 							ControlledObject.ViewRadius;
 
 						if( angle != 0 )
-							DebugGeometry.Instance.AddLine( lastPos, pos );
+							camera.DebugGeometry.AddLine( lastPos, pos );
 
 						lastPos = pos;
 					}
@@ -204,7 +206,7 @@ namespace GameEntities
 					if( weapon.Type.WeaponAlternativeMode.IsInitialized )
 						radius = Math.Max( radius, weapon.Type.WeaponAlternativeMode.UseDistanceRange.Maximum );
 
-					DebugGeometry.Instance.Color = new ColorValue( 1, 0, 0, .5f );
+					camera.DebugGeometry.Color = new ColorValue( 1, 0, 0, .5f );
 					Vec3 lastPos = Vec3.Zero;
 					for( float angle = 0; angle <= MathFunctions.PI * 2 + .001f;
 						angle += MathFunctions.PI / 16 )
@@ -213,7 +215,7 @@ namespace GameEntities
 							new Vec3( MathFunctions.Cos( angle ), MathFunctions.Sin( angle ), 0 ) * radius;
 
 						if( angle != 0 )
-							DebugGeometry.Instance.AddLine( lastPos, pos );
+							camera.DebugGeometry.AddLine( lastPos, pos );
 
 						lastPos = pos;
 					}
@@ -223,8 +225,8 @@ namespace GameEntities
 				if( targetTask != null )
 				{
 					Vec3 targetPos = targetTask.Position;
-					DebugGeometry.Instance.AddArrow( ControlledObject.Position, targetPos, 1 );
-					DebugGeometry.Instance.AddSphere( new Sphere( targetPos, 3 ), 10 );
+					camera.DebugGeometry.AddArrow( ControlledObject.Position, targetPos, 1 );
+					camera.DebugGeometry.AddSphere( new Sphere( targetPos, 3 ), 10 );
 				}
 			}
 		}

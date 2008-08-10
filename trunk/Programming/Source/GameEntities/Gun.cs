@@ -278,11 +278,34 @@ namespace GameEntities
 
 	public class Gun : Weapon
 	{
+		[FieldSerialize]
+		Mode normalMode = new Mode();
+		[FieldSerialize]
+		Mode alternativeMode = new Mode();
+
+		[FieldSerialize]
+		bool needReload;
+
+		[FieldSerialize]
+		float readyTimeRemaining;
+
+		//for FireTimes
+		[FieldSerialize]
+		float currentFireTime;
+		//serialized in OnLoad/OnSave
+		Mode currentFireMode;
+		[FieldSerialize]
+		int fireTimesExecuted;
+
+		///////////////////////////////////////////
+
 		public class Mode
 		{
 			internal GunType.GunMode typeMode;
 
+			[FieldSerialize]
 			int bulletCount;
+			[FieldSerialize]
 			int bulletMagazineCount;
 
 			public int BulletCount
@@ -295,22 +318,6 @@ namespace GameEntities
 			{
 				get { return bulletMagazineCount; }
 				set { bulletMagazineCount = value; }
-			}
-
-			internal bool OnLoad( TextBlock block )
-			{
-				bulletCount = int.Parse( block.GetAttribute( "bulletCount", "0" ) );
-				bulletMagazineCount = int.Parse( block.GetAttribute( "bulletMagazineCount", "0" ) );
-				return true;
-			}
-
-			internal bool OnSave( TextBlock block )
-			{
-				if( bulletCount != 0 )
-					block.SetAttribute( "bulletCount", bulletCount.ToString() );
-				if( bulletMagazineCount != 0 )
-					block.SetAttribute( "bulletMagazineCount", bulletMagazineCount.ToString() );
-				return true;
 			}
 
 			public override string ToString()
@@ -326,19 +333,7 @@ namespace GameEntities
 			}
 		}
 
-		Mode normalMode = new Mode();
-		Mode alternativeMode = new Mode();
-
-		bool needReload;
-
-		float readyTimeRemaining;
-
-		//for FireTimes
-		float currentFireTime;
-		Mode currentFireMode;
-		int fireTimesExecuted;
-
-		//
+		///////////////////////////////////////////
 
 		GunType _type = null; public new GunType Type { get { return _type; } }
 
@@ -365,6 +360,35 @@ namespace GameEntities
 		public override bool Ready
 		{
 			get { return readyTimeRemaining == 0; }
+		}
+
+		protected override bool OnLoad( TextBlock block )
+		{
+			if( !base.OnLoad( block ) )
+				return false;
+
+			if( block.IsAttributeExist( "currentFireMode" ) )
+			{
+				if( block.GetAttribute( "currentFireMode" ) == "normal" )
+					currentFireMode = normalMode;
+				else
+					currentFireMode = alternativeMode;
+			}
+
+			return true;
+		}
+
+		protected override void OnSave( TextBlock block )
+		{
+			base.OnSave( block );
+
+			if( currentFireMode != null )
+			{
+				if( currentFireMode == normalMode )
+					block.SetAttribute( "currentFireMode", "normal" );
+				else
+					block.SetAttribute( "currentFireMode", "alternative" );
+			}
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
@@ -440,14 +464,14 @@ namespace GameEntities
 							SoundPlay3D( Type.SoundReload, .5f, true );
 
 							//animation
-							SetForceAnimationState( Type.ReloadAnimationName );
+							SetForceAnimation( Type.ReloadAnimationName, true );
 
 							//parent unit animation
 							if( !string.IsNullOrEmpty( Type.ReloadUnitAnimationName ) )
 							{
 								Unit parentUnit = GetParentUnit();
 								if( parentUnit != null )
-									parentUnit.SetForceAnimationState( Type.ReloadUnitAnimationName );
+									parentUnit.SetForceAnimation( Type.ReloadUnitAnimationName, true );
 							}
 						}
 					}
@@ -457,7 +481,7 @@ namespace GameEntities
 			}
 		}
 
-		public bool GetAdvanceAttackTargetPosition( bool alternative, MapObject obj, bool useGravity, 
+		public bool GetAdvanceAttackTargetPosition( bool alternative, MapObject obj, bool useGravity,
 			out Vec3 pos )
 		{
 			Mode mode = alternative ? alternativeMode : normalMode;
@@ -616,14 +640,14 @@ namespace GameEntities
 			}
 
 			//animation
-			SetForceAnimationState( mode.typeMode.FireAnimationName );
+			SetForceAnimation( mode.typeMode.FireAnimationName, true );
 
 			//parent unit animation
 			if( !string.IsNullOrEmpty( mode.typeMode.FireUnitAnimationName ) )
 			{
 				Unit parentUnit = GetParentUnit();
 				if( parentUnit != null )
-					parentUnit.SetForceAnimationState( mode.typeMode.FireUnitAnimationName );
+					parentUnit.SetForceAnimation( mode.typeMode.FireUnitAnimationName, true );
 			}
 		}
 

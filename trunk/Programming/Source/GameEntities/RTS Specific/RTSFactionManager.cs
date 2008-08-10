@@ -27,6 +27,11 @@ namespace GameEntities
 	{
 		static RTSFactionManager instance;
 
+		[FieldSerialize]
+		List<FactionItem> factions = new List<FactionItem>();
+
+		///////////////////////////////////////////
+
 		public class FactionItem
 		{
 			[FieldSerialize]
@@ -58,20 +63,6 @@ namespace GameEntities
 			}
 		}
 
-		//!!!!temp. load/save List<custom class> not implemented
-		//[FieldSerialize]
-		List<FactionItem> factions = new List<FactionItem>();
-
-		///////////////////////////////////////////
-
-		[EditorBrowsable( EditorBrowsableState.Never )]
-		public class FactionsCollectionEditor : PropertyGridUtils.ModalDialogCollectionEditor
-		{
-			public FactionsCollectionEditor()
-				: base( typeof( List<FactionItem> ) )
-			{ }
-		}
-
 		///////////////////////////////////////////
 
 		RTSFactionManagerType _type = null; public new RTSFactionManagerType Type { get { return _type; } }
@@ -92,48 +83,9 @@ namespace GameEntities
 		/// Don't modify
 		/// </summary>
 		[TypeConverter( typeof( CollectionTypeConverter ) )]
-		[Editor( typeof( FactionsCollectionEditor ), typeof( UITypeEditor ) )]
 		public List<FactionItem> Factions
 		{
 			get { return factions; }
-		}
-
-		protected override bool OnLoad( TextBlock block )
-		{
-			//!!!!temp. load/save List<custom class> not implemented
-			TextBlock group = block.FindChild( "factions" );
-			if( group != null )
-			{
-				foreach( TextBlock itemBlock in group.Children )
-				{
-					FactionItem item = new FactionItem();
-
-					item.FactionType = (FactionType)EntityTypes.Instance.GetByName( 
-						itemBlock.GetAttribute( "factionType" ) );
-					item.Money = float.Parse( itemBlock.GetAttribute( "money" ) );
-
-					factions.Add( item );
-				}
-			}
-
-			return base.OnLoad( block );
-		}
-
-		protected override void OnSave( TextBlock block )
-		{
-			base.OnSave( block );
-
-			//!!!!temp. load/save List<custom class> not implemented
-			TextBlock group = block.AddChild( "factions" );
-			foreach( FactionItem item in factions )
-			{
-				TextBlock itemBlock = group.AddChild( "item" );
-				if( item.FactionType != null )
-					itemBlock.SetAttribute( "factionType", item.FactionType.Name );
-
-				itemBlock.SetAttribute( "money", item.Money.ToString() );
-			}
-
 		}
 
 		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>

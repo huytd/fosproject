@@ -6,6 +6,7 @@ using System.Text;
 using Engine;
 using Engine.Renderer;
 using Engine.MapSystem;
+using Engine.Utils;
 using GameCommon;
 
 namespace GameEntities
