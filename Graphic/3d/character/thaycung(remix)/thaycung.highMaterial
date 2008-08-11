@@ -5,7 +5,8 @@ highLevelMaterial trautinh2
 	alphaRejectFunction = Greater
 	diffuseScale = 0.9882354 1 1
 	reflectionScaleDynamic = True
-	specularScale = 0.4392157 0.454902 0.4666667
+	specularScale = 0.6156863 0.6352941 0.6470588
+	specularShininess = 55.919
 	heightScale = 0.4
 	diffuse1Map
 	{
