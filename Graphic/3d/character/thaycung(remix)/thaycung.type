@@ -8,7 +8,6 @@ type thaycung
 		mesh
 		{
 			meshName = thaycung\thaycung.mesh
-			forceMaterial = trautinh2
 			collision = True
 			receiveStaticShadows = True
 			position = 0 0 -14
@@ -18,7 +17,7 @@ type thaycung
 		{
 			meshName = thaycung\gay.mesh
 			receiveStaticShadows = True
-			position = -3 0 -8
+			position = -4 1 -14
 			scale = 0.4386813 0.4386813 0.4386813
 		}
 	}
