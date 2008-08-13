@@ -1019,7 +1019,7 @@ namespace Game
 					gameWindow = CreateGameWindowByGameType( GameMap.Instance.GameType );
 
 				if( gameWindow == null )
-					gameWindow = new ActionGameWindow();
+					gameWindow = new VHFOSGameWindows();
 
 				ScreenControlManager.Instance.Controls.Add( gameWindow );
 			}
@@ -1085,7 +1085,7 @@ namespace Game
 			{
 			case GameMap.GameTypes.Action:
 			case GameMap.GameTypes.TPSArcade:
-				return new ActionGameWindow();
+				return new VHFOSGameWindows();
 
 			case GameMap.GameTypes.RTS:
 				return new RTSGameWindow();

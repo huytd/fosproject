@@ -121,7 +121,13 @@ namespace Game
             //string textureName = Map.Instance.GetVirtualFileDirectory() + "\\Minimap\\Minimap";
             //Texture minimapTexture = TextureManager.Instance.Load(textureName, Texture.Type.Type2D, 0);
             //minimapControl.BackTexture = minimapTexture;
-            minimapControl.RenderUI += new RenderUIDelegate(Minimap_RenderUI);	
+            minimapControl.RenderUI += new RenderUIDelegate(Minimap_RenderUI);
+
+            EngineApp.Instance.ScreenGuiRenderer.AddText("Render minimap",
+                   new Vec2(.5f, .9f), HorizontalAlign.Center, VerticalAlign.Center);
+
+            EngineConsole.Instance.Print("Warning: Minimap render ", new ColorValue(1, 0, 0));
+          
         }
 
         protected override void OnDetach()
@@ -136,10 +142,11 @@ namespace Game
                 minimapControl.BackTexture = null;
             }
 
+
             base.OnDetach();
         }
 
-        //Draw minimap
+        // TASK: Draw minimap
         void Minimap_RenderUI(EControl sender, GuiRenderer renderer)
         {
             Rect screenMapRect = sender.GetScreenRectangle();
@@ -147,27 +154,50 @@ namespace Game
             //Get Map Rectange
             Bounds initialBounds = Map.Instance.InitialCollisionBounds;
             Rect mapRect = new Rect(initialBounds.Minimum.ToVec2(), initialBounds.Maximum.ToVec2());
+
             
             Vec2 mapSizeInv = new Vec2(1, 1) / mapRect.Size;
 
             //draw units
             Vec2 screenPixel = new Vec2(1, 1) / new Vec2(EngineApp.Instance.VideoMode.Size.ToVec2());
-
-            foreach (Entity entity in Map.Instance.Children)
             {
-                GameCharacter unit = entity as GameCharacter;
-                if (unit == null)
-                    continue;
+                //Loading texture to the engine
+                Texture texture = null;
+                string mapDirectory = Path.GetDirectoryName(mapName);
+                string textureName = mapDirectory + "\\Data\\Minimap";
+                string textureFileName = "Minimap";
+                bool finded = false;
+                string[] extensions = new string[] { "dds", "tga", "png", "jpg" };
+                foreach (string extension in extensions)
+                {
+                    textureFileName = textureName + "." + extension;
+                    if (VirtualFile.Exists(textureFileName))
+                    {
+                        finded = true;
+                        break;
+                    }
+                }
+                if (finded)
+                    texture = TextureManager.Instance.Load(textureFileName);
 
-                Rect rect = new Rect(unit.MapBounds.Minimum.ToVec2(), unit.MapBounds.Maximum.ToVec2());
+                texture.
+
+                Unit playerUnit = GetPlayerUnit();
+
+                Rect rect = new Rect(playerUnit.MapBounds.Minimum.ToVec2(), 
+                                     playerUnit.MapBounds.Maximum.ToVec2()
+                                     );
 
                 rect -= mapRect.Minimum;
                 rect.Minimum *= mapSizeInv;
                 rect.Maximum *= mapSizeInv;
+
                 rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
                 rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
+
                 rect.Minimum *= screenMapRect.Size;
                 rect.Maximum *= screenMapRect.Size;
+
                 rect += screenMapRect.Minimum;
 
                 //increase 1 pixel
@@ -175,13 +205,46 @@ namespace Game
 
                 ColorValue color;
 
-                if (unit.Intellect == null || unit.Intellect.Faction == null)
+                if (playerUnit.Intellect == null || playerUnit.Intellect.Faction == null)
                     color = new ColorValue(1, 1, 0);
                 else
                     color = new ColorValue(1, 0, 0);
 
                 renderer.AddQuad(rect, color);
+
+                
             }
+
+            //foreach (Entity entity in Map.Instance.Children)
+            //{
+            //    GameCharacter unit = entity as GameCharacter;
+                
+            //    if (unit == null)
+            //        continue;
+
+            //    Rect rect = new Rect(unit.MapBounds.Minimum.ToVec2(), unit.MapBounds.Maximum.ToVec2());
+
+            //    rect -= mapRect.Minimum;
+            //    rect.Minimum *= mapSizeInv;
+            //    rect.Maximum *= mapSizeInv;
+            //    rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
+            //    rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
+            //    rect.Minimum *= screenMapRect.Size;
+            //    rect.Maximum *= screenMapRect.Size;
+            //    rect += screenMapRect.Minimum;
+
+            //    //increase 1 pixel
+            //    rect.Maximum += new Vec2(screenPixel.X, -screenPixel.Y);
+
+            //    ColorValue color;
+
+            //    if (unit.Intellect == null || unit.Intellect.Faction == null)
+            //        color = new ColorValue(1, 1, 0);
+            //    else
+            //        color = new ColorValue(1, 0, 0);
+
+            //    renderer.AddQuad(rect, color);
+            //}
 
             //Draw camera borders
             {
@@ -760,8 +823,9 @@ namespace Game
             //Player
             string playerTypeName = playerUnit != null ? playerUnit.Type.Name : "";
 
-            UpdateHUDControlIcon(hudControl.Controls["Game/PlayerIcon"], playerTypeName);
-            hudControl.Controls["Game/Player"].Text = playerTypeName;
+            //UpdateHUDControlIcon(hudControl.Controls["Game/PlayerIcon"], playerTypeName);
+            //Update player name
+            //hudControl.Controls["Game/Player"].Text = playerTypeName;
 
             //HealthBar
             {
