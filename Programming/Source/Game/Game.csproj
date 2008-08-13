@@ -68,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutWindow.cs" />
-    <Compile Include="ActionGameWindow.cs" />
     <Compile Include="VHFOS\VHFOSGameWindows.cs" />
     <Compile Include="WorldLoadSaveWindow.cs" />
     <Compile Include="ExampleCustomInputDevice.cs" />

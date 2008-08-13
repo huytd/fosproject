@@ -9,6 +9,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{5D197770-2CEF-48B2-ABAB-C5C0152B0151}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEntities", "GameEntities\GameEntities.csproj", "{3F0C9CE6-824F-4B8F-A4F3-68A70F7CF63A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4E6A3381-C33F-4DA2-9AEE-D0583FBCD30F} = {4E6A3381-C33F-4DA2-9AEE-D0583FBCD30F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caelum", "Caelum\Caelum.csproj", "{4E6A3381-C33F-4DA2-9AEE-D0583FBCD30F}"
 EndProject
