@@ -1,0 +1,13 @@
+highLevelMaterial Grass0122
+{
+	template = VegetationMaterial
+	blending = AlphaBlend
+	culling = False
+	useNormals = False
+	diffuseScale = 0.2 0.4196079 0.2039216
+	reflectionScale = 0.345098 0.5568628 0.09803922
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\export\Grass\grass.tga
+	}
+}

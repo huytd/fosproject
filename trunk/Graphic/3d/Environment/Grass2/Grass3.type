@@ -1,0 +1,16 @@
+type Grass3
+{
+	class = DecorativeObject
+	batchSize = 30
+	distanceBetweenObjects = 0.5
+	visibilityDistance = 100
+	destroyBatchOnDistance = 130
+	storeObjectsPositionsInVertices = True
+	items
+	{
+		item
+		{
+			meshName = Types\DecorativeObjects\Grass2\grass.mesh
+		}
+	}
+}
