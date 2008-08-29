@@ -1,0 +1,15 @@
+type conglang
+{
+	class = MapObject
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\StaticObjects\Conglang\conglang2.mesh
+			castDynamicShadows = True
+			collision = True
+			castStaticShadows = True
+			scale = 0.01457617 0.01457617 0.01457617
+		}
+	}
+}
