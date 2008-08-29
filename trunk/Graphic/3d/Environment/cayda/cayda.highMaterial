@@ -1,0 +1,28 @@
+highLevelMaterial cayda
+{
+	template = ShaderBaseMaterial
+	specularScale = 0.8000001 0.7098039 0.7019608
+	diffuse1Map
+	{
+		texture = Types\Units\cayda\texture.jpg
+		transform
+		{
+			scale = 7 7
+		}
+	}
+	diffuse2Map
+	{
+		transform
+		{
+			scale = 0.1 0.505
+		}
+	}
+	specularMap
+	{
+		texture = Types\Units\cayda\caydaspec.jpg
+	}
+	normalMap
+	{
+		texture = Types\Units\cayda\normal.jpg
+	}
+}
