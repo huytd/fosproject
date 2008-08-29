@@ -1,0 +1,17 @@
+type cayda
+{
+	class = MapObject
+	allowEditorCreate = True
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\Units\cayda\cayda.mesh
+			castDynamicShadows = True
+			collision = True
+			castStaticShadows = True
+			receiveStaticShadows = True
+			scale = 0.5882353 0.5882353 0.5882353
+		}
+	}
+}
