@@ -1,0 +1,12 @@
+type cayrom
+{
+	class = MapObject
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\StaticObjects\Cayrom\cayrom.mesh
+			scale = 0.01698507 0.01698507 0.01698507
+		}
+	}
+}
