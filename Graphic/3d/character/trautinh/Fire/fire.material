@@ -1,0 +1,17 @@
+material BaseFire2
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+			texture_unit
+			{
+				//texture GX_02_woodgrain02.jpg
+				anim_texture Materials\Game\Fire\Textures\fire.png 30 1.25
+			}
+		}
+	}
+}
