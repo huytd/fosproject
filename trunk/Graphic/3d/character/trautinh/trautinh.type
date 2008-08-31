@@ -1,14 +1,29 @@
-type trautinh
+type Trautinh
 {
-	class = PlayerCharacter
+	class = MapObject
 	allowEditorCreate = True
-	allowEmptyName = True
 	attachedObjects
 	{
 		mesh
 		{
-			meshName = trautinh\trautinh.mesh
-			position = 0 0 3
+			meshName = Types\Units\Trautinh\trautinh.mesh
+			castDynamicShadows = True
+			linkBonesToBodies = True
+			collision = True
+			castStaticShadows = True
+			receiveStaticShadows = True
+			position = -0.008110997 -0.4465255 0.1075728
+			scale = 0.08422615 0.08422615 0.08422615
+			boneSlot tay
+			{
+				bone = Bip01 L Hand
+			}
+		}
+		particle
+		{
+			particleName = Emmiters/TorchFire2
+			boneSlot = tay
+			position = -0.5858504 -0.2942645 -1.057699
 		}
 	}
 }
