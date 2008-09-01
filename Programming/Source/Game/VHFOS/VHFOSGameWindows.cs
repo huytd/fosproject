@@ -54,7 +54,7 @@ namespace Game
         GameEntities.Switch currentSwitch;
 
         //Minimap
-        bool minimapChangeCameraPosition;
+        //bool minimapChangeCameraPosition;
         EControl minimapControl;
 
         //For an opportunity to change an active unit and for work with float switches
@@ -161,26 +161,26 @@ namespace Game
             //draw units
             Vec2 screenPixel = new Vec2(1, 1) / new Vec2(EngineApp.Instance.VideoMode.Size.ToVec2());
             {
-                //Loading texture to the engine
-                Texture texture = null;
-                string mapDirectory = Path.GetDirectoryName(mapName);
-                string textureName = mapDirectory + "\\Data\\Minimap";
-                string textureFileName = "Minimap";
-                bool finded = false;
-                string[] extensions = new string[] { "dds", "tga", "png", "jpg" };
-                foreach (string extension in extensions)
-                {
-                    textureFileName = textureName + "." + extension;
-                    if (VirtualFile.Exists(textureFileName))
-                    {
-                        finded = true;
-                        break;
-                    }
-                }
-                if (finded)
-                    texture = TextureManager.Instance.Load(textureFileName);
+                ////Loading texture to the engine
+                //Texture texture = null;
+                //string mapDirectory = Path.GetDirectoryName(mapName);
+                //string textureName = mapDirectory + "\\Data\\Minimap";
+                //string textureFileName = "Minimap";
+                //bool finded = false;
+                //string[] extensions = new string[] { "dds", "tga", "png", "jpg" };
+                //foreach (string extension in extensions)
+                //{
+                //    textureFileName = textureName + "." + extension;
+                //    if (VirtualFile.Exists(textureFileName))
+                //    {
+                //        finded = true;
+                //        break;
+                //    }
+                //}
+                //if (finded)
+                //    texture = TextureManager.Instance.Load(textureFileName);
 
-                texture.
+                
 
                 Unit playerUnit = GetPlayerUnit();
 
