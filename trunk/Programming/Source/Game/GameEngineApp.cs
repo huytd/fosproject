@@ -430,13 +430,13 @@ namespace Game
 							return true;
 					}
 
-					GameMusic.MusicPlay( "Sounds\\Music\\MainMenu.ogg", true );
+                    GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
 					ScreenControlManager.Instance.Controls.Add( new EngineLogoWindow() );
 				}
 			}
 			else
 			{
-				GameMusic.MusicPlay( "Sounds\\Music\\MainMenu.ogg", true );
+                GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
 				ScreenControlManager.Instance.Controls.Add( new EngineLogoWindow() );
 			}
 
@@ -774,7 +774,7 @@ namespace Game
 
 			//play music
 			if( string.Compare( fileName, "Maps\\MainMenu\\Map.map", true ) != 0 )
-				GameMusic.MusicPlay( "Sounds\\Music\\Game.ogg", true );
+                GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
 
 			return true;
 		}
@@ -960,7 +960,7 @@ namespace Game
 			}
 
 			//play music
-			GameMusic.MusicPlay( "Sounds\\Music\\Game.ogg", true );
+            GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
 
 			return true;
 		}
@@ -1024,8 +1024,8 @@ namespace Game
 				ScreenControlManager.Instance.Controls.Add( gameWindow );
 			}
 
-			if( string.Compare( fileName, "Maps\\MainMenu\\Map.map", true ) != 0 )
-				GameMusic.MusicPlay( "Sounds\\Music\\Game.ogg", true );
+			if( string.Compare( fileName, "Maps\\Vietheroes\\Map.map", true ) != 0 )
+                GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
 
 			return true;
 		}
