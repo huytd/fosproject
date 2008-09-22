@@ -36,25 +36,17 @@ namespace Game
 
 			//create main menu window
 			window = ControlDeclarationManager.Instance.CreateControl( "Gui\\MainMenuWindow.gui" );
-			window.ColorMultiplier = new ColorValue( 1, 1, 1, 0 );
+            //window.ColorMultiplier = new ColorValue( 1, 1, 1, 0 );
 			Controls.Add( window );
 
-			//Run button handler
-			( (EButton)window.Controls[ "Run" ] ).Click += delegate( EButton sender )
-			{
-				GameEngineApp.Instance.SetNeedMapLoad( "Maps\\Vietheroes\\Map.map" );
-			};
-
-			//add version info control
-			versionTextBox = new ETextBox();
-			versionTextBox.TextHorizontalAlign = HorizontalAlign.Left;
-			versionTextBox.TextVerticalAlign = VerticalAlign.Bottom;
-			versionTextBox.Text = "Version " + EngineVersionInformation.Version;
-			versionTextBox.ColorMultiplier = new ColorValue( 1, 1, 1, 0 );
-			Controls.Add( versionTextBox );
+            ////Run button handler
+            //( (EControl)window.Controls[ "Run" ] ).Click += delegate( EButton sender )
+            //{
+            //    GameEngineApp.Instance.SetNeedMapLoad( "Maps\\Vietheroes\\Map.map" );
+            //};            		
 
 			//play background music
-			GameMusic.MusicPlay( "Sounds\\Music\\MainMenu.ogg", true );
+            GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
 
 			//update sound listener
 			SoundWorld.Instance.SetListener( new Vec3( 1000, 1000, 1000 ),
@@ -63,7 +55,9 @@ namespace Game
 			//create the background world
 			CreateMap();
 
-			ResetTime();
+            ResetTime();
+
+            //GameEngineApp.Instance.SetNeedMapLoad("Maps\\Vietheroes\\Map.map");
 		}
 
 		/// <summary>
@@ -95,44 +89,44 @@ namespace Game
 		{
 			base.OnTick( delta );
 
-			//Change window transparency
-			{
-				float alpha = 0;
+            ////Change window transparency
+            //{
+            //    float alpha = 0;
 
-				if( Time > 2 && Time <= 4 )
-					alpha = ( Time - 2 ) / 2;
-				else if( Time > 4 )
-					alpha = 1;
+            //    if( Time > 2 && Time <= 4 )
+            //        alpha = ( Time - 2 ) / 2;
+            //    else if( Time > 4 )
+            //        alpha = 1;
 
-				window.ColorMultiplier = new ColorValue( 1, 1, 1, alpha );
-				versionTextBox.ColorMultiplier = new ColorValue( 1, 1, 1, alpha );
-			}
+            //    window.ColorMultiplier = new ColorValue( 1, 1, 1, alpha );
+            //    versionTextBox.ColorMultiplier = new ColorValue( 1, 1, 1, alpha );
+            //}
 
-			//Change pictures
-			{
-				float period = 6 * 10;
+            ////Change pictures
+            //{
+            //    float period = 6 * 10;
 
-				float t = Time % period;
+            //    float t = Time % period;
 
-				for( int n = 1; ; n++ )
-				{
-					EControl control = window.Controls[ "Picture" + n.ToString() ];
-					if( control == null )
-						break;
+            //    for( int n = 1; ; n++ )
+            //    {
+            //        EControl control = window.Controls[ "Picture" + n.ToString() ];
+            //        if( control == null )
+            //            break;
 
-					float a = 3 + t / 2 - n * 3;
-					MathFunctions.Clamp( ref a, 0, 1 );
-					if( t > period - 2 )
-					{
-						float a2 = ( period - t ) / 2;
-						a = Math.Min( a, a2 );
+            //        float a = 3 + t / 2 - n * 3;
+            //        MathFunctions.Clamp( ref a, 0, 1 );
+            //        if( t > period - 2 )
+            //        {
+            //            float a2 = ( period - t ) / 2;
+            //            a = Math.Min( a, a2 );
 
-						if( window.Controls[ "Picture" + ( n + 1 ).ToString() ] != null )
-							a = 0;
-					}
-					control.BackColor = new ColorValue( 1, 1, 1, a );
-				}
-			}
+            //            if( window.Controls[ "Picture" + ( n + 1 ).ToString() ] != null )
+            //                a = 0;
+            //        }
+            //        control.BackColor = new ColorValue( 1, 1, 1, a );
+            //    }
+            //}
 
 			//update sound listener
 			SoundWorld.Instance.SetListener( new Vec3( 1000, 1000, 1000 ),
@@ -183,7 +177,7 @@ namespace Game
 					worldTypeName, EntityTypes.Instance.GetClassInfoByEntityClassName( "World" ) );
 			}
 
-			if( !GameEngineApp.Instance.MapLoad( "Maps\\MainMenu\\Map.map", worldType, true ) )
+            if (!GameEngineApp.Instance.MapLoad("Maps\\Vietheroes\\Map.map", worldType, true))
 				return;
 
 			mapInstance = Map.Instance;
