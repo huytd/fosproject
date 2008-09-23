@@ -1,14 +1,19 @@
 type = GameMap
 uin = 2
 classPrompt = GameMap
-ambientLight = 0.2 0.2 0.2
-editorCameraPosition = 146.4865 147.3429 10.72286
-editorCameraDirection = 5.877554 0.1233659
+ambientLight = 0.0627451 0.2 0.1215686
+editorCameraPosition = 24.14341 -157.7197 9.03515
+editorCameraDirection = 1.580631 0.0807043
 shadowColor = 0.75 0.75 0.75
 fov = 80
 logicSystemManager = 3
+sceneGraphType = Octree
 rootEditorLayer
 {
+	layer
+	{
+		name = Layer 1
+	}
 }
 entity
 {
@@ -23,20 +28,14 @@ entity
 }
 entity
 {
-	type = Collision
-	uin = 5
-	classPrompt = Collision
-}
-entity
-{
 	type = HeightmapTerrain
-	uin = 6
+	uin = 5
 	classPrompt = HeightmapTerrain
-	position = 0 0 -12
+	position = 0 0 -5
 	horizontalSize = 1000
 	verticalSize = 100
 	dataDirectory = HeightmapTerrain
-	masksSize = 1024
+	masksSize = 256
 	lodMethod = None
 	maxPixelError = 5
 	maxLODLevel = 7
@@ -44,16 +43,17 @@ entity
 	detailMapsDistance = 50
 	renderQueueGroup = WorldGeometry1
 	collisionMaterialName = Default
-	bottomClipHeight = 0
+	bottomClipHeight = -10000
 	castDynamicShadows = False
 	tileSize = 16
+	name = DefaultTerrain
 	layers
 	{
 		item
 		{
 			name = base
 			baseMap = Defaults\HeightmapTerrain\Layer0Base.jpg
-			baseScale = 5
+			baseScale = 10
 			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
 			detailScale = 2
 		}
@@ -65,12 +65,230 @@ entity
 			detailMap = Defaults\HeightmapTerrain\Layer1Detail.jpg
 			detailScale = 2
 		}
+		item
+		{
+			name = DatCoTuoi
+			baseMap = Maps\Vietheroes\HeightmapTerrain\Texture\DatCoTuoi.png
+			baseScale = 10
+			detailScale = 2
+		}
+		item
+		{
+			name = DaTangRan
+			baseMap = Maps\Vietheroes\HeightmapTerrain\Texture\DaTangRan.png
+			baseScale = 10
+			detailScale = 2
+		}
+		item
+		{
+			name = DaVoi
+			baseMap = Maps\Vietheroes\HeightmapTerrain\Texture\DaVoi.png
+			baseScale = 10
+			detailScale = 2
+		}
 	}
 }
 entity
 {
-	type = Light
+	type = SkyDome
+	uin = 6
+	classPrompt = SkyDome
+	horizonMap = Defaults\SkyDome\Horizon.png
+	colorScale = 1 1 1
+	diffuse1Map
+	{
+		texture = Defaults\SkyDome\SkyDome.jpg
+		tiling = 5
+		scrollSpeed = 0.005 0
+	}
+	diffuse2Map
+	{
+		blending = Add
+		texture = Defaults\SkyDome\SkyDome2.jpg
+		tiling = 4
+		scrollSpeed = 0.018 0
+	}
+	diffuse3Map
+	{
+		blending = Add
+		tiling = 10
+		scrollSpeed = 0 0
+	}
+	diffuse4Map
+	{
+		blending = Add
+		tiling = 10
+		scrollSpeed = 0 0
+	}
+}
+entity
+{
+	type = SpawnPoint
 	uin = 7
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = -4.74286 -198.3601 15.08153
+	name = SpawnPoint_0
+}
+entity
+{
+	type = WaterPlane
+	uin = 8
+	classPrompt = WaterPlane
+	size = 1000 1000
+	position = 0 0 0
+	segments = 20 20
+	renderQueueGroup = Queue3
+	reflectionLevel = ReflectAll
+	physicsHeight = 2
+	deepColor = 0 0.3 0.5
+	shallowColor = 1 0.9450981 0.9294118
+}
+entity
+{
+	type = Fog
+	uin = 9
+	classPrompt = Fog
+	color = 0.7686275 1 0.427451
+	expDensity = 0.002
+}
+entity
+{
+	type = DecorativeObjectManager
+	uin = 10
+	classPrompt = DecorativeObjectManager
+	visible = True
+	typeItems
+	{
+		item
+		{
+			type = DefaultGrass
+			itemCount = 169
+		}
+	}
+}
+entity
+{
+	type = Stone
+	uin = 11
+	classPrompt = MapObject
+	position = 19.54722 -121.2948 -0.7834087
+	name = Stone_0
+}
+entity
+{
+	type = Stone
+	uin = 12
+	classPrompt = MapObject
+	position = 20.55043 -115.0381 -1.770136
+	name = Stone_1
+}
+entity
+{
+	type = Stone
+	uin = 13
+	classPrompt = MapObject
+	position = 24.27603 -125.3159 -1.821327
+	name = Stone_2
+}
+entity
+{
+	type = Stone
+	uin = 14
+	classPrompt = MapObject
+	position = 29.09224 -129.2344 -1.269421
+	rotation = -0.02806742 0.4607097 0.8854653 0.05394445
+	name = Stone_3
+}
+entity
+{
+	type = Stone
+	uin = 15
+	classPrompt = MapObject
+	position = 29.34994 -111.2073 -1.7986
+	name = Stone_4
+}
+entity
+{
+	type = Stone
+	uin = 16
+	classPrompt = MapObject
+	position = 15.5155 -113.6763 -1.201058
+	rotation = 0 0.826148 0 -0.5634532
+	name = Stone_5
+}
+entity
+{
+	type = Palm
+	uin = 17
+	classPrompt = MapObject
+	position = 33.61626 -149.89 5.904048
+	rotation = -0.03137387 -0.04491883 0.06006286 -0.9966897
+	name = Palm_0
+}
+entity
+{
+	type = Palm
+	uin = 18
+	classPrompt = MapObject
+	position = 32.63815 -149.93 5.634774
+	name = Palm_1
+}
+entity
+{
+	type = Palm
+	uin = 19
+	classPrompt = MapObject
+	position = 32.51985 -150.7437 6.051627
+	rotation = 0 0 0.9052629 0.4248519
+	name = Palm_2
+}
+entity
+{
+	type = Light
+	uin = 21
+	classPrompt = Light
+	lightType = Point
+	diffuseColor = 0.764706 0.8000001 0.6 0.7843138
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = 229.0991 -223.9991 1000.749
+	name = Light_2
+}
+entity
+{
+	type = Light
+	uin = 22
+	classPrompt = Light
+	lightType = Spot
+	diffuseColor = 1 1 1
+	specularColor = 0 0 0
+	attenuationRangeAutomatic = True
+	attenuationRange = Infinity
+	attenuationConstant = 1
+	attenuationLinear = 0
+	attenuationQuadric = 0
+	spotlightInnerAngle = 30
+	spotlightOuterAngle = 40
+	spotlightFalloff = 1
+	castShadows = True
+	allowStaticLighting = False
+	position = -3.844642 -193.2433 10000
+	name = Light_5
+}
+entity
+{
+	type = Light
+	uin = 20
 	classPrompt = Light
 	lightType = Point
 	diffuseColor = 1 1 1
@@ -85,87 +303,6 @@ entity
 	spotlightFalloff = 1
 	castShadows = True
 	allowStaticLighting = False
-	position = 8 12 100
-	name = Light_0
-}
-entity
-{
-	type = WaterPlane
-	uin = 8
-	classPrompt = WaterPlane
-	size = 1000 1000
-	position = 0 0 0
-	segments = 20 20
-	renderQueueGroup = Queue3
-	reflectionLevel = ReflectAll
-	physicsHeight = 0
-	deepColor = 0 0.3019608 0.5019608
-	shallowColor = 0 1 1
-}
-entity
-{
-	type = SpawnPoint
-	uin = 9
-	classPrompt = SpawnPoint
-	defaultPoint = False
-	position = -98 259 0
-	name = SpawnPoint_0
-}
-entity
-{
-	type = SpawnPoint
-	uin = 10
-	classPrompt = SpawnPoint
-	defaultPoint = False
-	position = -38 242 0
-	name = SpawnPoint_1
-}
-entity
-{
-	type = Caelum
-	uin = 11
-	classPrompt = CaelumManager
-	ObserverLatitude = 45
-	ObserverLongitude = 45
-	ManageAmbientLight = True
-	CastShadows = True
-	SpecularMultiplier = 1 1 1
-	DiffuseMultiplier = 1 1 0.9
-	AmbientMultiplier = 1 1 1
-	MinAmbientLight = 0.15 0.15 0.15
-	StarFieldInclination = 13
-	CloudsCover = 0.5
-	IsCloudsAnimated = True
-	CloudsBlendTime = 86400
-	CloudsSpeed = 5 9
-	FogDensityMultiplier = 0.015
-	TimeScale = 400
-	StartYear = 2008
-	StartMonth = 4
-	StartDay = 9
-	StartHour = 23
-}
-entity
-{
-	type = SpawnPoint
-	uin = 12
-	classPrompt = SpawnPoint
-	defaultPoint = False
-	position = -263.6492 -247.2401 7.482418
-	name = SpawnPoint_2
-}
-entity
-{
-	type = DecorativeObjectManager
-	uin = 13
-	classPrompt = DecorativeObjectManager
-	visible = True
-	typeItems
-	{
-		item
-		{
-			type = DefaultGrass
-			itemCount = 64841
-		}
-	}
+	position = -13.88303 -198.2925 123.854
+	name = Light_1
 }

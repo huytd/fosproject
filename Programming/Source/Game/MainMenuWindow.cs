@@ -147,10 +147,13 @@ namespace Game
 				float dir = Time / 10.0f;
 
 				Vec3 from = new Vec3(
-					MathFunctions.Cos( dir ) * 29.0f / 1.5f,
-					MathFunctions.Sin( dir * 1.50f ) * 10.0f / 1.5f,
-					( MathFunctions.Cos( dir * 1.2f ) + 1.4f ) * 17.0f / 1.5f );
-				Vec3 to = Vec3.Zero;
+					29,
+					-155,
+					8);
+                Vec3 to = new Vec3(
+                    30,
+                    -120,
+                    16);
 				float fov = 80;
 
 				Camera camera = RendererWorld.Instance.DefaultCamera;

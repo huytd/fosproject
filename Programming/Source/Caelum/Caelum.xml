@@ -4,15 +4,14 @@
         <name>Caelum</name>
     </assembly>
     <members>
-        <member name="T:Caelum.CaelumSkydome">
+        <member name="T:Caelum.CaelumSun">
             <summary>
-             Class for skydome.</summary>
-            <remarks>This is tighly integrated with CG script and Skydome.material.</remarks>
+            Class representing the sun.</summary>
         </member>
-        <member name="T:Caelum.CaelumBaseMesh">
+        <member name="T:Caelum.CaelumBaseSkyLight">
             <summary>
-            Describes a base class for all elements of caelum wich are rendered with a mesh.
-            </summary>
+            Describes a base class for all elements of caelum wich are rendered with a 
+            billboard and wich are a source of light.</summary>
         </member>
         <member name="T:Caelum.CaelumBase">
             <summary>
@@ -28,6 +27,69 @@
             <param name="time">The relative day time.</param>
             <param name="cam">The main camera used for the render.</param>
         </member>
+        <member name="M:Caelum.CaelumBaseSkyLight.Initialise(Engine.Renderer.RenderQueueGroupID,System.String,Engine.MathEx.Vec3)">
+            <summary>
+            Creates the element in the world. It automatically
+            sets up the mesh and the node.</summary>
+        </member>
+        <member name="M:Caelum.CaelumBaseSkyLight.setBodyColor(Engine.MathEx.ColorValue)">
+            <summary>
+            Sets the billboard body color.</summary>
+        </member>
+        <member name="M:Caelum.CaelumBaseSkyLight.setLighting(Engine.MathEx.ColorValue,Engine.MathEx.Vec3)">
+            <summary>
+            Sets up the directional lightning</summary>
+            <param name="color">The color of the light</param>
+            <param name="direction">The direction of the light</param>
+        </member>
+        <member name="P:Caelum.CaelumBaseSkyLight.MainMaterial">
+            <summary>
+            Gets the main node's material.</summary>
+            <remarks>Returns null if there isn't material</remarks>
+        </member>
+        <member name="P:Caelum.CaelumBaseSkyLight.FarDistance">
+            <summary>
+            The distance used to orbiting.</summary>
+        </member>
+        <member name="M:Caelum.CaelumSun.SetAmbientLight(Engine.MathEx.ColorValue)">
+            <summary>
+            Sets the sunlight colour used as ambient light.</summary>
+        </member>
+        <member name="T:Caelum.SolarSystemModel">
+            <summary>
+            Class which calculates sun and moon positions on the sky. 
+            Most of the calculations are done in the astronomy class.</summary>
+        </member>
+        <member name="M:Caelum.SolarSystemModel.GetSunDirection">
+            <summary>
+            Returns the updated sun's position.</summary>
+        </member>
+        <member name="M:Caelum.SolarSystemModel.GetMoonDirection">
+            <summary>
+            Returns the updated moon's position.</summary>
+        </member>
+        <member name="M:Caelum.SolarSystemModel.GetMoonPhase">
+            <summary>
+            Fake function to get the phase of the moon</summary>
+            <remarks>The calculations performed by this function are completely fake.
+            It's a triangle wave with a period of 28.5 days.</remarks>
+            <returns>The phase of the moon; ranging from 0(full moon) to 2(new moon).</returns>
+        </member>
+        <member name="T:Caelum.CaelumClouds">
+            <summary>
+            Class for layered clouds.</summary>
+            <remarks>This is tighly integrated with CaelumShaders.cg and LayeredClouds.material.
+            There are two "cloud mass" layers blended to create animating clouds and an extra
+            detailLayer.
+            Most of the parameters in this class are direct wrappers from GPU shader params.
+            Cloud offsets and speeds are not in any meaningful world units. Maybe they should
+            be in radians or something?</remarks>
+        </member>
+        <member name="T:Caelum.CaelumBaseMesh">
+            <summary>
+            Describes a base class for all elements of caelum wich are rendered with a mesh.
+            </summary>
+        </member>
         <member name="M:Caelum.CaelumBaseMesh.Initialise(Engine.Renderer.RenderQueueGroupID,System.String,Engine.MathEx.Vec3,Engine.MathEx.Vec3)">
             <summary>
             Creates the element in the world. It automatically
@@ -37,6 +99,79 @@
             <summary>
             Gets the main node's material.</summary>
             <remarks>Returns null if there isn't material</remarks>
+        </member>
+        <member name="F:Caelum.CaelumClouds.mCloudMassBlend">
+            <summary>
+            Current cloud blend factor.</summary>
+        </member>
+        <member name="F:Caelum.CaelumClouds.mCloudMassOffset">
+            <summary>
+            Current cloud layer offset.</summary>
+        </member>
+        <member name="F:Caelum.CaelumClouds.mCloudDetailOffset">
+            <summary>
+            Current cloud detail layer offset.</summary>
+        </member>
+        <member name="F:Caelum.CaelumClouds.mCoverLookupImage">
+            <summary>
+            Lookup used for cloud coverage.</summary>
+        </member>
+        <member name="M:Caelum.CaelumClouds.#ctor(Caelum.CaelumItem)">
+            <summary>
+            Creates the element in the world. It automatically
+            sets up the mesh and the node with the infos in <paramref name="Item"/></summary>.
+            <param name="item">Describes the element and all necessary infos</param>
+        </member>
+        <member name="M:Caelum.CaelumClouds.SetCoverImage(System.String)">
+            <summary>
+            Sets the bitmap which will be used to coverage's calculation.</summary>
+            <param name="virtualImageName">The virtual path of the bitmap</param>
+            <example>setCoverImage(Caelum\Clouds\CloudCoverLookup.png)</example>
+        </member>
+        <member name="M:Caelum.CaelumClouds.SetCloudMassBlend(System.Single)">
+            <summary>
+            Sets the current blending factor between the two cloud mass layers.</summary>
+            <param name="massBlend"></param>
+        </member>
+        <member name="M:Caelum.CaelumClouds.SetCloudMassOffset(Engine.MathEx.Vec2)">
+            <summary>
+            Sets the current offset(translation) of the cloud mass on the sky.</summary>
+        </member>
+        <member name="M:Caelum.CaelumClouds.SetCloudDetailOffset(Engine.MathEx.Vec2)">
+            <summary>
+            Sets current offset(translation) of cloud details on the sky.</summary>
+        </member>
+        <member name="M:Caelum.CaelumClouds.UpdateSunDirection">
+            <summary>
+            Calculs and sends the current direction of the sun to Cg script.</summary>
+        </member>
+        <member name="M:Caelum.CaelumClouds.UpdateSunColor">
+            <summary>
+            Calculs and sends the current color of the sun's light to Cg script.</summary>
+        </member>
+        <member name="M:Caelum.CaelumClouds.UpdateFogColor">
+            <summary>
+            Calculs and sends the current fog's color to Cg script.</summary>
+        </member>
+        <member name="M:Caelum.CaelumClouds.GetFpParams">
+            <summary>
+            Shortcut function for fragment program parameters.</summary>
+            <remarks>Doesn't check if there is a material, can throws an exception.</remarks>
+        </member>
+        <member name="M:Caelum.CaelumClouds.GetVpParams">
+            <summary>
+            Shortcut function for vertex program parameters.</summary>
+            <remarks>Doesn't check if there is a material, can throws an exception.</remarks>
+        </member>
+        <member name="M:Caelum.CaelumClouds.GetTUS(System.UInt16)">
+            <summary>
+            Shortcut function for texture unit state parameters</summary>
+            <remarks>Doesn't check if there is a material, can throws an exception.</remarks>
+        </member>
+        <member name="T:Caelum.CaelumSkydome">
+            <summary>
+             Class for skydome.</summary>
+            <remarks>This is tighly integrated with CG script and Skydome.material.</remarks>
         </member>
         <member name="T:Caelum.UniversalClock">
             <summary>
@@ -77,46 +212,99 @@
             <summary>
             The current time as a julian day.</summary>
         </member>
-        <member name="T:Caelum.CaelumSun">
+        <member name="T:Caelum.CaelumStarfield">
             <summary>
-            Class representing the sun.</summary>
+            Class for starfield.</summary>
         </member>
-        <member name="T:Caelum.CaelumBaseSkyLight">
+        <member name="T:Caelum.ImageHelper">
             <summary>
-            Describes a base class for all elements of caelum wich are rendered with a 
-            billboard and wich are a source of light.</summary>
+            Defines some bitmap tools</summary>
         </member>
-        <member name="M:Caelum.CaelumBaseSkyLight.Initialise(Engine.Renderer.RenderQueueGroupID,System.String,Engine.MathEx.Vec3)">
+        <member name="M:Caelum.ImageHelper.GetInterpolatedColour(System.Single,System.Single,System.Drawing.Bitmap,System.Boolean)">
             <summary>
-            Creates the element in the world. It automatically
-            sets up the mesh and the node.</summary>
-        </member>
-        <member name="M:Caelum.CaelumBaseSkyLight.setBodyColor(Engine.MathEx.ColorValue)">
-            <summary>
-            Sets the billboard body color.</summary>
-        </member>
-        <member name="M:Caelum.CaelumBaseSkyLight.setLighting(Engine.MathEx.ColorValue,Engine.MathEx.Vec3)">
-            <summary>
-            Sets up the directional lightning</summary>
-            <param name="color">The color of the light</param>
-            <param name="direction">The direction of the light</param>
-        </member>
-        <member name="P:Caelum.CaelumBaseSkyLight.MainMaterial">
-            <summary>
-            Gets the main node's material.</summary>
-            <remarks>Returns null if there isn't material</remarks>
-        </member>
-        <member name="P:Caelum.CaelumBaseSkyLight.FarDistance">
-            <summary>
-            The distance used to orbiting.</summary>
-        </member>
-        <member name="M:Caelum.CaelumSun.SetAmbientLight(Engine.MathEx.ColorValue)">
-            <summary>
-            Sets the sunlight colour used as ambient light.</summary>
+            Gets the interpolated colour between two pixels from an image.
+            Interpolate a texture pixel by hand. (fx, fy) are in texture coordinates,
+            ranging [0-1] across the entire texture.
+            Smooth blending is only done on the x coordinate.
+            Wrapping is only supported on X as well.</summary>
         </member>
         <member name="T:Caelum.CaelumMoon">
             <summary>
             Class representing the moon.</summary>
+        </member>
+        <member name="T:Caelum.EnumListBoxEditor">
+            <summary>
+            Draws a CheckedListBox which allows to tick some values
+            from a enum (flags).
+            </summary>
+        </member>
+        <member name="M:Caelum.EnumListBoxEditor.EnumContainsValue(System.Type,System.Object,System.Object)">
+            <summary>
+            Sets if a value is contained in an other enum value
+            whose the type is specified type.</summary>
+            <param name="enumType">Enum type</param>
+            <param name="enumValue">Value with type enumType</param>
+            <param name="value">Value wanted</param>
+            <returns>True if the value is contained in enumValue, else returns false</returns>
+        </member>
+        <member name="T:Caelum.CaelumComponent">
+            <summary>
+            Contains all Caelum's types. A flag is
+            set to allow <c>EnumListBoxEditor</c> creation.</summary>
+        </member>
+        <member name="T:Caelum.CaelumItem">
+            <summary>
+            Describes an element of caelum which can be created
+            in the world.</summary>
+        </member>
+        <member name="M:Caelum.CaelumItem.IsContainType(Caelum.CaelumComponent)">
+            <summary>
+            Checks if this element describes a type of caelum.</summary>
+            <remarks>An element can describe more than one type.</remarks>
+            <param name="type">The type to search</param>
+            <returns>Returns true if this element contains 
+            <paramref name="type"/>, else returns false</returns>
+        </member>
+        <member name="T:Caelum.CaelumUtils">
+            <summary>
+            Defines some math tools. It also make all necessary 
+            conversion for NAE (I prefer use Yaxis as UpAxis).</summary>
+        </member>
+        <member name="F:Caelum.CaelumUtils.XAxis">
+            Wraps OgreAxis to NAE axis
+            So YAxis is the up axis and ZAxis is the deep axis
+        </member>
+        <member name="F:Caelum.CaelumUtils.ColorWhite">
+            Wraps some Colors to NAE
+            @note: ColorBlack is equal to ColorValue.Zero
+        </member>
+        <member name="M:Caelum.CaelumUtils.GenerateQuat(Engine.MathEx.Vec3,Engine.MathEx.Degree)">
+            <summary>
+            Generates a quaternion from an axis and an Euler's angle in degrees.</summary>
+            <param name="axis">The axis of the rotation</param>
+            <param name="angle">An Euler's angle in degrees</param>
+        </member>
+        <member name="M:Caelum.CaelumUtils.GenerateQuat(Engine.MathEx.Vec3,Engine.MathEx.Radian)">
+            <summary>
+            Generates a quaternion from an axis and an Euler's angle in radians.</summary>
+            <param name="axis">The axis of the rotation</param>
+            <param name="angle">An Euler's angle in Radian</param>
+        </member>
+        <member name="M:Caelum.CaelumUtils.IsContainType(Caelum.CaelumItem,Caelum.CaelumComponent)">
+            <summary>
+            Checks if an item describes a type of caelum.</summary>
+            <remarks>An item can describe more than one type.</remarks>
+            <param name="item">The item which may contain <paramref name="type"/></param>
+            <param name="type">The type to search</param>
+            <returns>Returns true if this item contains</returns>
+        </member>
+        <member name="M:Caelum.CaelumUtils.IsContainType(Caelum.CaelumComponent,Caelum.CaelumComponent)">
+            <summary>
+            Checks if an item describes a type of caelum.</summary>
+            <remarks>An item can describe more than one type.</remarks>
+            <param name="item">The item which may contain <paramref name="type"/></param>
+            <param name="type">The type to search</param>
+            <returns>Returns true if this item contains</returns>
         </member>
         <member name="T:Caelum.CaelumManagerType">
             <summary>
@@ -231,237 +419,6 @@
             <summary>
             The relative time scale. If negative, time will move backwards; 
             2.0 means double speed...</summary>
-        </member>
-        <member name="T:Caelum.SkyColorModel">
-            <summary>
-            Class which returns various sky colours.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetSunColor">
-            <summary>
-            Gets the colour of the sun sphere.
-            This colour is used to draw the sun sphere in the sky.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetSunLight">
-            <summary>
-            Gets the colour of sun light.
-            This color is used to illuminate the scene.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetMoonBodyColour">
-            <summary>
-            Gets the colour of moon's body.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetMoonLight">
-            <summary>
-            Gets the colour of moon's light.
-            This color is used to illuminate the scene.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetFogColor">
-            <summary>
-            Gets the fog colour for a certain daytime.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetFogDensity">
-            <summary>
-            Gets the fog density for a certain daytime.</summary>
-        </member>
-        <member name="M:Caelum.SkyColorModel.GetBMPFromPath(System.String)">
-            <summary>
-            Gets a bitmap from his virtual path</summary>
-        </member>
-        <member name="P:Caelum.SkyColorModel.GradientImage">
-            <summary>
-            Sets the name of the image used to calculate sun color</summary>
-        </member>
-        <member name="P:Caelum.SkyColorModel.SkyGradientImage">
-            <summary>
-            Sets the sky color gradients image's name.</summary>
-        </member>
-        <member name="T:Caelum.ImageHelper">
-            <summary>
-            Defines some bitmap tools</summary>
-        </member>
-        <member name="M:Caelum.ImageHelper.GetInterpolatedColour(System.Single,System.Single,System.Drawing.Bitmap,System.Boolean)">
-            <summary>
-            Gets the interpolated colour between two pixels from an image.
-            Interpolate a texture pixel by hand. (fx, fy) are in texture coordinates,
-            ranging [0-1] across the entire texture.
-            Smooth blending is only done on the x coordinate.
-            Wrapping is only supported on X as well.</summary>
-        </member>
-        <member name="T:Caelum.SolarSystemModel">
-            <summary>
-            Class which calculates sun and moon positions on the sky. 
-            Most of the calculations are done in the astronomy class.</summary>
-        </member>
-        <member name="M:Caelum.SolarSystemModel.GetSunDirection">
-            <summary>
-            Returns the updated sun's position.</summary>
-        </member>
-        <member name="M:Caelum.SolarSystemModel.GetMoonDirection">
-            <summary>
-            Returns the updated moon's position.</summary>
-        </member>
-        <member name="M:Caelum.SolarSystemModel.GetMoonPhase">
-            <summary>
-            Fake function to get the phase of the moon</summary>
-            <remarks>The calculations performed by this function are completely fake.
-            It's a triangle wave with a period of 28.5 days.</remarks>
-            <returns>The phase of the moon; ranging from 0(full moon) to 2(new moon).</returns>
-        </member>
-        <member name="T:Caelum.CaelumClouds">
-            <summary>
-            Class for layered clouds.</summary>
-            <remarks>This is tighly integrated with CaelumShaders.cg and LayeredClouds.material.
-            There are two "cloud mass" layers blended to create animating clouds and an extra
-            detailLayer.
-            Most of the parameters in this class are direct wrappers from GPU shader params.
-            Cloud offsets and speeds are not in any meaningful world units. Maybe they should
-            be in radians or something?</remarks>
-        </member>
-        <member name="F:Caelum.CaelumClouds.mCloudMassBlend">
-            <summary>
-            Current cloud blend factor.</summary>
-        </member>
-        <member name="F:Caelum.CaelumClouds.mCloudMassOffset">
-            <summary>
-            Current cloud layer offset.</summary>
-        </member>
-        <member name="F:Caelum.CaelumClouds.mCloudDetailOffset">
-            <summary>
-            Current cloud detail layer offset.</summary>
-        </member>
-        <member name="F:Caelum.CaelumClouds.mCoverLookupImage">
-            <summary>
-            Lookup used for cloud coverage.</summary>
-        </member>
-        <member name="M:Caelum.CaelumClouds.#ctor(Caelum.CaelumItem)">
-            <summary>
-            Creates the element in the world. It automatically
-            sets up the mesh and the node with the infos in <paramref name="Item"/></summary>.
-            <param name="item">Describes the element and all necessary infos</param>
-        </member>
-        <member name="M:Caelum.CaelumClouds.SetCoverImage(System.String)">
-            <summary>
-            Sets the bitmap which will be used to coverage's calculation.</summary>
-            <param name="virtualImageName">The virtual path of the bitmap</param>
-            <example>setCoverImage(Caelum\Clouds\CloudCoverLookup.png)</example>
-        </member>
-        <member name="M:Caelum.CaelumClouds.SetCloudMassBlend(System.Single)">
-            <summary>
-            Sets the current blending factor between the two cloud mass layers.</summary>
-            <param name="massBlend"></param>
-        </member>
-        <member name="M:Caelum.CaelumClouds.SetCloudMassOffset(Engine.MathEx.Vec2)">
-            <summary>
-            Sets the current offset(translation) of the cloud mass on the sky.</summary>
-        </member>
-        <member name="M:Caelum.CaelumClouds.SetCloudDetailOffset(Engine.MathEx.Vec2)">
-            <summary>
-            Sets current offset(translation) of cloud details on the sky.</summary>
-        </member>
-        <member name="M:Caelum.CaelumClouds.UpdateSunDirection">
-            <summary>
-            Calculs and sends the current direction of the sun to Cg script.</summary>
-        </member>
-        <member name="M:Caelum.CaelumClouds.UpdateSunColor">
-            <summary>
-            Calculs and sends the current color of the sun's light to Cg script.</summary>
-        </member>
-        <member name="M:Caelum.CaelumClouds.UpdateFogColor">
-            <summary>
-            Calculs and sends the current fog's color to Cg script.</summary>
-        </member>
-        <member name="M:Caelum.CaelumClouds.GetFpParams">
-            <summary>
-            Shortcut function for fragment program parameters.</summary>
-            <remarks>Doesn't check if there is a material, can throws an exception.</remarks>
-        </member>
-        <member name="M:Caelum.CaelumClouds.GetVpParams">
-            <summary>
-            Shortcut function for vertex program parameters.</summary>
-            <remarks>Doesn't check if there is a material, can throws an exception.</remarks>
-        </member>
-        <member name="M:Caelum.CaelumClouds.GetTUS(System.UInt16)">
-            <summary>
-            Shortcut function for texture unit state parameters</summary>
-            <remarks>Doesn't check if there is a material, can throws an exception.</remarks>
-        </member>
-        <member name="T:Caelum.EnumListBoxEditor">
-            <summary>
-            Draws a CheckedListBox which allows to tick some values
-            from a enum (flags).
-            </summary>
-        </member>
-        <member name="M:Caelum.EnumListBoxEditor.EnumContainsValue(System.Type,System.Object,System.Object)">
-            <summary>
-            Sets if a value is contained in an other enum value
-            whose the type is specified type.</summary>
-            <param name="enumType">Enum type</param>
-            <param name="enumValue">Value with type enumType</param>
-            <param name="value">Value wanted</param>
-            <returns>True if the value is contained in enumValue, else returns false</returns>
-        </member>
-        <member name="T:Caelum.CaelumComponent">
-            <summary>
-            Contains all Caelum's types. A flag is
-            set to allow <c>EnumListBoxEditor</c> creation.</summary>
-        </member>
-        <member name="T:Caelum.CaelumItem">
-            <summary>
-            Describes an element of caelum which can be created
-            in the world.</summary>
-        </member>
-        <member name="M:Caelum.CaelumItem.IsContainType(Caelum.CaelumComponent)">
-            <summary>
-            Checks if this element describes a type of caelum.</summary>
-            <remarks>An element can describe more than one type.</remarks>
-            <param name="type">The type to search</param>
-            <returns>Returns true if this element contains 
-            <paramref name="type"/>, else returns false</returns>
-        </member>
-        <member name="T:Caelum.CaelumUtils">
-            <summary>
-            Defines some math tools. It also make all necessary 
-            conversion for NAE (I prefer use Yaxis as UpAxis).</summary>
-        </member>
-        <member name="F:Caelum.CaelumUtils.XAxis">
-            Wraps OgreAxis to NAE axis
-            So YAxis is the up axis and ZAxis is the deep axis
-        </member>
-        <member name="F:Caelum.CaelumUtils.ColorWhite">
-            Wraps some Colors to NAE
-            @note: ColorBlack is equal to ColorValue.Zero
-        </member>
-        <member name="M:Caelum.CaelumUtils.GenerateQuat(Engine.MathEx.Vec3,Engine.MathEx.Degree)">
-            <summary>
-            Generates a quaternion from an axis and an Euler's angle in degrees.</summary>
-            <param name="axis">The axis of the rotation</param>
-            <param name="angle">An Euler's angle in degrees</param>
-        </member>
-        <member name="M:Caelum.CaelumUtils.GenerateQuat(Engine.MathEx.Vec3,Engine.MathEx.Radian)">
-            <summary>
-            Generates a quaternion from an axis and an Euler's angle in radians.</summary>
-            <param name="axis">The axis of the rotation</param>
-            <param name="angle">An Euler's angle in Radian</param>
-        </member>
-        <member name="M:Caelum.CaelumUtils.IsContainType(Caelum.CaelumItem,Caelum.CaelumComponent)">
-            <summary>
-            Checks if an item describes a type of caelum.</summary>
-            <remarks>An item can describe more than one type.</remarks>
-            <param name="item">The item which may contain <paramref name="type"/></param>
-            <param name="type">The type to search</param>
-            <returns>Returns true if this item contains</returns>
-        </member>
-        <member name="M:Caelum.CaelumUtils.IsContainType(Caelum.CaelumComponent,Caelum.CaelumComponent)">
-            <summary>
-            Checks if an item describes a type of caelum.</summary>
-            <remarks>An item can describe more than one type.</remarks>
-            <param name="item">The item which may contain <paramref name="type"/></param>
-            <param name="type">The type to search</param>
-            <returns>Returns true if this item contains</returns>
-        </member>
-        <member name="T:Caelum.CaelumStarfield">
-            <summary>
-            Class for starfield.</summary>
         </member>
         <member name="T:Caelum.Astronomy">
              <summary>
@@ -586,6 +543,49 @@
         <member name="M:Caelum.Astronomy.RestoreFloatingPointMode(System.Int32)">
             <summary>
             Restore old floating point precission.</summary>
+        </member>
+        <member name="T:Caelum.SkyColorModel">
+            <summary>
+            Class which returns various sky colours.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetSunColor">
+            <summary>
+            Gets the colour of the sun sphere.
+            This colour is used to draw the sun sphere in the sky.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetSunLight">
+            <summary>
+            Gets the colour of sun light.
+            This color is used to illuminate the scene.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetMoonBodyColour">
+            <summary>
+            Gets the colour of moon's body.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetMoonLight">
+            <summary>
+            Gets the colour of moon's light.
+            This color is used to illuminate the scene.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetFogColor">
+            <summary>
+            Gets the fog colour for a certain daytime.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetFogDensity">
+            <summary>
+            Gets the fog density for a certain daytime.</summary>
+        </member>
+        <member name="M:Caelum.SkyColorModel.GetBMPFromPath(System.String)">
+            <summary>
+            Gets a bitmap from his virtual path</summary>
+        </member>
+        <member name="P:Caelum.SkyColorModel.GradientImage">
+            <summary>
+            Sets the name of the image used to calculate sun color</summary>
+        </member>
+        <member name="P:Caelum.SkyColorModel.SkyGradientImage">
+            <summary>
+            Sets the sky color gradients image's name.</summary>
         </member>
     </members>
 </doc>

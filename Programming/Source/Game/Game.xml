@@ -39,6 +39,11 @@
             Destroys the background world.
             </summary>
         </member>
+        <member name="T:Game.StudioLogoWindow">
+            <summary>
+            Defines a your project logo window.
+            </summary>
+        </member>
         <member name="T:Game.GameWindow">
             <summary>
             Defines a base window of game.
