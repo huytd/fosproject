@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5D197770-2CEF-48B2-ABAB-C5C0152B0151}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutWindow.cs" />
+    <Compile Include="StudioLogoWindow.cs" />
     <Compile Include="VHFOS\VHFOSGameWindows.cs" />
     <Compile Include="WorldLoadSaveWindow.cs" />
     <Compile Include="ExampleCustomInputDevice.cs" />

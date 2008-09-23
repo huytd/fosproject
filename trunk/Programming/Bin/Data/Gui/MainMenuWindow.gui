@@ -2,35 +2,46 @@
 
 control Control
 {
+	position = Parent -0.1757813 0
 	size = Parent 1.341797 1
+	anchor = Left, Bottom, Top, Right
 	control Control
 	{
 		topMost = True
-		position = Screen 0.7617188 0.2864583
+		position = Screen 0.1464844 0.06510416
 		size = Parent 0.14 0.14
 		name = Run
 		backTexture = VietHeroes\MenuButton\PlayDemo_Active.png
+		visible = False
 		mouseCover = True
 	}
 	control Control
 	{
 		topMost = True
-		position = Texture 840 320
+		position = Texture 100 150
 		size = Parent 0.11 0.11
 		backTexture = VietHeroes\MenuButton\Option_Active.png
+		visible = False
 	}
 	control Control
 	{
 		topMost = True
-		position = Texture 810 400
+		position = Texture 70 230
 		size = Parent 0.11 0.11
 		backTexture = VietHeroes\MenuButton\Credit_Active.png
+		visible = False
 	}
 	control Control
 	{
 		topMost = True
-		position = Texture 810 490
+		position = Texture 70 320
 		size = Parent 0.1 0.1
 		backTexture = VietHeroes\MenuButton\Exit_Active.png
+		visible = False
+	}
+	control Control
+	{
+		position = Texture 0 0
+		backTexture = VietHeroes\MenuButton\menu.png
 	}
 }

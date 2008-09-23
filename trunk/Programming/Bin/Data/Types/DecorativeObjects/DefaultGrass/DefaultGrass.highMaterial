@@ -1,15 +1,17 @@
 highLevelMaterial DefaultGrass
 {
 	template = VegetationMaterial
-	culling = False
+	blending = AlphaBlend
+	lighting = False
 	useNormals = False
-	alphaRejectFunction = Greater
-	alphaRejectValue = 170
-	fadingByDistanceRange = 100 110
+	receiveShadows = False
+	alphaRejectFunction = GreaterEqual
+	alphaRejectValue = 60
+	fadingByDistanceRange = 50 50
 	diffuseScale = 0.3607843 0.5686275 0.3960785
 	receiveObjectsPositionsFromVertices = True
 	diffuse1Map
 	{
-		texture = Types\DecorativeObjects\DefaultGrass\DefaultGrass.png
+		texture = Types\DecorativeObjects\DefaultGrass\grass3_alegion-stock.png
 	}
 }

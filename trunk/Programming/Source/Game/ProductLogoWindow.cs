@@ -47,7 +47,7 @@ namespace Game
 				return true;
 			if( e.Key == EKeys.Escape || e.Key == EKeys.Return || e.Key == EKeys.Space )
 			{
-				Destroy();
+				Destroy(true);
 				return true;
 			}
 			return false;
@@ -57,7 +57,7 @@ namespace Game
 		{
 			if( button == EMouseButtons.Left || button == EMouseButtons.Right )
 			{
-				Destroy();
+				Destroy(true);
 				return true;
 			}
 			return base.OnMouseDown( button );
@@ -67,15 +67,25 @@ namespace Game
 		{
 			base.OnTick( delta );
 			if( Time > lifeTime )
-				Destroy();
+				Destroy(false);
 		}
 
-		void Destroy()
+        void Destroy(bool breaked)
 		{
-			SetShouldDetach();
+            SetShouldDetach();
+            if (breaked)
+            {
+                EngineApp.Instance.MouseRelativeMode = false;
+                EngineApp.Instance.MousePosition = new Vec2(.9f, .8f);
 
-			//go to main menu
-			ScreenControlManager.Instance.Controls.Add( new MainMenuWindow() );
+                //go to main menu
+                ScreenControlManager.Instance.Controls.Add(new MainMenuWindow());
+            }
+            else
+            {
+                //go to product logo window
+                ScreenControlManager.Instance.Controls.Add(new StudioLogoWindow());                
+            }
 		}
 
 		protected override void OnRenderUI( GuiRenderer renderer )
