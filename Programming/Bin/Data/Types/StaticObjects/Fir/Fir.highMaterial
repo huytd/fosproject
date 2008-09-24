@@ -1,9 +1,0 @@
-highLevelMaterial Fir
-{
-	template = VegetationMaterial
-	lighting = False
-	culling = False
-	alphaRejectFunction = GreaterEqual
-	alphaRejectValue = 182
-	diffuseMap = Types\StaticObjects\Fir\Fir.tga
-}
