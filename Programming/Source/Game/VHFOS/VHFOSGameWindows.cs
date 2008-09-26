@@ -890,9 +890,9 @@ namespace Game
             //Player
             string playerTypeName = playerUnit != null ? playerUnit.Type.Name : "";
 
-            //UpdateHUDControlIcon(hudControl.Controls["Game/PlayerIcon"], playerTypeName);
+            UpdateHUDControlIcon(hudControl.Controls["Game/PlayerIcon"], playerTypeName);
             //Update player name
-            //hudControl.Controls["Game/Player"].Text = playerTypeName;
+            hudControl.Controls["Game/Player"].Text = playerTypeName;
 
             //HealthBar
             {
@@ -979,6 +979,12 @@ namespace Game
                 hudControl.Controls["Game/WeaponBulletCountAlternative"].Text = bulletCountAlternative;
 
                 UpdateHUDControlIcon(hudControl.Controls["Game/WeaponIcon"], weaponName);
+
+
+                ColorValue color;
+                color = new ColorValue(1, 1, 0);
+                EngineApp.Instance.ScreenGuiRenderer.AddText("Weapon loaded\"",
+                    new Vec2(.9f, .9f), HorizontalAlign.Center, VerticalAlign.Center, color);
             }
 
             //CutScene
