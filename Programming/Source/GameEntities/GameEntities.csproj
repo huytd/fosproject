@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3F0C9CE6-824F-4B8F-A4F3-68A70F7CF63A}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -113,6 +113,7 @@
     <Compile Include="GameWorld.cs" />
     <Compile Include="General.cs" />
     <Compile Include="Gun.cs" />
+    <Compile Include="VHFOS\EInventory.cs" />
     <Compile Include="WeaponItem.cs" />
     <Compile Include="HealthItem.cs" />
     <Compile Include="Influence.cs" />

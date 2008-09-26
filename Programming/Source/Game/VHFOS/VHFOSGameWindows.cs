@@ -32,6 +32,10 @@ namespace Game
             Free,
             Count,
         }
+
+        Unit PlayerUnit;
+        PlayerCharacter PlayerChar;
+
         [Config("Camera", "cameraType")]
         static CameraType cameraType;
 
@@ -324,6 +328,19 @@ namespace Game
                 return true;
             }
 
+            if (e.Key == EKeys.Escape)
+            {
+                if(PlayerChar != null)
+                if (PlayerChar.Inventory != null)
+                {
+                    PlayerChar.Inventory.SetShouldDetach();
+                    PlayerChar.Inventory = null;
+
+                    EntitySystemWorld.Instance.Simulation = true;
+                    EngineApp.Instance.MouseRelativeMode = true;
+                }
+            }
+
             //GameControlsManager
             if (EntitySystemWorld.Instance.Simulation)
             {
@@ -337,6 +354,44 @@ namespace Game
             return base.OnKeyDown(e);
         }
 
+//Begin hack
+
+        Body GetTarget(float distance)
+        {
+            Ray lookRay = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay(new Vec2(.5f, .5f));
+
+            Body body = null;
+
+            Vec3 lookFrom = lookRay.Origin;
+            Vec3 lookDir = Vec3.Normalize(lookRay.Direction);
+
+            PlayerUnit = GetPlayerUnit();
+
+            RayCastResult[] piercingResult = PhysicsWorld.Instance.RayCastPiercing(new Ray(lookFrom, lookDir * distance), (int)ContactGroup.CastOnlyContact);
+
+            foreach (RayCastResult result in piercingResult)
+            {
+                bool ignore = false;
+
+                MapObject obj = MapSystemWorld.GetMapObjectByBody(result.Shape.Body);
+
+                Dynamic dynamic = obj as Dynamic;
+                if (dynamic != null && PlayerUnit != null && dynamic.GetParentUnit() == GetPlayerUnit())
+                    ignore = true;
+
+                if (!ignore)
+                {
+                    body = result.Shape.Body;
+                    return body;
+                }
+            }
+            return body;
+        }
+ 
+
+
+
+//End hack
         protected override bool OnKeyPress(KeyPressEvent e)
         {
             //currentAttachedGuiObject
@@ -348,6 +403,8 @@ namespace Game
 
             return base.OnKeyPress(e);
         }
+
+
 
         protected override bool OnKeyUp(KeyEvent e)
         {
@@ -449,6 +506,16 @@ namespace Game
                                 mouseOffset /= 3;
 
                     GameControlsManager.Instance.DoMouseMoveRelative(mouseOffset);
+                }
+            }
+
+            Body body = GetTarget(3.0f);
+            if (body != null)
+            {
+                MapObject obj = MapSystemWorld.GetMapObjectByBody(body);
+                if (obj != null && (obj as GameGuiObject) == null)
+                {
+                    PlayerChar.UseItem = obj as Item;
                 }
             }
 

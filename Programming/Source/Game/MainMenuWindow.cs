@@ -39,11 +39,11 @@ namespace Game
             //window.ColorMultiplier = new ColorValue( 1, 1, 1, 0 );
 			Controls.Add( window );
 
-            ////Run button handler
-            //( (EControl)window.Controls[ "Run" ] ).Click += delegate( EButton sender )
-            //{
-            //    GameEngineApp.Instance.SetNeedMapLoad( "Maps\\Vietheroes\\Map.map" );
-            //};            		
+            //Run button handler
+            ((EButton)window.Controls["Run"]).Click += delegate(EButton sender)
+            {
+                GameEngineApp.Instance.SetNeedMapLoad("Maps\\Vietheroes\\Map.map");
+            };            		
 
 			//play background music
             GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
