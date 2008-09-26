@@ -124,13 +124,7 @@ namespace GameEntities
 
 		public bool Take( Unit unit )
 		{
-			bool ret = OnTake( unit );
-			if( ret )
-			{
-				unit.SoundPlay3D( Type.SoundTake, .5f, true );
-				Die();
-			}
-			return ret;
+            return false; 
 		}
 
 	}

@@ -43,7 +43,7 @@ namespace GameEntities
 			if( Type.WeaponType != null )
 			{
 				PlayerCharacter character = unit as PlayerCharacter;
-				if( character != null && character.TakeWeapon( Type.WeaponType ) )
+                if (character != null && character.TakeItem(Type.WeaponType))
 					take = true;
 			}
 			else

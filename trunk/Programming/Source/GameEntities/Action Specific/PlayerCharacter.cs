@@ -13,9 +13,19 @@ using Engine.MapSystem;
 using Engine.PhysicsSystem;
 using Engine.Renderer;
 using GameCommon;
+using Engine.UISystem;
 
 namespace GameEntities
 {
+    public enum ItemSlot
+    {
+        None,
+        MainWeapon,
+        Pistol,
+        Health,
+        Ammo
+    }
+
 	/// <summary>
 	/// Defines the <see cref="PlayerCharacter"/> entity type.
 	/// </summary>
@@ -30,7 +40,13 @@ namespace GameEntities
 		[FieldSerialize]
 		List<WeaponItem> weapons = new List<WeaponItem>();
 
-		///////////////////////////////////////////
+        [FieldSerialize]
+        List<InventoryItem> items = new List<InventoryItem>();
+
+        [FieldSerialize]
+        int inventorySize;
+
+    	///////////////////////////////////////////
 
 		public class WeaponItem
 		{
@@ -50,6 +66,96 @@ namespace GameEntities
 				return weaponType.Name;
 			}
 		}
+
+        public class InventoryItem
+        {
+            [FieldSerialize]
+            DynamicType type;
+
+            [FieldSerialize]
+            ItemType itemType;
+
+            [FieldSerialize]
+            ItemSlot slot;
+
+            [FieldSerialize]
+            string icon;
+
+            [FieldSerialize]
+            string hint;
+
+            int normalBulletCount;
+            int normalMagazineCount;
+
+            int alternativeBulletCount;
+            int alternativeMagazineCount;
+
+            public DynamicType Type
+            {
+                get { return type; }
+                set { type = value; }
+            }
+
+            public ItemType ItemType
+            {
+                get { return itemType; }
+                set { itemType = value; }
+            }
+
+            public ItemSlot Slot
+            {
+                get { return slot; }
+                set { slot = value; }
+            }
+
+            [Editor(typeof(EditorTextureUITypeEditor), typeof(UITypeEditor))]
+            public string Icon
+            {
+                get { return icon; }
+                set { icon = value; }
+            }
+
+            public string Hint
+            {
+                get { return hint; }
+                set { hint = value; }
+            }
+
+            [Browsable(false)]
+            public int NormalBulletCount
+            {
+                get { return normalBulletCount; }
+                set { normalBulletCount = value; }
+            }
+
+            [Browsable(false)]
+            public int NormalMagazineCount
+            {
+                get { return normalMagazineCount; }
+                set { normalMagazineCount = value; }
+            }
+
+            [Browsable(false)]
+            public int AlternativeBulletCount
+            {
+                get { return alternativeBulletCount; }
+                set { alternativeBulletCount = value; }
+            }
+
+            [Browsable(false)]
+            public int AlternativeMagazineCount
+            {
+                get { return alternativeMagazineCount; }
+                set { alternativeMagazineCount = value; }
+            }
+
+            public override string ToString()
+            {
+                if (type == null)
+                    return "(not initialized)";
+                return type.Name;
+            }
+        }
 
 		///////////////////////////////////////////
 
@@ -71,19 +177,34 @@ namespace GameEntities
 		{
 			get { return weapons; }
 		}
+
+        public int InventorySize
+        {
+            get { return inventorySize; }
+            set { inventorySize = value; }
+        }
+
+        
+
+        public List<InventoryItem> Items
+        {
+            get { return items; }
+            set { items = value; }
+        }
 	}
 
 	public class PlayerCharacter : GameCharacter
 	{
 		[FieldSerialize]
-		List<WeaponItem> weapons = new List<WeaponItem>();
+		List<WeaponItem> weapons = new List<WeaponItem>();               
 
 		[FieldSerialize]
 		Weapon activeWeapon;
 		MapObjectAttachedMapObject activeWeaponAttachedObject;
 
 		bool allowContusionMotionBlur = true;
-		[FieldSerialize]
+		
+        [FieldSerialize]
 		float contusionTimeRemaining;
 
 		///////////////////////////////////////////
@@ -140,12 +261,57 @@ namespace GameEntities
 			public float life;
 
 			public List<WeaponItem> weapons;
+            public List<InventoryItem> items;
+
 			public int activeWeaponIndex;
 		}
 
 		///////////////////////////////////////////
 
-		PlayerCharacterType _type = null; public new PlayerCharacterType Type { get { return _type; } }
+		PlayerCharacterType _type = null;
+
+        public new PlayerCharacterType Type { get { return _type; } }       
+           
+        public class InventoryItem
+        {
+            int index = -1;
+            int count = 0;
+
+            public int Index
+            {
+                get { return index; }
+                set { index = value; }
+            }
+
+            public int Count
+            {
+                get { return count; }
+                set { count = value; }
+            }
+
+            public void Copy(InventoryItem Source)
+            {
+                index = Source.Index;
+                count = Source.Count;
+            }
+
+            public static void Swap(InventoryItem Item1, InventoryItem Item2)
+            {
+                InventoryItem Temp = new InventoryItem();
+                Temp.Copy(Item1);
+                Item1.Copy(Item2);
+                Item2.Copy(Temp);
+            }
+        }
+
+        public new List<InventoryItem> items;
+
+        [Browsable(false)]
+        public new List<InventoryItem> Items
+        {
+            get { return items; }
+            set { items = value; }
+        }
 
 		[Browsable( false )]
 		public List<WeaponItem> Weapons
@@ -162,134 +328,321 @@ namespace GameEntities
 			return -1;
 		}
 
-		public bool TakeWeapon( WeaponType weaponType )
-		{
-			int index = GetWeaponIndex( weaponType );
-			if( index == -1 )
-				return false;
+        InventoryItem mainWeapon = new InventoryItem();
+        [Browsable( false )]
+        public InventoryItem MainWeapon
+         {
+             get {return mainWeapon; }
+             set { mainWeapon = value; }
+         }
 
-			if( weapons[ index ].exists )
-				return true;
+         int activePistol = -1;
+         [Browsable( false )]
+         public int ActivePistol
+         {
+             get { return activePistol; }
+             set { activePistol = value; }
+         }
 
-			weapons[ index ].exists = true;
+ 
+         InventoryItem pistol = new InventoryItem();
+         [Browsable( false )]
+         public InventoryItem Pistol
+         {
+             get { return pistol; }
+             set { pistol = value; }
+         }
 
-			SetActiveWeapon( index );
+         
+         int activeMainWeapon = -1;
+         [Browsable( false )]
+         public int ActiveMainWeapon
+         {
+             get { return activeMainWeapon; }
+             set { activeMainWeapon = value; }
+         }
 
-			return true;
-		}
 
-		public bool TakeBullets( BulletType bulletType, int count )
-		{
-			bool taked = false;
+         ItemSlot activeSlot;
+         [Browsable(false)]
+         public ItemSlot ActiveSlot
+         {
+             get { return activeSlot; }
+             set { activeSlot = value; }
+         }
 
-			for( int n = 0; n < weapons.Count; n++ )
-			{
-				GunType gunType = Type.Weapons[ n ].WeaponType as GunType;
-				if( gunType == null )
-					continue;
 
-				if( gunType.NormalMode.BulletType == bulletType )
-				{
-					if( weapons[ n ].normalBulletCount < gunType.NormalMode.BulletCapacity )
-					{
-						taked = true;
-						weapons[ n ].normalBulletCount += count;
-						if( weapons[ n ].normalBulletCount > gunType.NormalMode.BulletCapacity )
-							weapons[ n ].normalBulletCount = gunType.NormalMode.BulletCapacity;
-					}
-				}
-				if( gunType.AlternativeMode.BulletType == bulletType )
-				{
-					if( weapons[ n ].alternativeBulletCount < gunType.AlternativeMode.BulletCapacity )
-					{
-						taked = true;
-						weapons[ n ].alternativeBulletCount += count;
-						if( weapons[ n ].alternativeBulletCount > gunType.AlternativeMode.BulletCapacity )
-							weapons[ n ].alternativeBulletCount = gunType.AlternativeMode.BulletCapacity;
-					}
-				}
-			}
+         [Browsable(false)]
+         public int InventorySize
+         {
+             get { return Type.InventorySize; }
+         }
 
-			if( ActiveWeapon != null )
-			{
-				Gun activeGun = activeWeapon as Gun;
-				if( activeGun != null )
-					activeGun.AddBullets( bulletType, count );
-			}
 
-			return taked;
-		}
+         Item useItem;
+         [Browsable(false)]
+         public Item UseItem
+         {
+             get { return useItem; }
+             set { useItem = value; }
+         }
 
-		public bool SetActiveWeapon( int index )
-		{
-			if( index < -1 || index >= weapons.Count )
-				return false;
+         EInventory inventory;
+         [Browsable(false)]
+         public EInventory Inventory
+         {
+             get { return inventory; }
+             set { inventory = value; }
+         }
 
-			if( index != -1 )
-				if( !weapons[ index ].exists )
-					return false;
 
-			if( activeWeapon != null )
-			{
-				activeWeapon.PreFire -= activeWeapon_PreFire;
+         public int GetFreeSlot()
+         {
+             for (int i = 0; i < Type.InventorySize; i++)
+             {
+                 if (items[i].Index == -1)
+                 {
+                     return i;
+                 }
+             }
+             return -1;
+         }
 
-				if( index != -1 && Type.Weapons[ index ].WeaponType == activeWeapon.Type )
-					return true;
+         public int GetBulletSlot(int bulletIndex)
+         {
+             for (int i = 0; i < InventorySize; i++)
+             {
+                 if (items[i].Index == bulletIndex)
+                 {
+                     return i;
+                 }
+             }
+             return -1;
+         }
 
-				foreach( MapObjectAttachedObject attachedObject in AttachedObjects )
-				{
-					MapObjectAttachedMapObject attachedMapObject = attachedObject as MapObjectAttachedMapObject;
-					if( attachedMapObject == null )
-						continue;
+         public int GetBulletGun(int bulletIndex)
+         {
+             for (int i = 0; i < Type.Items.Count; i++)
+             {
+                 GunType gunType = Type.Items[i].Type as GunType;
+                 if (gunType != null)
+                 {
+                     if (gunType.NormalMode.BulletType == Type.Items[bulletIndex].Type ||
+                     gunType.AlternativeMode.BulletType == Type.Items[bulletIndex].Type)
+                     {
+                         return i;
+                     }
+                 }
+             }
+             return -1;
+         }
 
-					Weapon weapon = attachedMapObject.MapObject as Weapon;
-					if( weapon == activeWeapon )
-					{
-						Gun activeGun = activeWeapon as Gun;
-						if( activeGun != null )
-						{
-							int activeIndex = GetWeaponIndex( activeWeapon.Type );
-							weapons[ activeIndex ].normalMagazineCount =
-								activeGun.NormalMode.BulletMagazineCount;
-							weapons[ activeIndex ].alternativeMagazineCount =
-								activeGun.AlternativeMode.BulletMagazineCount;
-						}
+         public bool SetAmmoCount(BulletType bulletType, int count)
+         {
+             int index = GetItemIndex(bulletType);
+             if (index != -1)
+             {
+                 int slot = GetBulletSlot(index);
+                 if (slot == -1)
+                 {
+                     slot = GetFreeSlot();
+                     if (slot != -1)
+                     {
+                         items[slot].Index = index;
+                     }
+                     else
+                     {
+                         return false;
+                     }
+                 }
+                 items[slot].Count = count;
+             }
+             return true;
+         }
 
-						Detach( attachedMapObject );
-						weapon.SetShouldDelete();
-						activeWeapon = null;
-						activeWeaponAttachedObject = null;
-						break;
-					}
-				}
-			}
+	
 
-			if( index != -1 )
-			{
-				activeWeapon = (Weapon)Entities.Instance.Create(
-					Type.Weapons[ index ].WeaponType, Parent );
+        public int GetItemIndex(DynamicType itemType)
+        {
+            for (int i = 0; i < Type.Items.Count; i++)
+            {
+                if (Type.Items[i].Type == itemType)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
-				Gun activeGun = activeWeapon as Gun;
 
-				if( activeGun != null )
-				{
-					activeGun.NormalMode.BulletCount = weapons[ index ].NormalBulletCount;
-					activeGun.NormalMode.BulletMagazineCount = weapons[ index ].NormalMagazineCount;
+        public bool TakeWeapon(WeaponType weaponType)
+        {
+            int index = GetWeaponIndex(weaponType);
+            if (index == -1)
+                return false;
 
-					activeGun.AlternativeMode.BulletCount = weapons[ index ].AlternativeBulletCount;
-					activeGun.AlternativeMode.BulletMagazineCount =
-						weapons[ index ].AlternativeMagazineCount;
-				}
+            if (weapons[index].exists)
+                return true;
 
-				activeWeapon.PostCreate();
+            weapons[index].exists = true;
 
-				CreateActiveWeaponAttachedObject();
+            SetActiveWeapon(index);
 
-				activeWeapon.PreFire += activeWeapon_PreFire;
-			}
+            return true;
+        }
 
-			return true;
-		}
+
+        public bool TakeItem(DynamicType itemType)
+        {
+            int index = GetItemIndex(itemType);
+            if (index == -1)
+                return false;
+
+            int Slot = GetFreeSlot();
+            if (Slot != -1)
+            {
+                items[Slot].Index = index;
+                return true;
+            }
+            return false;
+        }
+
+
+
+        public bool TakeBullets(BulletType bulletType, int count)
+        {
+            bool taked = false;
+
+            for (int i = 0; i < Type.Items.Count;  i++)
+            {
+                GunType gunType = Type.Items[i].Type as GunType;
+                if (gunType == null)
+                    continue;
+
+                if (gunType.NormalMode.BulletType == bulletType)
+                {
+                    if (Type.Items[i].NormalBulletCount < gunType.NormalMode.BulletCapacity)
+                    {
+                        int newCount = Type.Items[i].NormalBulletCount + count;
+                        if (newCount > gunType.NormalMode.BulletCapacity)
+                        {
+                            newCount = gunType.NormalMode.BulletCapacity;
+                        }
+                        taked = SetAmmoCount(bulletType, newCount);
+                        if (taked)
+                        {
+                            Type.Items[i].NormalBulletCount = newCount;
+                        }
+                    }
+                }
+                if (gunType.AlternativeMode.BulletType == bulletType)
+                {
+                    if (Type.Items[i].AlternativeBulletCount < gunType.AlternativeMode.BulletCapacity)
+                    {
+                        int newCount = Type.Items[i].AlternativeBulletCount + count;
+                        if (newCount > gunType.AlternativeMode.BulletCapacity)
+                        {
+                            newCount = gunType.AlternativeMode.BulletCapacity;
+                        }
+                        taked = SetAmmoCount(bulletType, newCount);
+                        if (taked)
+                        {
+                            Type.Items[i].AlternativeBulletCount = newCount;
+                        }
+                    }
+                }
+            }
+            if (ActiveWeapon != null)
+            {
+                Gun activeGun = activeWeapon as Gun;
+                if (activeGun != null)
+                {
+                    activeGun.AddBullets(bulletType, count);
+                    if (activeGun.Type.NormalMode.BulletType == bulletType)
+                    {
+                        SetAmmoCount(bulletType, activeGun.NormalMode.BulletCount);
+                    }
+                    else if (activeGun.Type.AlternativeMode.BulletType == bulletType)
+                    {
+                        SetAmmoCount(bulletType, activeGun.AlternativeMode.BulletCount);
+                    }
+                }
+            }
+            return taked;
+        }
+
+
+
+
+        public bool SetActiveWeapon(int index)
+        {
+            if (index < -1 || index >= items.Count) return false;
+            if (activeWeapon != null)
+            {
+                activeWeapon.PreFire -= activeWeapon_PreFire;
+                if (index != -1 && Type.Items[index].Type.Name == activeWeapon.Type.Name)
+                    return true;
+                foreach (MapObjectAttachedObject attachedObject in AttachedObjects)
+                {
+                    MapObjectAttachedMapObject attachedMapObject = attachedObject as MapObjectAttachedMapObject;
+                    if (attachedMapObject == null)
+                        continue;
+                    Weapon weapon = attachedMapObject.MapObject as Weapon;
+                    if (weapon == activeWeapon)
+                    {
+                        Gun activeGun = activeWeapon as Gun;
+                        if (activeGun != null)
+                        {
+                            int activeIndex = GetActiveWeapon();
+                            Type.Items[activeIndex].NormalMagazineCount = activeGun.NormalMode.BulletMagazineCount;
+                            Type.Items[activeIndex].AlternativeMagazineCount = activeGun.AlternativeMode.BulletMagazineCount;
+                        }
+
+                        Detach(attachedMapObject);
+                        weapon.SetShouldDelete();
+                        activeWeapon = null;
+                        activeWeaponAttachedObject = null;
+                        break;
+                    }
+                }
+            }
+
+            if (index != -1)
+            {
+                activeWeapon = (Weapon)Entities.Instance.Create(Type.Items[index].Type, Parent);
+
+                Gun activeGun = activeWeapon as Gun;
+
+                if (activeGun != null)
+                {
+                    activeGun.NormalMode.BulletCount = Type.Items[index].NormalBulletCount;
+                    activeGun.NormalMode.BulletMagazineCount = Type.Items[index].NormalMagazineCount;
+
+                    activeGun.AlternativeMode.BulletCount = Type.Items[index].AlternativeBulletCount;
+                    activeGun.AlternativeMode.BulletMagazineCount = Type.Items[index].AlternativeMagazineCount;
+                }
+
+                activeWeapon.PostCreate();
+
+                activeWeaponAttachedObject = new MapObjectAttachedMapObject();
+                activeWeaponAttachedObject.MapObject = activeWeapon;
+                activeWeaponAttachedObject.BoneSlot = GetBoneSlotFromAttachedMeshes(activeWeapon.Type.BoneSlot);
+                if (activeWeaponAttachedObject.BoneSlot == null)
+                {
+                    activeWeaponAttachedObject.PositionOffset = Type.WeaponAttachPosition;
+                }
+                Attach(activeWeaponAttachedObject);
+
+                activeWeapon.PreFire += activeWeapon_PreFire;
+
+                SoundPlay3D(Type.Items[index].ItemType.SoundTake, .5f, true);
+
+                WeaponTryReload();
+            }
+
+            return true;
+        }
+ 
 
 		void CreateActiveWeaponAttachedObject()
 		{
@@ -302,20 +655,20 @@ namespace GameEntities
 			Attach( activeWeaponAttachedObject );
 		}
 
-		int GetActiveWeapon()
-		{
-			if( activeWeapon == null )
-				return -1;
-			for( int n = 0; n < Weapons.Count; n++ )
-			{
-				if( weapons[ n ].Exists )
-				{
-					if( Type.Weapons[ n ].WeaponType == activeWeapon.Type )
-						return n;
-				}
-			}
-			return -1;
-		}
+
+        int GetActiveWeapon()
+        {
+            if (activeSlot == ItemSlot.MainWeapon)
+            {
+                return activeMainWeapon;
+            }
+            else if (activeSlot == ItemSlot.Pistol)
+            {
+                return activePistol;
+            }
+            return -1;
+        }
+ 
 
 		void SetActiveNextWeapon()
 		{
@@ -576,81 +929,118 @@ namespace GameEntities
 			}
 		}
 
-		protected override void OnIntellectCommand( Intellect.Command command )
-		{
-			base.OnIntellectCommand( command );
 
-			if( command.KeyPressed )
-			{
-				if( command.Key >= GameControlKeys.Weapon1 && command.Key <= GameControlKeys.Weapon9 )
-				{
-					int index = (int)command.Key - (int)GameControlKeys.Weapon1;
-					SetActiveWeapon( index );
-				}
+        protected override void OnIntellectCommand(Intellect.Command command)
+        {
+            base.OnIntellectCommand(command);
 
-				if( command.Key == GameControlKeys.PreviousWeapon )
-					SetActivePreviousWeapon();
-				if( command.Key == GameControlKeys.NextWeapon )
-					SetActiveNextWeapon();
-				if( command.Key == GameControlKeys.Fire1 )
-					WeaponTryFire( false );
-				if( command.Key == GameControlKeys.Fire2 )
-					WeaponTryFire( true );
-				if( command.Key == GameControlKeys.Reload )
-					WeaponTryReload();
-			}
-		}
+            if (command.KeyPressed)
+            {
+                if (command.Key == GameControlKeys.MainWeapon)
+                {
+                    SetActiveWeapon(ActiveMainWeapon);
+                    ActiveSlot = ItemSlot.MainWeapon;
+                }
+                else if (command.Key == GameControlKeys.Pistol)
+                {
+                    SetActiveWeapon(ActivePistol);
+                    ActiveSlot = ItemSlot.Pistol;
+                }
+                else if (command.Key == GameControlKeys.Fire1)
+                {
+                    WeaponTryFire(false);
+                }
+                else if (command.Key == GameControlKeys.Fire2)
+                {
+                    WeaponTryFire(true);
+                }
+                else if (command.Key == GameControlKeys.Reload)
+                {
+                    WeaponTryReload();
+                }
+                else if (command.Key == GameControlKeys.Use)
+                {                    
+                }
+                else if (command.Key == GameControlKeys.Inventory)
+                {
+                    if (inventory != null)
+                    {
+                        inventory.SetShouldDetach();
+                        inventory = null;
+
+                        EntitySystemWorld.Instance.Simulation = true;
+                        EngineApp.Instance.MouseRelativeMode = true;
+                    }
+                    else
+                    {
+                        inventory = new EInventory();
+                        ScreenControlManager.Instance.Controls.Add(inventory);
+
+                        EntitySystemWorld.Instance.Simulation = false;
+                        EngineApp.Instance.MouseRelativeMode = false;
+                    }
+                }
+            }
+        }
+ 
+ 
 
 		[Browsable( false )]
 		public Weapon ActiveWeapon
 		{
 			get { return activeWeapon; }
 		}
-
-		void WeaponTryFire( bool alternative )
-		{
-			if( activeWeapon == null )
-				return;
-
-			//set real weapon fire direction
-			{
-				//!!!!!mb not true use DefaultCamera here
-				Vec3 seeDir = SeePosition - RendererWorld.Instance.DefaultCamera.Position;
-
-				Vec3 lookTo = SeePosition;
-
-				for( int iter = 0; iter < 100; iter++ )
-				{
-					activeWeapon.SetForceFireRotationLookTo( lookTo );
-					Vec3 fireDir = activeWeapon.GetFireRotation( alternative ) * new Vec3( 1, 0, 0 );
-					Degree angle = MathUtils.GetVectorsAngle( seeDir, fireDir );
-
-					if( angle < 80 )
-						break;
-
-					const float step = .3f;
-					lookTo += seeDir * step;
-				}
-
-				activeWeapon.SetForceFireRotationLookTo( lookTo );
-			}
-
-			bool fired = activeWeapon.TryFire( alternative );
-
-			Gun activeGun = activeWeapon as Gun;
-			if( activeGun != null )
-			{
-				if( fired )
-				{
-					int index = GetWeaponIndex( activeWeapon.Type );
-					weapons[ index ].normalBulletCount = activeGun.NormalMode.BulletCount;
-					weapons[ index ].normalMagazineCount = activeGun.NormalMode.BulletMagazineCount;
-					weapons[ index ].alternativeBulletCount = activeGun.AlternativeMode.BulletCount;
-					weapons[ index ].alternativeMagazineCount =
-						activeGun.AlternativeMode.BulletMagazineCount;
-				}
-			}
-		}
+ void WeaponTryFire( bool alternative )
+ {
+     if( activeWeapon == null )
+     return;
+ 
+     //set real weapon fire direction
+     {
+     Vec3 seeDir = SeePosition - RendererWorld.Instance.DefaultCamera.Position;
+ 
+     Vec3 lookTo = SeePosition;
+ 
+     for( int iter = 0; iter < 100; iter++ )
+     {
+         activeWeapon.SetForceFireRotationLookTo( lookTo );
+         Vec3 fireDir = activeWeapon.GetFireRotation( alternative ) * new Vec3( 1, 0, 0 );
+         Degree angle = MathUtils.GetVectorsAngle( seeDir, fireDir );
+ 
+         if( angle < 80 )
+             break;
+ 
+         const float step = .3f;
+         lookTo += seeDir * step;
+         }
+ 
+         activeWeapon.SetForceFireRotationLookTo( lookTo );
+     }
+ 
+     bool fired = activeWeapon.TryFire( alternative );
+ 
+     Gun activeGun = activeWeapon as Gun;
+     if( activeGun != null )     {
+         if( fired )
+         {
+             int index = GetItemIndex( activeWeapon.Type );
+             Type.Items[ index ].NormalBulletCount = activeGun.NormalMode.BulletCount;
+             Type.Items[ index ].NormalMagazineCount = activeGun.NormalMode.BulletMagazineCount;
+             Type.Items[ index ].AlternativeBulletCount = activeGun.AlternativeMode.BulletCount;
+             Type.Items[ index ].AlternativeMagazineCount = activeGun.AlternativeMode.BulletMagazineCount;
+ 
+             int itemIndex = GetItemIndex( activeGun.Type.NormalMode.BulletType );
+             if( index != -1 )
+             {
+                 int slot = GetBulletSlot( itemIndex );
+                 if( slot != -1 )                 {
+                     items[ slot ].Count = activeGun.NormalMode.BulletCount;
+                 }
+             }
+         }
+     }
+ }
+ 
 
 		void WeaponTryReload()
 		{

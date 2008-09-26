@@ -89,24 +89,14 @@ namespace GameEntities
 		[DefaultJoystickValue( JoystickPOVs.POV1, JoystickPOVDirections.East )]
 		NextWeapon,
 
-		[DefaultKeyboardMouseValue( EKeys.D1 )]
-		Weapon1,
-		[DefaultKeyboardMouseValue( EKeys.D2 )]
-		Weapon2,
-		[DefaultKeyboardMouseValue( EKeys.D3 )]
-		Weapon3,
-		[DefaultKeyboardMouseValue( EKeys.D4 )]
-		Weapon4,
-		[DefaultKeyboardMouseValue( EKeys.D5 )]
-		Weapon5,
-		[DefaultKeyboardMouseValue( EKeys.D6 )]
-		Weapon6,
-		[DefaultKeyboardMouseValue( EKeys.D7 )]
-		Weapon7,
-		[DefaultKeyboardMouseValue( EKeys.D8 )]
-		Weapon8,
-		[DefaultKeyboardMouseValue( EKeys.D9 )]
-		Weapon9,
+        [DefaultKeyboardMouseValue(EKeys.D1)]
+        MainWeapon,
+
+        [DefaultKeyboardMouseValue(EKeys.D2)]
+        Pistol,
+
+        [DefaultKeyboardMouseValue(EKeys.I)]
+        Inventory,
 
 	}
 }
