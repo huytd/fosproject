@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Copyright note: this code is under BSD License (C) by Maxwolf
+ * http://www.neoaxisgroup.com/phpBB2/viewtopic.php?t=1552&start=0
+ */
+using System;
 using System.Collections.Generic;
 using System.Text;
 using GameEntities;
