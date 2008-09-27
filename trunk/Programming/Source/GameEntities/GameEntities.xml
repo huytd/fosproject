@@ -723,6 +723,11 @@
         <member name="M:GameEntities.Player.OnRelatedEntityDelete(Engine.EntitySystem.Entity)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnRelatedEntityDelete(Engine.EntitySystem.Entity)"/></summary>
         </member>
+        <member name="M:GameEntities.Inventory.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
         <member name="M:GameEntities.Inventory.AddItem(GameEntities.Item)">
             <summary>
             This returns true if it can be taken into inventory, false if full or current item has existed.
@@ -752,6 +757,12 @@
         <member name="M:GameEntities.Inventory.removeShouldReRender">
             <summary>
             Do not rerender all inventory flag
+            </summary>
+        </member>
+        <member name="P:GameEntities.Inventory.CurrentHoldItem">
+            <summary>
+            If there is a inventory item currtly selected by player, 
+            this variable will not Empty and contain selected slot name
             </summary>
         </member>
         <member name="T:GameEntities.RTSMineType">
