@@ -163,6 +163,10 @@ namespace GameEntities
 
                 this.inventory.Remove("temp");
             }
+
+            //Make selected icon to mouse
+            ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png";
+            currentHoldItem = String.Empty;
         }
 
         public void dropItem(Unit playerUnit, EControl hud)
@@ -240,6 +244,25 @@ namespace GameEntities
                     return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Determiter and select inventory slot if a item is existed
+        /// </summary>
+        /// <param name="battleshipPos">Item slot name</param>
+        public void holdItem(string battleshipPos)
+        {
+            Vec2 location = InventoryHelpers.BattleShip2Vector(battleshipPos);
+            
+            Item item = this.inventory[location] as Item;
+            if (item == null) return;
+                        
+            {
+                //Make selected icon to mouse
+                ScreenControlManager.Instance.DefaultCursor = item.Type.InventoryIcon;
+
+                currentHoldItem = battleshipPos;
+            }            
         }
 
         private Vec2 findFreeSpace()

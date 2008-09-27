@@ -749,6 +749,12 @@
             <param name="theItem">The new item to check</param>
             <returns>Bool value, true if item existed, false if not exist.</returns>
         </member>
+        <member name="M:GameEntities.Inventory.holdItem(System.String)">
+            <summary>
+            Determiter and select inventory slot if a item is existed
+            </summary>
+            <param name="battleshipPos">Item slot name</param>
+        </member>
         <member name="M:GameEntities.Inventory.setShouldReRender">
             <summary>
             Rerender all inventory flag
