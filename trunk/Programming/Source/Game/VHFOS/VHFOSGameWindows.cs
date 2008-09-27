@@ -15,6 +15,8 @@ using Engine.MapSystem;
 using Engine.PhysicsSystem;
 using Engine.FileSystem;
 using Engine.Utils;
+using System.Collections;
+using Engine.MathEx;
 using GameCommon;
 using GameEntities;
 
@@ -32,10 +34,6 @@ namespace Game
             Free,
             Count,
         }
-
-        Unit PlayerUnit;
-        PlayerCharacter PlayerChar;
-
         [Config("Camera", "cameraType")]
         static CameraType cameraType;
 
@@ -78,7 +76,9 @@ namespace Game
         //The list of ObserveCameraArea's for faster work
         List<ObserveCameraArea> observeCameraAreas = new List<ObserveCameraArea>();
 
-        //
+        //Sound delete
+        ////Inventory Icon
+        //List <EControl> inventorySlotButton = new List<EControl>(12);
 
         protected override void OnAttach()
         {
@@ -86,8 +86,11 @@ namespace Game
 
             //To load the HUD screen
             hudControl = ControlDeclarationManager.Instance.CreateControl("Gui\\ActionHUD.gui");
+
             //Attach the HUD screen to the this window
             Controls.Add(hudControl);
+
+            hudControl.Controls["Inventory"].Visible = false;
 
             //CutSceneManager specific
             if (CutSceneManager.Instance != null)
@@ -120,6 +123,18 @@ namespace Game
             //accept commands of the player
             GameControlsManager.Instance.GameControlsEvent += GameControlsManager_GameControlsEvent;
 
+            //Accept command from inventory
+            {
+                Unit playerUnit = GetPlayerUnit();
+                foreach (DictionaryEntry dItem in playerUnit.Inventory.getHashtable())
+                {
+
+                    Item theOrigItem = (Item)dItem.Value;
+
+                    (hudControl.Controls["Inventory/" + InventoryHelpers.Vector2BattleShip((Vec2)dItem.Key)] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                }
+            }
+
             //minimap
             minimapControl = hudControl.Controls["Game/Minimap"];
             //string textureName = Map.Instance.GetVirtualFileDirectory() + "\\Minimap\\Minimap";
@@ -131,7 +146,12 @@ namespace Game
                    new Vec2(.5f, .9f), HorizontalAlign.Center, VerticalAlign.Center);
 
             EngineConsole.Instance.Print("Warning: Minimap render ", new ColorValue(1, 0, 0));
-          
+
+        }
+
+        public void InventoryItem_Click(EButton sender)
+        {
+
         }
 
         protected override void OnDetach()
@@ -159,7 +179,7 @@ namespace Game
             Bounds initialBounds = Map.Instance.InitialCollisionBounds;
             Rect mapRect = new Rect(initialBounds.Minimum.ToVec2(), initialBounds.Maximum.ToVec2());
 
-            
+
             Vec2 mapSizeInv = new Vec2(1, 1) / mapRect.Size;
 
             //draw units
@@ -184,11 +204,11 @@ namespace Game
                 //if (finded)
                 //    texture = TextureManager.Instance.Load(textureFileName);
 
-                
+
 
                 Unit playerUnit = GetPlayerUnit();
 
-                Rect rect = new Rect(playerUnit.MapBounds.Minimum.ToVec2(), 
+                Rect rect = new Rect(playerUnit.MapBounds.Minimum.ToVec2(),
                                      playerUnit.MapBounds.Maximum.ToVec2()
                                      );
 
@@ -216,13 +236,13 @@ namespace Game
 
                 renderer.AddQuad(rect, color);
 
-                
+
             }
 
             //foreach (Entity entity in Map.Instance.Children)
             //{
             //    GameCharacter unit = entity as GameCharacter;
-                
+
             //    if (unit == null)
             //        continue;
 
@@ -328,16 +348,21 @@ namespace Game
                 return true;
             }
 
-            if (e.Key == EKeys.Escape)
+            if (e.Key == EKeys.Tab)
             {
-                if(PlayerChar != null)
-                if (PlayerChar.Inventory != null)
+                if (hudControl.Controls["Inventory"].Visible)
                 {
-                    PlayerChar.Inventory.SetShouldDetach();
-                    PlayerChar.Inventory = null;
+                    hudControl.Controls["Inventory"].Visible = false;
 
                     EntitySystemWorld.Instance.Simulation = true;
                     EngineApp.Instance.MouseRelativeMode = true;
+                }
+                else
+                {
+                    hudControl.Controls["Inventory"].Visible = true;
+
+                    EntitySystemWorld.Instance.Simulation = false;
+                    EngineApp.Instance.MouseRelativeMode = false;
                 }
             }
 
@@ -354,44 +379,6 @@ namespace Game
             return base.OnKeyDown(e);
         }
 
-//Begin hack
-
-        Body GetTarget(float distance)
-        {
-            Ray lookRay = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay(new Vec2(.5f, .5f));
-
-            Body body = null;
-
-            Vec3 lookFrom = lookRay.Origin;
-            Vec3 lookDir = Vec3.Normalize(lookRay.Direction);
-
-            PlayerUnit = GetPlayerUnit();
-
-            RayCastResult[] piercingResult = PhysicsWorld.Instance.RayCastPiercing(new Ray(lookFrom, lookDir * distance), (int)ContactGroup.CastOnlyContact);
-
-            foreach (RayCastResult result in piercingResult)
-            {
-                bool ignore = false;
-
-                MapObject obj = MapSystemWorld.GetMapObjectByBody(result.Shape.Body);
-
-                Dynamic dynamic = obj as Dynamic;
-                if (dynamic != null && PlayerUnit != null && dynamic.GetParentUnit() == GetPlayerUnit())
-                    ignore = true;
-
-                if (!ignore)
-                {
-                    body = result.Shape.Body;
-                    return body;
-                }
-            }
-            return body;
-        }
- 
-
-
-
-//End hack
         protected override bool OnKeyPress(KeyPressEvent e)
         {
             //currentAttachedGuiObject
@@ -403,8 +390,6 @@ namespace Game
 
             return base.OnKeyPress(e);
         }
-
-
 
         protected override bool OnKeyUp(KeyEvent e)
         {
@@ -506,16 +491,6 @@ namespace Game
                                 mouseOffset /= 3;
 
                     GameControlsManager.Instance.DoMouseMoveRelative(mouseOffset);
-                }
-            }
-
-            Body body = GetTarget(3.0f);
-            if (body != null)
-            {
-                MapObject obj = MapSystemWorld.GetMapObjectByBody(body);
-                if (obj != null && (obj as GameGuiObject) == null)
-                {
-                    PlayerChar.UseItem = obj as Item;
                 }
             }
 
@@ -840,6 +815,7 @@ namespace Game
 
             UpdateHUD();
             UpdateCurrentPlayerUseObjects();
+
         }
 
         void UpdateHUDControlIcon(EControl control, string iconName)
@@ -890,9 +866,13 @@ namespace Game
             //Player
             string playerTypeName = playerUnit != null ? playerUnit.Type.Name : "";
 
-            UpdateHUDControlIcon(hudControl.Controls["Game/PlayerIcon"], playerTypeName);
+            //UpdateHUDControlIcon(hudControl.Controls["Game/PlayerIcon"], playerTypeName);
             //Update player name
-            hudControl.Controls["Game/Player"].Text = playerTypeName;
+            //hudControl.Controls["Game/Player"].Text = playerTypeName;
+
+            //PlayerCharacter specific
+            if (playerUnit != null)
+                playerUnit.Inventory.OnRender(hudControl);
 
             //HealthBar
             {
@@ -979,12 +959,6 @@ namespace Game
                 hudControl.Controls["Game/WeaponBulletCountAlternative"].Text = bulletCountAlternative;
 
                 UpdateHUDControlIcon(hudControl.Controls["Game/WeaponIcon"], weaponName);
-
-
-                ColorValue color;
-                color = new ColorValue(1, 1, 0);
-                EngineApp.Instance.ScreenGuiRenderer.AddText("Weapon loaded\"",
-                    new Vec2(.9f, .9f), HorizontalAlign.Center, VerticalAlign.Center, color);
             }
 
             //CutScene
@@ -1236,6 +1210,8 @@ namespace Game
 
                 //if( EngineApp.Instance.IsKeyPressed( Keys.Tab ) && !EngineConsole.Instance.Active )
                 //   DrawPlayersStatistics( renderer );
+
+
             }
         }
 
