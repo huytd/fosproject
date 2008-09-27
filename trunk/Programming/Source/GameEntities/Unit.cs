@@ -25,8 +25,19 @@ namespace GameEntities
 		[FieldSerialize]
 		float viewRadius;
 
+        [FieldSerialize]
+        Inventory inventory;
+
 		[FieldSerialize]
 		Vec3 fpsCameraOffset;
+
+        
+        [DefaultValue(false)]
+        public Inventory Inventory
+        {
+            get { return inventory; }
+            set { inventory = value; }
+        }
 
 		/// <summary>
 		/// Gets or sets a value which indicates, whether the unit can be controlled by the player.
@@ -88,6 +99,9 @@ namespace GameEntities
 		[FieldSerialize]
 		FactionType initialFaction;
 
+        [FieldSerialize]
+        Inventory inventory = new Inventory();
+        
 		float takeItemsTimer;
 
 		//influences. only for optimization
@@ -157,6 +171,8 @@ namespace GameEntities
 				TickTakeItems();
 		}
 
+        
+
 		void TickTakeItems()
 		{
 			takeItemsTimer -= TickDelta;
@@ -177,7 +193,9 @@ namespace GameEntities
 					if( ( item.Position - Position ).LengthSqr() > radius * radius )
 						return;
 
-					item.Take( this );
+                    item.Take(this);
+                    
+
 				} );
 			}
 		}
@@ -355,6 +373,12 @@ namespace GameEntities
 			get { return initialAI; }
 			set { initialAI = value; }
 		}
+
+        public Inventory Inventory
+        {
+            get { return inventory; }
+            set { inventory = value; }
+        }
 
 	}
 
