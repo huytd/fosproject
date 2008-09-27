@@ -125,14 +125,21 @@ namespace Game
 
             //Accept command from inventory
             {
-                Unit playerUnit = GetPlayerUnit();
-                foreach (DictionaryEntry dItem in playerUnit.Inventory.getHashtable())
-                {
+                (hudControl.Controls["Inventory/A1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/A2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/A3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
 
-                    Item theOrigItem = (Item)dItem.Value;
+                (hudControl.Controls["Inventory/B1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/B2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/B3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
 
-                    (hudControl.Controls["Inventory/" + InventoryHelpers.Vector2BattleShip((Vec2)dItem.Key)] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                }
+                (hudControl.Controls["Inventory/C1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/C2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/C3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+
+                (hudControl.Controls["Inventory/D1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/D2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                (hudControl.Controls["Inventory/D3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
             }
 
             //minimap
@@ -146,12 +153,29 @@ namespace Game
                    new Vec2(.5f, .9f), HorizontalAlign.Center, VerticalAlign.Center);
 
             EngineConsole.Instance.Print("Warning: Minimap render ", new ColorValue(1, 0, 0));
-
         }
+
+        string currentHoldItem = string.Empty;
 
         public void InventoryItem_Click(EButton sender)
         {
+            //If there is an item is hole
+            if (currentHoldItem != string.Empty)
+            {
+                GetPlayerUnit().Inventory.SwapItem(currentHoldItem, sender.Name);
+                currentHoldItem = string.Empty;
+                //Make selected icon to mouse
+                ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png";
+            }
+            else
+            {
+                //Make selected icon to mouse
+                ScreenControlManager.Instance.DefaultCursor = sender.BackTexture.Name;
+                //Change selected button color 
+                sender.ColorMultiplier = new ColorValue(255, 25, 52, 255);
 
+                currentHoldItem = sender.Name;
+            }
         }
 
         protected override void OnDetach()
@@ -203,9 +227,7 @@ namespace Game
                 //}
                 //if (finded)
                 //    texture = TextureManager.Instance.Load(textureFileName);
-
-
-
+                                
                 Unit playerUnit = GetPlayerUnit();
 
                 Rect rect = new Rect(playerUnit.MapBounds.Minimum.ToVec2(),
