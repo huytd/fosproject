@@ -59,6 +59,7 @@ namespace GameEntities
     public class Inventory
     {
         Hashtable inventory;
+        private bool shouldRerenderAll = false;
 
         public Inventory()
         {
@@ -115,16 +116,34 @@ namespace GameEntities
             return true;
         }
 
+        /// <summary>
+        /// Move an item from battleshipPos to otherBattleshipPos 
+        /// </summary>
+        /// <param name="battleshipPos">Old item slot name</param>
+        /// <param name="otherBattleshipPos">New item slot name</param>
         public void SwapItem(string battleshipPos, string otherBattleshipPos)
         {
             Vec2 location = InventoryHelpers.BattleShip2Vector(battleshipPos);
             Vec2 otherLocation = InventoryHelpers.BattleShip2Vector(otherBattleshipPos);
-            this.inventory.Add("temp", this.inventory[location]);
 
-            this.inventory[location] = this.inventory[otherLocation];
-            this.inventory[otherLocation] = this.inventory["temp"];
+            //If move to empty slot
+            if (GetItem(otherLocation) == null)
+            {   
+                this.inventory[otherLocation] = this.inventory[location];
+                this.inventory.Remove(location);
 
-            this.inventory.Remove("temp");
+                this.setShouldReRender();
+            }
+            //If move to another slot with a item existed
+            else 
+            {                
+                this.inventory.Add("temp", this.inventory[location]);
+
+                this.inventory[location] = this.inventory[otherLocation];
+                this.inventory[otherLocation] = this.inventory["temp"];
+
+                this.inventory.Remove("temp");
+            }
         }
 
         public void RemoveItem(Vec2 location, EControl hud)
@@ -151,14 +170,22 @@ namespace GameEntities
 
         public void OnRender(EControl hud)
         {
+            if (isShouldReRender())
+            {
+                foreach (EControl button in hud.Controls["Inventory"].Controls)
+                {
+                    button.BackTexture =  TextureManager.Instance.Load(@"Gui\Inventory\emptyslot.png");
+                }
+                removeShouldReRender();
+            }
+            
             foreach (DictionaryEntry dItem in this.inventory)
             {
                 Item theOrigItem = (Item)dItem.Value;
 
                 if (theOrigItem == null) continue;
                 if (theOrigItem.Type.InventoryIcon == null)
-                    theOrigItem.Type.InventoryIcon = @"Gui\Inventory\default.png";
-                                              
+                    theOrigItem.Type.InventoryIcon = @"Gui\Inventory\default.png";                                              
 
                 hud.Controls["Inventory/" + InventoryHelpers.Vector2BattleShip((Vec2)dItem.Key)].BackTexture = TextureManager.Instance.Load(theOrigItem.Type.InventoryIcon, Texture.Type.Type2D, 0);
             }                        
@@ -210,6 +237,27 @@ namespace GameEntities
         public int TotalInventoryItems()
         {
             return inventory.Count;
+        }
+
+        /// <summary>
+        /// Rerender all inventory flag
+        /// </summary>
+        private void setShouldReRender()
+        {
+            shouldRerenderAll = true;
+        }
+
+        /// <summary>
+        /// Do not rerender all inventory flag
+        /// </summary>
+        private void removeShouldReRender()
+        {
+            shouldRerenderAll = false;
+        }
+
+        private bool isShouldReRender()
+        {
+            return shouldRerenderAll;
         }
 
         public void ClearInventory(EControl hudControl)

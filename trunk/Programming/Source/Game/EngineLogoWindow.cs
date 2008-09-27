@@ -66,6 +66,8 @@ namespace Game
 		void Destroy( bool breaked )
 		{
 			SetShouldDetach();
+            //Remove for faster debug
+            GameEngineApp.Instance.SetNeedMapLoad("Maps\\Vietheroes\\Map.map");
 			if( breaked )
 			{
 				EngineApp.Instance.MouseRelativeMode = false;
