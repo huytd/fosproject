@@ -178,6 +178,7 @@ control Control
 		sizeByBackTexture = True
 		name = Inventory
 		backTexture = Gui\Inventory\BackGround.png
+		colorMultiplier = 1 0.8352942 0.427451
 		control Button
 		{
 			soundClick = Sounds\ButtonClick.ogg
@@ -215,7 +216,7 @@ control Control
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
 			position = Texture 101 134
@@ -224,70 +225,63 @@ control Control
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-
 			position = Texture 179 134
 			size = Texture 78 78
 			name = B3
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-
 			position = Texture 23 212
 			size = Texture 78 78
 			name = C1
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-
 			position = Texture 101 212
 			size = Texture 78 78
 			name = C2
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-
 			position = Texture 179 212
 			size = Texture 78 78
 			name = C3
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-
 			position = Texture 23 290
 			size = Texture 78 78
 			name = D1
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-
 			position = Texture 101 290
 			size = Texture 78 78
 			name = D2
 			backTexture = Gui\Inventory\emptyslot.png
 		}
 		control Button
-		{			
+		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-
 			position = Texture 179 290
 			size = Texture 78 78
 			name = D3
@@ -295,4 +289,3 @@ control Control
 		}
 	}
 }
-
