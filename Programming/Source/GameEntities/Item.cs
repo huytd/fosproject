@@ -12,120 +12,136 @@ using Engine.MathEx;
 
 namespace GameEntities
 {
-	/// <summary>
-	/// Defines the <see cref="Item"/> entity type.
-	/// </summary>
-	public class ItemType : DynamicType
-	{
-		[FieldSerialize]
-		float defaultRespawnTime;
-		[FieldSerialize]
-		string soundTake;
+    /// <summary>
+    /// Defines the <see cref="Item"/> entity type.
+    /// </summary>
+    public class ItemType : DynamicType
+    {
+        [FieldSerialize]
+        float defaultRespawnTime;
 
-		[DefaultValue( 0.0f )]
-		public float DefaultRespawnTime
-		{
-			get { return defaultRespawnTime; }
-			set { defaultRespawnTime = value; }
-		}
+        [FieldSerialize]
+        string soundTake;
 
-		[Editor( typeof( EditorSoundUITypeEditor ), typeof( UITypeEditor ) )]
-		public string SoundTake
-		{
-			get { return soundTake; }
-			set { soundTake = value; }
-		}
+        [FieldSerialize]
+        string inventoryIcon;
 
-		public ItemType()
-		{
-			AllowEmptyName = true;
-		}
-	}
+        [DefaultValue("DefaultIcon.png")]
+        public string InventoryIcon
+        {
+            get { return inventoryIcon; }
+            set { inventoryIcon = value; }
+        }
 
-	/// <summary>
-	/// Items which can be picked up by units. Med-kits, weapons, ammunition.
-	/// </summary>
-	public class Item : Dynamic
-	{
-		[FieldSerialize]
-		float respawnTime;
+        [DefaultValue(0.0f)]
+        public float DefaultRespawnTime
+        {
+            get { return defaultRespawnTime; }
+            set { defaultRespawnTime = value; }
+        }
 
-		Radian rotationAngle;
+        [Editor(typeof(EditorSoundUITypeEditor), typeof(UITypeEditor))]
+        public string SoundTake
+        {
+            get { return soundTake; }
+            set { soundTake = value; }
+        }
 
-		//
+        public ItemType()
+        {
+            AllowEmptyName = true;
+        }
+    }
 
-		ItemType _type = null; public new ItemType Type { get { return _type; } }
+    /// <summary>
+    /// Items which can be picked up by units. Med-kits, weapons, ammunition.
+    /// </summary>
+    public class Item : Dynamic
+    {
+        [FieldSerialize]
+        float respawnTime;
 
-		public Item()
-		{
-			rotationAngle = World.Instance.Random.NextFloat() * MathFunctions.PI * 2;
-		}
+        Radian rotationAngle;
 
-		public float RespawnTime
-		{
-			get { return respawnTime; }
-			set { respawnTime = value; }
-		}
+        ItemType _type = null; public new ItemType Type { get { return _type; } }
 
-		protected override void OnCreate()
-		{
-			base.OnCreate();
+        public Item()
+        {
+            rotationAngle = World.Instance.Random.NextFloat() * MathFunctions.PI * 2;
+        }
 
-			if( EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor )
-				respawnTime = Type.DefaultRespawnTime;
-		}
+        public float RespawnTime
+        {
+            get { return respawnTime; }
+            set { respawnTime = value; }
+        }
 
-		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
-		protected override void OnPostCreate( bool loaded )
-		{
-			base.OnPostCreate( loaded );
+        protected override void OnCreate()
+        {
+            base.OnCreate();
 
-			bool editor = EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor;
+            if (EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor)
+                respawnTime = Type.DefaultRespawnTime;
+        }
 
-			if( !editor )
-			{
-				UpdateRotation();
-				OldRotation = Rotation;
-			}
+        /// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnPostCreate(Boolean)"/>.</summary>
+        protected override void OnPostCreate(bool loaded)
+        {
+            base.OnPostCreate(loaded);
 
-			AddTimer();
+            bool editor = EntitySystemWorld.Instance.WorldSimulationType == WorldSimulationType.Editor;
 
-			if( loaded && !editor && EntitySystemWorld.Instance.SerializationMode == 
-				SerializationModes.Map )
-			{
-				ItemCreator obj = (ItemCreator)Entities.Instance.Create(
-					EntityTypes.Instance.GetByName( "ItemCreator" ), Parent );
-				obj.Position = Position;
-				obj.ItemType = Type;
-				obj.CreateRemainingTime = respawnTime;
-				obj.Item = this;
-				obj.PostCreate();
-			}
-		}
+            if (!editor)
+            {
+                UpdateRotation();
+                OldRotation = Rotation;
+            }
 
-		/// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnTick()"/>.</summary>
-		protected override void OnTick()
-		{
-			base.OnTick();
+            AddTimer();
 
-			rotationAngle += TickDelta;
-			UpdateRotation();
-		}
+            if (loaded && !editor && EntitySystemWorld.Instance.SerializationMode ==
+                SerializationModes.Map)
+            {
+                ItemCreator obj = (ItemCreator)Entities.Instance.Create(
+                    EntityTypes.Instance.GetByName("ItemCreator"), Parent);
+                obj.Position = Position;
+                obj.ItemType = Type;
+                obj.CreateRemainingTime = respawnTime;
+                obj.Item = this;
+                obj.PostCreate();
+            }
+        }
 
-		void UpdateRotation()
-		{
-			Rotation = new Angles( 0, 0, -rotationAngle.InDegrees() ).ToQuat();
-		}
+        /// <summary>Overridden from <see cref="Engine.EntitySystem.Entity.OnTick()"/>.</summary>
+        protected override void OnTick()
+        {
+            base.OnTick();
 
-		protected virtual bool OnTake( Unit unit )
-		{
-			return false;
-		}
+            rotationAngle += TickDelta;
+            UpdateRotation();
+        }
 
-		public bool Take( Unit unit )
-		{
-            return false; 
-		}
+        void UpdateRotation()
+        {
+            Rotation = new Angles(0, 0, -rotationAngle.InDegrees()).ToQuat();
+        }
 
-	}
+        protected virtual bool OnTake(Unit unit)
+        {
+            return false;
+        }
+
+        public bool Take(Unit unit)
+        {
+            bool ret = OnTake(unit);
+
+            if (ret)
+            {
+                unit.SoundPlay3D(Type.SoundTake, .5f, true);
+                Die();
+            }
+            return ret;
+        }
+
+    }
 }
