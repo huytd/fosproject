@@ -8,6 +8,7 @@ type SubmachineGunItem
 	bulletCount2 = 500
 	defaultRespawnTime = 10
 	soundTake = Types/Items/DefaultItemTake.ogg
+	inventoryIcon = Gui\Inventory\weapon.png
 	allowEditorCreate = True
 	networkType = Network
 	attachedObjects
@@ -15,7 +16,7 @@ type SubmachineGunItem
 		mesh
 		{
 			meshName = Types\Weapons\SubmachineGun\SubmachineGun.mesh
-			castShadows = True
+			castDynamicShadows = True
 		}
 	}
 }
