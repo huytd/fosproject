@@ -151,20 +151,13 @@ namespace Game
             if (playerUnit.Inventory.CurrentHoldItem != string.Empty)
             {
                 GetPlayerUnit().Inventory.SwapItem(playerUnit.Inventory.CurrentHoldItem, sender.Name);
-                playerUnit.Inventory.CurrentHoldItem = string.Empty;
-
-                //Make selected icon to mouse
-                ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png";
+                
             }
             else
-            {
-                //Make selected icon to mouse
-                ScreenControlManager.Instance.DefaultCursor = sender.BackTexture.Name;
-
-                //Change selected button color 
-                //sender.ColorMultiplier = new ColorValue(255, 25, 52, 255); temp remove because wrong logic
-
-                playerUnit.Inventory.CurrentHoldItem = sender.Name;
+            {                
+                //Try to select item
+                GetPlayerUnit().Inventory.holdItem(sender.Name);
+                
             }
         }
 

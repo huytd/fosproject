@@ -67,7 +67,7 @@ namespace Game
 		{
 			SetShouldDetach();
             //Remove for faster debug
-            GameEngineApp.Instance.SetNeedMapLoad("Maps\\Vietheroes\\Map.map");
+            //GameEngineApp.Instance.SetNeedMapLoad("Maps\\Vietheroes\\Map.map");
 			if( breaked )
 			{
 				EngineApp.Instance.MouseRelativeMode = false;
