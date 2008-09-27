@@ -113,7 +113,7 @@
     <Compile Include="GameWorld.cs" />
     <Compile Include="General.cs" />
     <Compile Include="Gun.cs" />
-    <Compile Include="VHFOS\EInventory.cs" />
+    <Compile Include="VHFOS\Inventory.cs" />
     <Compile Include="WeaponItem.cs" />
     <Compile Include="HealthItem.cs" />
     <Compile Include="Influence.cs" />

@@ -33,22 +33,24 @@ namespace GameEntities
 
 		protected override bool OnTake( Unit unit )
 		{
-			bool take = base.OnTake( unit );
+            //bool take = base.OnTake( unit );
 
-			float lifeMax = unit.Type.LifeMax;
+            //float lifeMax = unit.Type.LifeMax;
 
-			if( unit.Life < lifeMax )
-			{
-				float life = unit.Life + Type.Health;
-				if( life > lifeMax )
-					life = lifeMax;
+            //if( unit.Life < lifeMax )
+            //{
+            //    float life = unit.Life + Type.Health;
+            //    if( life > lifeMax )
+            //        life = lifeMax;
 
-				unit.Life = life;
+            //    unit.Life = life;
 
-				take = true;
-			}
+            //    take = true;
+            //}
 
-			return take;
+
+
+            return unit.Inventory.AddItem(this); 
 		}
 	}
 }
