@@ -431,7 +431,9 @@ namespace Game
 					}
 
                     GameMusic.MusicPlay("Sounds\\Vietheroes\\NewLegend.mp3", true);
-					ScreenControlManager.Instance.Controls.Add( new EngineLogoWindow() );
+
+                    
+					ScreenControlManager.Instance.Controls.Add( new EngineLogoWindow() );                    
 				}
 			}
 			else
@@ -442,7 +444,6 @@ namespace Game
 
 			//example of custom input device
 			//ExampleCustomInputDevice.InitDevice();
-
 			return true;
 		}
 

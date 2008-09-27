@@ -125,21 +125,10 @@ namespace Game
 
             //Accept command from inventory
             {
-                (hudControl.Controls["Inventory/A1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/A2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/A3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-
-                (hudControl.Controls["Inventory/B1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/B2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/B3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-
-                (hudControl.Controls["Inventory/C1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/C2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/C3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-
-                (hudControl.Controls["Inventory/D1"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/D2"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
-                (hudControl.Controls["Inventory/D3"] as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                foreach (EControl button in hudControl.Controls["Inventory"].Controls)
+                {
+                    (button as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                }                
             }
 
             //minimap
@@ -164,6 +153,7 @@ namespace Game
             {
                 GetPlayerUnit().Inventory.SwapItem(currentHoldItem, sender.Name);
                 currentHoldItem = string.Empty;
+
                 //Make selected icon to mouse
                 ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png";
             }
@@ -171,8 +161,9 @@ namespace Game
             {
                 //Make selected icon to mouse
                 ScreenControlManager.Instance.DefaultCursor = sender.BackTexture.Name;
+
                 //Change selected button color 
-                sender.ColorMultiplier = new ColorValue(255, 25, 52, 255);
+                //sender.ColorMultiplier = new ColorValue(255, 25, 52, 255); temp remove because wrong logic
 
                 currentHoldItem = sender.Name;
             }
