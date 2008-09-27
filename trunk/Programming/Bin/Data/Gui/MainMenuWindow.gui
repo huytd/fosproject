@@ -2,46 +2,56 @@
 
 control Control
 {
-	position = Parent -0.1757813 0
+	position = Parent -0.08789063 0.4427083
 	size = Parent 1.341797 1
 	anchor = Left, Bottom, Top, Right
-	control Control
+	control Button
 	{
-		topMost = True
-		position = Screen 0.1464844 0.06510416
-		size = Parent 0.14 0.14
+		soundClick = Sounds\ButtonClick.ogg
+		soundMouseIntoArea = Sounds\ButtonMouseIntoArea.ogg
+		active = True
+		position = Texture 720 190
+		size = Parent 0.2 0.2
 		name = Run
 		backTexture = VietHeroes\MenuButton\PlayDemo_Active.png
-		visible = False
-		mouseCover = True
+		overControl Control
+		{
+			position = Texture 0 0
+			backTexture = VietHeroes\MenuButton\PlayDemo_InActive.png
+			visible = False
+		}
+		defaultControl Control
+		{
+			position = Texture 0 0
+			backTexture = VietHeroes\MenuButton\PlayDemo_Active.png
+			visible = False
+		}
 	}
-	control Control
+	control Button
 	{
-		topMost = True
-		position = Texture 100 150
+		soundClick = Sounds\ButtonClick.ogg
+		soundMouseIntoArea = Sounds\ButtonMouseIntoArea.ogg
+		position = Texture 910 130
 		size = Parent 0.11 0.11
-		backTexture = VietHeroes\MenuButton\Option_Active.png
-		visible = False
-	}
-	control Control
-	{
-		topMost = True
-		position = Texture 70 230
-		size = Parent 0.11 0.11
+		name = Credit
 		backTexture = VietHeroes\MenuButton\Credit_Active.png
-		visible = False
 	}
-	control Control
+	control Button
 	{
-		topMost = True
-		position = Texture 70 320
+		soundClick = Sounds\ButtonClick.ogg
+		soundMouseIntoArea = Sounds\ButtonMouseIntoArea.ogg
+		position = Texture 960 309.9999
 		size = Parent 0.1 0.1
+		name = Exit
 		backTexture = VietHeroes\MenuButton\Exit_Active.png
-		visible = False
 	}
-	control Control
+	control Button
 	{
-		position = Texture 0 0
-		backTexture = VietHeroes\MenuButton\menu.png
+		soundClick = Sounds\ButtonClick.ogg
+		soundMouseIntoArea = Sounds\ButtonMouseIntoArea.ogg
+		position = Texture 740 330
+		size = Parent 0.11 0.11
+		name = Option
+		backTexture = VietHeroes\MenuButton\Option_Active.png
 	}
 }
