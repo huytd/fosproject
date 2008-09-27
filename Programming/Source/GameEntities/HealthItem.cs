@@ -33,7 +33,7 @@ namespace GameEntities
 
 		protected override bool OnTake( Unit unit )
 		{
-            //bool take = base.OnTake( unit );
+            bool take = base.OnTake( unit );
 
             //float lifeMax = unit.Type.LifeMax;
 
@@ -47,9 +47,6 @@ namespace GameEntities
 
             //    take = true;
             //}
-
-
-
             return unit.Inventory.AddItem(this); 
 		}
 	}

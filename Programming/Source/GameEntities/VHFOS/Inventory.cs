@@ -55,8 +55,7 @@ namespace GameEntities
             return realX + realY;
         }
     }
-
-
+    
     public class Inventory
     {
         Hashtable inventory;
@@ -81,6 +80,7 @@ namespace GameEntities
                 return true;
             }
         }
+
         public bool AddItem(string battleShipPos, Item theItem)
         {
             Vec2 location = InventoryHelpers.BattleShip2Vector(battleShipPos);
@@ -93,35 +93,54 @@ namespace GameEntities
                 return true;
             }
         }
+
         /// <summary>
-        /// This returns true if it can be taken into inventory, false if full.
+        /// This returns true if it can be taken into inventory, false if full or current item has existed.
         /// </summary>
         /// <param name="theItem"></param>
         /// <returns></returns>
         public bool AddItem(Item theItem)
         {
             Vec2 pos = findFreeSpace();
+            
+            if (isItemExist(theItem)) return false;
 
             if (pos.X == -1.0f && pos.Y == -1.0f)
                 return false;
+
+            //if (theItem.UIN)
 
             this.AddItem(pos, theItem);
 
             return true;
         }
 
+        public void SwapItem(string battleshipPos, string otherBattleshipPos)
+        {
+            Vec2 location = InventoryHelpers.BattleShip2Vector(battleshipPos);
+            Vec2 otherLocation = InventoryHelpers.BattleShip2Vector(otherBattleshipPos);
+            this.inventory.Add("temp", this.inventory[location]);
+
+            this.inventory[location] = this.inventory[otherLocation];
+            this.inventory[otherLocation] = this.inventory["temp"];
+
+            this.inventory.Remove("temp");
+        }
+
         public void RemoveItem(Vec2 location, EControl hud)
         {
             this.inventory.Remove(location);
-            hud.Controls["Inventory/" + InventoryHelpers.Vector2BattleShip(location)].BackTexture = TextureManager.Instance.Load(@"Gui\Inventory\kill.png", Texture.Type.Type2D, 0);
+            hud.Controls["Inventory/" + InventoryHelpers.Vector2BattleShip(location)].BackTexture = TextureManager.Instance.Load(@"Gui\Inventory\emptyslot.png", Texture.Type.Type2D, 0);
         }
+
         public void RemoveItem(string battleshipPos, EControl hud)
         {
             Vec2 thePos = InventoryHelpers.BattleShip2Vector(battleshipPos);
 
             this.inventory.Remove(thePos);
-            hud.Controls["Inventory/" + battleshipPos].BackTexture = TextureManager.Instance.Load(@"Gui\HUD\BLOCK.tga", Texture.Type.Type2D, 0);
+            hud.Controls["Inventory/" + battleshipPos].BackTexture = TextureManager.Instance.Load(@"Gui\Inventory\emptyslot.png", Texture.Type.Type2D, 0);
         }
+
         public Item GetItem(Vec2 pos)
         {
             if (this.inventory.ContainsKey(pos))
@@ -136,13 +155,30 @@ namespace GameEntities
             {
                 Item theOrigItem = (Item)dItem.Value;
 
+                if (theOrigItem == null) continue;
                 if (theOrigItem.Type.InventoryIcon == null)
-                    theOrigItem.Type.InventoryIcon = @"Gui\Inventory\inativate.jpg";
+                    theOrigItem.Type.InventoryIcon = @"Gui\Inventory\default.png";
+                                              
 
                 hud.Controls["Inventory/" + InventoryHelpers.Vector2BattleShip((Vec2)dItem.Key)].BackTexture = TextureManager.Instance.Load(theOrigItem.Type.InventoryIcon, Texture.Type.Type2D, 0);
-            }
+            }                        
+        }
 
-            // hud.Controls["Inventory/A1"].BackTexture = "Gui\HUD\BLOCK.tga";
+        /// <summary>
+        /// Determind a item is existed or not, return true if existed, false if not exist.
+        /// </summary>
+        /// <param name="theItem">The new item to check</param>
+        /// <returns>Bool value, true if item existed, false if not exist.</returns>
+        private bool isItemExist(Item theItem)
+        {
+            foreach (DictionaryEntry dItem in this.inventory)
+            {
+                Item theOrigItem = (Item)dItem.Value;
+                if (theOrigItem == null) continue;
+                if (theOrigItem.Position == theItem.Position)
+                    return true;
+            }
+            return false;
         }
 
         private Vec2 findFreeSpace()
@@ -182,10 +218,10 @@ namespace GameEntities
 
             foreach (EControl inventoryControl in hudControl.Controls["Inventory"].Controls)
             {
-            //    EButton button = inventoryControl as EButton;
+                EButton button = inventoryControl as EButton;
 
-            //    if (button != null)
-            //        button.BackTexture = TextureManager.Instance.Load(@"Gui\HUD\BLOCK.tga", Texture.Type.Type2D, 0);
+                if (button != null)
+                        button.BackTexture = TextureManager.Instance.Load(@"Gui\Inventory\emptyslot.png", Texture.Type.Type2D, 0);
             }
         }
     }

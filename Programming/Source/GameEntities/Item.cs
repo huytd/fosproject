@@ -138,7 +138,11 @@ namespace GameEntities
             if (ret)
             {
                 unit.SoundPlay3D(Type.SoundTake, .5f, true);
-                Die();
+
+                //After save in the inventory, delete the item
+                //Die();
+                this.Visible = false;
+                
             }
             return ret;
         }
