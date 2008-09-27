@@ -4,6 +4,7 @@ type SmallHealthItem
 	health = 125
 	defaultRespawnTime = 10
 	soundTake = Types\Items\HealthItems\Health.ogg
+	inventoryIcon = Gui\Inventory\heath.png
 	allowEditorCreate = True
 	networkType = Network
 	attachedObjects
@@ -11,7 +12,7 @@ type SmallHealthItem
 		mesh
 		{
 			meshName = Types\Items\HealthItems\SmallHealthItem\Main.mesh
-			castShadows = True
+			castDynamicShadows = True
 		}
 		particle
 		{
