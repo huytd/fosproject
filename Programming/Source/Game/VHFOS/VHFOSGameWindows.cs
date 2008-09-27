@@ -144,15 +144,14 @@ namespace Game
             EngineConsole.Instance.Print("Warning: Minimap render ", new ColorValue(1, 0, 0));
         }
 
-        string currentHoldItem = string.Empty;
-
         public void InventoryItem_Click(EButton sender)
         {
+            Unit playerUnit = GetPlayerUnit();
             //If there is an item is hole
-            if (currentHoldItem != string.Empty)
+            if (playerUnit.Inventory.CurrentHoldItem != string.Empty)
             {
-                GetPlayerUnit().Inventory.SwapItem(currentHoldItem, sender.Name);
-                currentHoldItem = string.Empty;
+                GetPlayerUnit().Inventory.SwapItem(playerUnit.Inventory.CurrentHoldItem, sender.Name);
+                playerUnit.Inventory.CurrentHoldItem = string.Empty;
 
                 //Make selected icon to mouse
                 ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png";
@@ -165,7 +164,7 @@ namespace Game
                 //Change selected button color 
                 //sender.ColorMultiplier = new ColorValue(255, 25, 52, 255); temp remove because wrong logic
 
-                currentHoldItem = sender.Name;
+                playerUnit.Inventory.CurrentHoldItem = sender.Name;
             }
         }
 
@@ -422,6 +421,33 @@ namespace Game
 
         protected override bool OnMouseDown(EMouseButtons button)
         {
+      
+            if (GetPlayerUnit().Inventory.CurrentHoldItem != String.Empty)
+            {
+                Vec2i windowSize = EngineApp.Instance.VideoMode.Size;
+
+                float ix = hudControl.Controls["Inventory"].Position.Value.X * windowSize.X;
+                float iy = hudControl.Controls["Inventory"].Position.Value.Y * windowSize.Y;
+
+                float mx = MousePosition.X * windowSize.X;
+                float my = MousePosition.Y * windowSize.Y;
+
+                float iw = hudControl.Controls["Inventory"].Size.Value.X;
+                float ih = hudControl.Controls["Inventory"].Size.Value.Y;
+
+
+                if (!(ix < mx && mx < ix + iw && 
+                      iy < my && my < iy + ih))
+                {
+                    
+                    //Show item
+                    GetPlayerUnit().Inventory.dropItem(GetPlayerUnit(), hudControl);                                       
+
+                    //Make selected icon to mouse
+                    ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png";                    
+                }
+            }
+
             //If atop openly any window to not process
             if (Controls.Count != 1)
                 return base.OnMouseDown(button);

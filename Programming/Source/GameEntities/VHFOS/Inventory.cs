@@ -63,8 +63,24 @@ namespace GameEntities
     public class Inventory
     {
         Hashtable inventory;
+
         private bool shouldRerenderAll = false;
 
+        private string currentHoldItem = String.Empty;
+
+        /// <summary>
+        /// If there is a inventory item currtly selected by player, 
+        /// this variable will not Empty and contain selected slot name
+        /// </summary>
+        public string CurrentHoldItem
+        {
+            set { currentHoldItem = value; }
+            get { return currentHoldItem; }
+        }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Inventory()
         {
             this.inventory = new Hashtable();
@@ -109,11 +125,10 @@ namespace GameEntities
             Vec2 pos = findFreeSpace();
             
             if (isItemExist(theItem)) return false;
+            //TODO : Check //if (theItem.UIN) for items with the same position and type
 
             if (pos.X == -1.0f && pos.Y == -1.0f)
-                return false;
-
-            //if (theItem.UIN)
+                return false;                       
 
             this.AddItem(pos, theItem);
 
@@ -148,6 +163,21 @@ namespace GameEntities
 
                 this.inventory.Remove("temp");
             }
+        }
+
+        public void dropItem(Unit playerUnit, EControl hud)
+        {
+            string battleshipPos = this.currentHoldItem;
+            
+            Vec2 location = InventoryHelpers.BattleShip2Vector(battleshipPos);
+            
+            (this.inventory[location] as Item).Visible = true;
+            hud.Controls["Inventory/" + battleshipPos].BackTexture = TextureManager.Instance.Load(@"Gui\Inventory\emptyslot.png", Texture.Type.Type2D, 0);
+                        
+            (this.inventory[location] as Item).Position = playerUnit.Position + new Vec3(-4.0f, -4.0f, 0f) ;
+            
+            this.currentHoldItem = string.Empty;
+            this.inventory.Remove(location);
         }
 
         public void RemoveItem(Vec2 location, EControl hud)
@@ -206,7 +236,7 @@ namespace GameEntities
             {
                 Item theOrigItem = (Item)dItem.Value;
                 if (theOrigItem == null) continue;
-                if (theOrigItem.Position == theItem.Position)
+                if (theOrigItem.UIN == theItem.UIN)
                     return true;
             }
             return false;
