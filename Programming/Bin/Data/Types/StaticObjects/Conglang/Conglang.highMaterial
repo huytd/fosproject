@@ -1,0 +1,20 @@
+highLevelMaterial Conglang
+{
+	template = ShaderBaseMaterial
+	culling = False
+	alphaRejectFunction = Greater
+	alphaRejectValue = 170
+	specularScale = 1 1 1
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\Conglang\conglangtexture.png
+	}
+	specularMap
+	{
+		texture = Types\StaticObjects\Conglang\conglangspec.jpg
+	}
+	normalMap
+	{
+		texture = Types\StaticObjects\Conglang\conglangnormal.jpg
+	}
+}

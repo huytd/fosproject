@@ -1,0 +1,19 @@
+highLevelMaterial nendat
+{
+	template = ShaderBaseMaterial
+	alphaRejectFunction = Greater
+	alphaRejectValue = 170
+	specularScale = 0.9686275 0.8666667 0.7529413
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\Conglang\nendat2.png
+	}
+	specularMap
+	{
+		texture = Types\StaticObjects\Conglang\nendatspec.jpg
+	}
+	normalMap
+	{
+		texture = Types\StaticObjects\Conglang\nendatnormal.jpg
+	}
+}

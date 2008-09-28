@@ -1,0 +1,17 @@
+type dongcuichay
+{
+	class = MapObject
+	attachedObjects
+	{
+		mesh
+		{
+			meshName = Types\StaticObjects\dongcui\dongcui.mesh
+			scale = 0.01287173 0.01287173 0.01287173
+		}
+		particle
+		{
+			particleName = SmokeParticle4
+			position = 0 -0.02959049 0.01126991
+		}
+	}
+}

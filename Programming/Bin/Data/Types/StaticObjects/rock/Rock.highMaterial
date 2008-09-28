@@ -1,0 +1,8 @@
+highLevelMaterial Rock
+{
+	template = ShaderBaseMaterial
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\rock\rock1.jpg
+	}
+}

@@ -1,0 +1,14 @@
+highLevelMaterial cayrom
+{
+	template = ShaderBaseMaterial
+	alphaRejectFunction = Greater
+	alphaRejectValue = 20
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\Cayrom\romtexture.png
+		transform
+		{
+			scale = 3 1
+		}
+	}
+}
