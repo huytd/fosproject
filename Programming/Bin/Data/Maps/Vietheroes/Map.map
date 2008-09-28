@@ -2,8 +2,8 @@ type = GameMap
 uin = 2
 classPrompt = GameMap
 ambientLight = 0.0627451 0.2 0.1215686
-editorCameraPosition = 24.14341 -157.7197 9.03515
-editorCameraDirection = 1.580631 0.0807043
+editorCameraPosition = -43.06122 -292.5399 64.01486
+editorCameraDirection = 1.063151 -0.8423718
 shadowColor = 0.75 0.75 0.75
 fov = 80
 logicSystemManager = 3
@@ -123,17 +123,8 @@ entity
 }
 entity
 {
-	type = SpawnPoint
-	uin = 7
-	classPrompt = SpawnPoint
-	defaultPoint = False
-	position = -4.74286 -198.3601 15.08153
-	name = SpawnPoint_0
-}
-entity
-{
 	type = WaterPlane
-	uin = 8
+	uin = 7
 	classPrompt = WaterPlane
 	size = 1000 1000
 	position = 0 0 0
@@ -147,7 +138,7 @@ entity
 entity
 {
 	type = Fog
-	uin = 9
+	uin = 8
 	classPrompt = Fog
 	color = 0.7686275 1 0.427451
 	expDensity = 0.002
@@ -155,7 +146,7 @@ entity
 entity
 {
 	type = DecorativeObjectManager
-	uin = 10
+	uin = 9
 	classPrompt = DecorativeObjectManager
 	visible = True
 	typeItems
@@ -163,14 +154,14 @@ entity
 		item
 		{
 			type = DefaultGrass
-			itemCount = 169
+			itemCount = 374
 		}
 	}
 }
 entity
 {
 	type = Stone
-	uin = 11
+	uin = 10
 	classPrompt = MapObject
 	position = 19.54722 -121.2948 -0.7834087
 	name = Stone_0
@@ -178,7 +169,7 @@ entity
 entity
 {
 	type = Stone
-	uin = 12
+	uin = 11
 	classPrompt = MapObject
 	position = 20.55043 -115.0381 -1.770136
 	name = Stone_1
@@ -186,7 +177,7 @@ entity
 entity
 {
 	type = Stone
-	uin = 13
+	uin = 12
 	classPrompt = MapObject
 	position = 24.27603 -125.3159 -1.821327
 	name = Stone_2
@@ -194,7 +185,7 @@ entity
 entity
 {
 	type = Stone
-	uin = 14
+	uin = 13
 	classPrompt = MapObject
 	position = 29.09224 -129.2344 -1.269421
 	rotation = -0.02806742 0.4607097 0.8854653 0.05394445
@@ -203,7 +194,7 @@ entity
 entity
 {
 	type = Stone
-	uin = 15
+	uin = 14
 	classPrompt = MapObject
 	position = 29.34994 -111.2073 -1.7986
 	name = Stone_4
@@ -211,7 +202,7 @@ entity
 entity
 {
 	type = Stone
-	uin = 16
+	uin = 15
 	classPrompt = MapObject
 	position = 15.5155 -113.6763 -1.201058
 	rotation = 0 0.826148 0 -0.5634532
@@ -219,34 +210,8 @@ entity
 }
 entity
 {
-	type = Palm
-	uin = 17
-	classPrompt = MapObject
-	position = 33.61626 -149.89 5.904048
-	rotation = -0.03137387 -0.04491883 0.06006286 -0.9966897
-	name = Palm_0
-}
-entity
-{
-	type = Palm
-	uin = 18
-	classPrompt = MapObject
-	position = 32.63815 -149.93 5.634774
-	name = Palm_1
-}
-entity
-{
-	type = Palm
-	uin = 19
-	classPrompt = MapObject
-	position = 32.51985 -150.7437 6.051627
-	rotation = 0 0 0.9052629 0.4248519
-	name = Palm_2
-}
-entity
-{
 	type = Light
-	uin = 21
+	uin = 16
 	classPrompt = Light
 	lightType = Point
 	diffuseColor = 0.764706 0.8000001 0.6 0.7843138
@@ -267,7 +232,7 @@ entity
 entity
 {
 	type = Light
-	uin = 22
+	uin = 17
 	classPrompt = Light
 	lightType = Spot
 	diffuseColor = 1 1 1
@@ -288,7 +253,7 @@ entity
 entity
 {
 	type = Light
-	uin = 20
+	uin = 18
 	classPrompt = Light
 	lightType = Point
 	diffuseColor = 1 1 1
@@ -305,4 +270,167 @@ entity
 	allowStaticLighting = False
 	position = -13.88303 -198.2925 123.854
 	name = Light_1
+}
+entity
+{
+	type = cayda
+	uin = 19
+	classPrompt = MapObject
+	position = 74.4704 -48.506 0.5365
+	rotation = 0 0 -0.1541801 -0.9880427
+	scale = 0.9189221 0.6281532 0.6348563
+	name = cayda_0
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 20
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -6 -195 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 21
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -9 -198 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 22
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -8 -203 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 23
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -6 -210 11
+}
+entity
+{
+	type = SpawnPoint
+	uin = 24
+	classPrompt = SpawnPoint
+	defaultPoint = False
+	position = 1 -203 11
+	name = SpawnPoint_0
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 25
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -22 -202 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 26
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -24 -209 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 27
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -24 -224 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 28
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -11 -228 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 29
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 0 -218 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 30
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 23 -240 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 31
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -21 -242 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 32
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -33 -221 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 33
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -15 -201 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 34
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -14 -210 11
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 35
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = -14 -191 10
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 36
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 12 -200 11
+}
+entity
+{
+	type = ShotgunItem
+	uin = 37
+	classPrompt = WeaponItem
+	respawnTime = 10
+	position = 5 -208 11
+}
+entity
+{
+	type = SubmachineGunItem
+	uin = 38
+	classPrompt = WeaponItem
+	respawnTime = 10
+	position = 3 -196 11
 }
