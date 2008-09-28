@@ -1,0 +1,11 @@
+highLevelMaterial rephu
+{
+	template = ShaderBaseMaterial
+	blending = AlphaBlend
+	culling = False
+	specularScale = 0.8000001 0.7098039 0.7019608
+	diffuse1Map
+	{
+		texture = Types\Units\cayda\rephu.png
+	}
+}

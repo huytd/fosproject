@@ -1,0 +1,13 @@
+highLevelMaterial la
+{
+	template = ShaderBaseMaterial
+	culling = False
+	alphaRejectFunction = Greater
+	alphaRejectValue = 120
+	diffuseScale = 0.3372549 0.7098039 0.5372549
+	specularScale = 0.3607843 0.9764706 0.4627451
+	diffuse1Map
+	{
+		texture = Types\Units\cayda\lada.png
+	}
+}
