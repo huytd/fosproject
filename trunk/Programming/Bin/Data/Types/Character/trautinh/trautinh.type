@@ -1,6 +1,8 @@
 type trautinh
 {
 	class = PlayerCharacter
+	weaponAttachPosition = 0.4 -0.1 -0.1
+	weaponFPSAttachPosition = 0.4 -0.1 -0.5
 	optimalAttackDistanceRange = 0 1
 	idleAnimationName = stand
 	walkAnimationVelocityMultiplier = 0.5
@@ -12,10 +14,27 @@ type trautinh
 	flyControlMaxVelocity = 3
 	flyControlForce = 700
 	allowPlayerControl = True
+	initialAI = DefaultGameCharacterAI
+	viewRadius = 70
 	lifeMax = 100
 	substance = Flesh
 	allowEditorCreate = True
 	allowEmptyName = True
+	weapons
+	{
+		item
+		{
+			weaponType = Hammer
+		}
+		item
+		{
+			weaponType = Shotgun
+		}
+		item
+		{
+			weaponType = SubmachineGun
+		}
+	}
 	attachedObjects
 	{
 		mesh
@@ -24,6 +43,10 @@ type trautinh
 			position = 0 0 -1
 			rotation = 0 0 -0.6427876 -0.7660444
 			scale = 0.3 0.3 0.3
+			boneSlot hand
+			{
+				bone = Bip01 R Hand
+			}
 		}
 	}
 }
