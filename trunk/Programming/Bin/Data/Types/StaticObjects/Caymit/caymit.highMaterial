@@ -1,0 +1,17 @@
+highLevelMaterial caymit
+{
+	template = ShaderBaseMaterial
+	specularScale = 1 0.6784314 0.4784314
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\Caymit\diffuse.png
+	}
+	specularMap
+	{
+		texture = Types\StaticObjects\Caymit\specular.png
+	}
+	normalMap
+	{
+		texture = Types\StaticObjects\Caymit\normal.png
+	}
+}

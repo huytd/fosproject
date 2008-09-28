@@ -1,0 +1,4 @@
+type Rock1
+{
+	class = MapObject
+}

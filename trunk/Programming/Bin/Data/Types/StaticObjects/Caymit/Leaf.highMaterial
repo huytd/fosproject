@@ -1,0 +1,13 @@
+highLevelMaterial Leaf
+{
+	template = VegetationMaterial
+	culling = False
+	receiveShadows = False
+	alphaRejectFunction = Greater
+	fadingByDistanceRange = 100 110
+	specularScale = 0.3764706 0.7098039 0.3529412
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\Caymit\leaf.png
+	}
+}

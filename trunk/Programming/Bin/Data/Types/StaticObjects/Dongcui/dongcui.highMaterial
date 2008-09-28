@@ -1,0 +1,16 @@
+highLevelMaterial dongcui
+{
+	template = ShaderBaseMaterial
+	diffuse1Map
+	{
+		texture = Types\StaticObjects\dongcui\caygo.png
+	}
+	specularMap
+	{
+		texture = Types\StaticObjects\dongcui\caygoSPEC.png
+	}
+	normalMap
+	{
+		texture = Types\StaticObjects\dongcui\caygoNRM.png
+	}
+}
