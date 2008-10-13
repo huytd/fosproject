@@ -16,7 +16,6 @@ using Engine.PhysicsSystem;
 using Engine.FileSystem;
 using Engine.Utils;
 using System.Collections;
-using Engine.MathEx;
 using GameCommon;
 using GameEntities;
 
@@ -28,9 +27,9 @@ namespace Game
     class VHFOSGameWindows : GameWindow
     {
         enum CameraType
-        {
-            FPS,
+        {           
             TPS,
+            FPS,
             Free,
             Count,
         }
@@ -39,19 +38,23 @@ namespace Game
 
         [Config("Camera", "tpsCameraDistance")]
         static float tpsCameraDistance = 4;
+
         [Config("Camera", "tpsCameraCenterOffset")]
         static float tpsCameraCenterOffset = 1.6f;
 
         [Config("Camera", "tpsVehicleCameraDistance")]
         static float tpsVehicleCameraDistance = 8.7f;
+
         [Config("Camera", "tpsVehicleCameraCenterOffset")]
         static float tpsVehicleCameraCenterOffset = 3.8f;
 
         //For management of pressing of the player on switches and management ingame GUI
         const float playerUseDistance = 3;
         const float playerUseDistanceTPS = 10;
+
         //Current ingame GUI which with which the player can cooperate
         MapObjectAttachedGui currentAttachedGuiObject;
+        
         //Which player can switch the current switch
         GameEntities.Switch currentSwitch;
 
@@ -125,40 +128,81 @@ namespace Game
 
             //Accept command from inventory
             {
-                foreach (EControl button in hudControl.Controls["Inventory"].Controls)
+                foreach (EControl control in hudControl.Controls["Inventory"].Controls)
                 {
-                    (button as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                    if (control.Name != String.Empty)
+                        try
+                        {
+                            (control as EButton).Click += new EButton.ClickDelegate(InventoryItem_Click);
+                        }
+                        catch
+                        {
+                        }
                 }                
             }
 
+            //Add scrool bar handle
+            EScrollBar itemScroll = hudControl.Controls["Inventory/InventoryVScrollBar"] as EScrollBar;
+            itemScroll.ValueChange += new EScrollBar.ValueChangeDelegate(ScrollBarValue_Change);
+
             //minimap
-            minimapControl = hudControl.Controls["Game/Minimap"];
-            //string textureName = Map.Instance.GetVirtualFileDirectory() + "\\Minimap\\Minimap";
-            //Texture minimapTexture = TextureManager.Instance.Load(textureName, Texture.Type.Type2D, 0);
-            //minimapControl.BackTexture = minimapTexture;
+            minimapControl = hudControl.Controls["Minimap"];            
+            
             minimapControl.RenderUI += new RenderUIDelegate(Minimap_RenderUI);
+            hudControl.Controls["Arrow"].BackTexture = null;
+            hudControl.Controls["Arrow"].RenderUI += new RenderUIDelegate(MiniMapArrow_RenderUI);
 
-            EngineApp.Instance.ScreenGuiRenderer.AddText("Render minimap",
-                   new Vec2(.5f, .9f), HorizontalAlign.Center, VerticalAlign.Center);
+            //EngineApp.Instance.ScreenGuiRenderer.AddText("Render minimap",
+            //       new Vec2(.5f, .9f), HorizontalAlign.Center, VerticalAlign.Center);
 
-            EngineConsole.Instance.Print("Warning: Minimap render ", new ColorValue(1, 0, 0));
+            //EngineConsole.Instance.Print("Warning: Minimap render ", new ColorValue(1, 0, 0));
+
+            InitCameraViewFromTarget();
+
         }
-
+             
+        /// <summary>
+        /// This method handle the click event on inventory items
+        /// </summary>
+        /// <param name="sender">The button in the inventory box</param>
         public void InventoryItem_Click(EButton sender)
         {
-            Unit playerUnit = GetPlayerUnit();
-            //If there is an item is hole
+            Unit playerUnit = GetPlayerUnit();            
+
+            //If there is an item is hole try to swap or change item position
             if (playerUnit.Inventory.CurrentHoldItem != string.Empty)
             {
-                GetPlayerUnit().Inventory.SwapItem(playerUnit.Inventory.CurrentHoldItem, sender.Name);
+
+                if (playerUnit.Inventory.CurrentHoldItem.StartsWith("A") && !sender.Name.ToString().StartsWith("A"))
+                    (playerUnit as PlayerCharacter).RemoveAllWeapon();
+
+                Item item = playerUnit.Inventory.SwapItem(playerUnit.Inventory.CurrentHoldItem, sender.Name);
+                
+                if (!playerUnit.Inventory.CurrentHoldItem.StartsWith("A") && sender.Name.ToString().StartsWith("A"))
+                    try
+                    {
+                        (item as WeaponItem).OnSelect(playerUnit);
+                    }
+                    catch
+                    {                        
+                    }
+
                 
             }
             else
             {                
                 //Try to select item
-                GetPlayerUnit().Inventory.holdItem(sender.Name);
-                
+                playerUnit.Inventory.holdItem(sender.Name);                
             }
+        }
+
+        /// <summary>
+        /// This function handle scroll bar value change event to control iventory item list
+        /// </summary>
+        /// <param name="sender"></param>
+        public void ScrollBarValue_Change(EScrollBar sender)
+        { 
+            
         }
 
         protected override void OnDetach()
@@ -177,6 +221,112 @@ namespace Game
             base.OnDetach();
         }
 
+        void RotateGuiControl(EControl sender, float alpha, Texture guiTexture, GuiRenderer renderer)
+        {
+            Rect controlRect = sender.GetScreenRectangle();
+            Rect screenMapRect = sender.GetScreenRectangle();
+            Vec2 size = controlRect.GetSize();           
+            float angle = MathFunctions.DegToRad(alpha);
+            float smallRadius = 0.03f;
+            float bigRadius = 0.8f;
+            float width = 0.15f;
+
+            Vec2 U = new Vec2(+(float)Math.Cos(angle), +(float)Math.Sin(angle));
+            Vec2 V = new Vec2(-(float)Math.Sin(angle), +(float)Math.Cos(angle));
+            Vec2 P1 = bigRadius * U + V * width / 2;
+            Vec2 P2 = bigRadius * U - V * width / 2;
+            Vec2 P3 = smallRadius * U + V * width / 2;
+            Vec2 P4 = smallRadius * U - V * width / 2;
+
+            float X1 = Vec2.Dot(P1, Vec2.XAxis);
+            float Y1 = Vec2.Dot(P1, Vec2.YAxis);
+            float X2 = Vec2.Dot(P2, Vec2.XAxis);
+            float Y2 = Vec2.Dot(P2, Vec2.YAxis);
+            float X3 = Vec2.Dot(P3, Vec2.XAxis);
+            float Y3 = Vec2.Dot(P3, Vec2.YAxis);
+            float X4 = Vec2.Dot(P4, Vec2.XAxis);
+            float Y4 = Vec2.Dot(P4, Vec2.YAxis);
+
+            X1 = controlRect.Left + (X1 + 1) / 2 * size.X ;
+            Y1 = controlRect.Top + (Y1 + 1) / 2 * size.Y ;
+            X2 = controlRect.Left + (X2 + 1) / 2 * size.X;
+            Y2 = controlRect.Top + (Y2 + 1) / 2 * size.Y ;
+            X3 = controlRect.Left + (X3 + 1) / 2 * size.X;
+            Y3 = controlRect.Top + (Y3 + 1) / 2 * size.Y ;
+            X4 = controlRect.Left + (X4 + 1) / 2 * size.X;
+            Y4 = controlRect.Top + (Y4 + 1) / 2 * size.Y ;
+
+            List<GuiRenderer.TriangleVertex> vert = new List<GuiRenderer.TriangleVertex>(6);
+            vert.Add(new GuiRenderer.TriangleVertex(new Vec2(X1, Y1), new ColorValue(1, 1, 1, 1), new Vec2(0, 0)));
+            vert.Add(new GuiRenderer.TriangleVertex(new Vec2(X2, Y2), new ColorValue(1, 1, 1, 1), new Vec2(1, 0)));
+            vert.Add(new GuiRenderer.TriangleVertex(new Vec2(X4, Y4), new ColorValue(1, 1, 1, 1), new Vec2(0, 1)));
+            vert.Add(new GuiRenderer.TriangleVertex(new Vec2(X3, Y3), new ColorValue(1, 1, 1, 1), new Vec2(1, 1)));
+            vert.Add(new GuiRenderer.TriangleVertex(new Vec2(X4, Y4), new ColorValue(1, 1, 1, 1), new Vec2(0, 1)));
+            vert.Add(new GuiRenderer.TriangleVertex(new Vec2(X2, Y2), new ColorValue(1, 1, 1, 1), new Vec2(1, 0)));
+            renderer.AddTriangles(vert, guiTexture, false); 
+        }
+
+        Texture cameraTexture;
+        Camera rmCamera;
+        void InitCameraViewFromTarget()
+        {
+            int textureSize = 256;
+
+            //Texture cameraTexture
+            cameraTexture = TextureManager.Instance.Create(
+                TextureManager.Instance.GetUniqueName("playerreviewbox"), Texture.Type.Type2D,
+                new Vec2i(textureSize, textureSize), 1, 0, PixelFormat.R8G8B8, Texture.Usage.RenderTarget);
+
+            RenderTexture renderTexture = cameraTexture.GetBuffer().GetRenderTarget();
+
+            rmCamera = SceneManager.Instance.CreateCamera();
+
+            rmCamera.ProjectionType = ProjectionTypes.Perspective;
+            rmCamera.PolygonMode = PolygonMode.Wireframe;
+
+            renderTexture.AddViewport(rmCamera);
+        }
+
+        void GetCameraViewFromTarget()
+        {
+            if (hudControl.Controls["Inventory"].Visible == false) return;
+
+            PlayerCharacter player = GetPlayerUnit() as PlayerCharacter;
+                        
+            if (player == null) return;
+
+            else if (player != null)
+            {
+                rmCamera.FixedUp = (Vec3.ZAxis);
+
+                rmCamera.Visible = true;
+
+                rmCamera.Position = player.Position + (player.Position - player.OldPosition)*10;
+                rmCamera.LookAt(player.Position);
+
+                rmCamera.PolygonMode = PolygonMode.Wireframe;
+                rmCamera.NearClipDistance = 1.0f;
+                rmCamera.FarClipDistance = 10.3f;
+                hudControl.Controls["Inventory/PlayerReviewBox"].BackTexture = cameraTexture;   
+            }
+        }
+
+
+        void MiniMapArrow_RenderUI(EControl sender, GuiRenderer renderer)
+        {
+            //Thanks Thor22 from NeoAxis Forum
+            //http://www.neoaxisgroup.com/phpBB2/viewtopic.php?t=1321&start=0
+            Angles playerRot = GetPlayerUnit().Rotation.ToAngles();
+            playerRot.Normalize360();
+            float PlayerRotation = playerRot.Yaw; //If don't work try to add 90 or 180
+            
+            Texture arrowTexture = sender.BackTexture;
+
+            //EControl arrowControl = minimapControl.Controls["Arrow"];
+            //renderer.SetTransform(new Vec3(1, 1, 1), new Quat(0f, 0f, 0.001f, 1f), new Vec3(1f, 1f, 1f));
+            RotateGuiControl(sender, PlayerRotation, arrowTexture, renderer);            
+        }
+
         // TASK: Draw minimap
         void Minimap_RenderUI(EControl sender, GuiRenderer renderer)
         {
@@ -189,142 +339,172 @@ namespace Game
 
             Vec2 mapSizeInv = new Vec2(1, 1) / mapRect.Size;
 
-            //draw units
-            Vec2 screenPixel = new Vec2(1, 1) / new Vec2(EngineApp.Instance.VideoMode.Size.ToVec2());
-            {
-                ////Loading texture to the engine
-                //Texture texture = null;
-                //string mapDirectory = Path.GetDirectoryName(mapName);
-                //string textureName = mapDirectory + "\\Data\\Minimap";
-                //string textureFileName = "Minimap";
-                //bool finded = false;
-                //string[] extensions = new string[] { "dds", "tga", "png", "jpg" };
-                //foreach (string extension in extensions)
-                //{
-                //    textureFileName = textureName + "." + extension;
-                //    if (VirtualFile.Exists(textureFileName))
-                //    {
-                //        finded = true;
-                //        break;
-                //    }
-                //}
-                //if (finded)
-                //    texture = TextureManager.Instance.Load(textureFileName);
+            Unit playerUnit = GetPlayerUnit();
+
+            Rect rect = new Rect(playerUnit.MapBounds.Minimum.ToVec2(),
+                                 playerUnit.MapBounds.Maximum.ToVec2() );
+
+            //Get position in the worldmap 2d image
+            float worldMapX = (playerUnit.Position.X + 500) / 1000 * 512;
+            float worldMapY = (playerUnit.Position.Y + 500) / 1000 * 512;
+
+            //Get begin cliped rectange postion in the worldmap 2d image
+            float x1 = worldMapX - 56;
+            float y1 = worldMapY - 56;
+
+            float x2 = x1 + 128;
+            float y2 = x2 + 128;
+
+            //Convert to % unit : 0.00...1.00
+            float fx1 = x1 / 512.0f;
+            float fy1 = (float)y1 / 512.0f;
+
+            float fx2 = x2 / 512.0f;
+            float fy2 = y2 / 512.0f;
+           
+            Rect coordRect = new Rect(fx1, fy1, fx2, fy2);
+            minimapControl.BackTextureCoord = coordRect;
+
+
+
+        //    //draw units
+        //    Vec2 screenPixel = new Vec2(1, 1) / new Vec2(EngineApp.Instance.VideoMode.Size.ToVec2());
+        //    {
+        //        ////Loading texture to the engine
+        //        //Texture texture = null;
+        //        //string mapDirectory = Path.GetDirectoryName(mapName);
+        //        //string textureName = mapDirectory + "\\Data\\Minimap";
+        //        //string textureFileName = "Minimap";
+        //        //bool finded = false;
+        //        //string[] extensions = new string[] { "dds", "tga", "png", "jpg" };
+        //        //foreach (string extension in extensions)
+        //        //{
+        //        //    textureFileName = textureName + "." + extension;
+        //        //    if (VirtualFile.Exists(textureFileName))
+        //        //    {
+        //        //        finded = true;
+        //        //        break;
+        //        //    }
+        //        //}
+        //        //if (finded)
+        //        //    texture = TextureManager.Instance.Load(textureFileName);
                                 
-                Unit playerUnit = GetPlayerUnit();
+        //        Unit playerUnit = GetPlayerUnit();
 
-                Rect rect = new Rect(playerUnit.MapBounds.Minimum.ToVec2(),
-                                     playerUnit.MapBounds.Maximum.ToVec2()
-                                     );
+        //        Rect rect = new Rect(playerUnit.MapBounds.Minimum.ToVec2(),
+        //                             playerUnit.MapBounds.Maximum.ToVec2()
+        //                             );
 
-                rect -= mapRect.Minimum;
-                rect.Minimum *= mapSizeInv;
-                rect.Maximum *= mapSizeInv;
+        //        rect -= mapRect.Minimum;
+        //        rect.Minimum *= mapSizeInv;
+        //        rect.Maximum *= mapSizeInv;
 
-                rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
-                rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
+        //        rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
+        //        rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
 
-                rect.Minimum *= screenMapRect.Size;
-                rect.Maximum *= screenMapRect.Size;
+        //        rect.Minimum *= screenMapRect.Size;
+        //        rect.Maximum *= screenMapRect.Size;
 
-                rect += screenMapRect.Minimum;
+        //        rect += screenMapRect.Minimum;
 
-                //increase 1 pixel
-                rect.Maximum += new Vec2(screenPixel.X, -screenPixel.Y);
+        //        //increase 1 pixel
+        //        rect.Maximum += new Vec2(screenPixel.X, -screenPixel.Y);
 
-                ColorValue color;
+        //        ColorValue color;
 
-                if (playerUnit.Intellect == null || playerUnit.Intellect.Faction == null)
-                    color = new ColorValue(1, 1, 0);
-                else
-                    color = new ColorValue(1, 0, 0);
+        //        if (playerUnit.Intellect == null || playerUnit.Intellect.Faction == null)
+        //            color = new ColorValue(1, 1, 0);
+        //        else
+        //            color = new ColorValue(1, 0, 0);
 
-                renderer.AddQuad(rect, color);
+        //        renderer.AddQuad(rect, color);
 
 
-            }
+        //    }
 
-            //foreach (Entity entity in Map.Instance.Children)
-            //{
-            //    GameCharacter unit = entity as GameCharacter;
+        //    //foreach (Entity entity in Map.Instance.Children)
+        //    //{
+        //    //    GameCharacter unit = entity as GameCharacter;
 
-            //    if (unit == null)
-            //        continue;
+        //    //    if (unit == null)
+        //    //        continue;
 
-            //    Rect rect = new Rect(unit.MapBounds.Minimum.ToVec2(), unit.MapBounds.Maximum.ToVec2());
+        //    //    Rect rect = new Rect(unit.MapBounds.Minimum.ToVec2(), unit.MapBounds.Maximum.ToVec2());
 
-            //    rect -= mapRect.Minimum;
-            //    rect.Minimum *= mapSizeInv;
-            //    rect.Maximum *= mapSizeInv;
-            //    rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
-            //    rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
-            //    rect.Minimum *= screenMapRect.Size;
-            //    rect.Maximum *= screenMapRect.Size;
-            //    rect += screenMapRect.Minimum;
+        //    //    rect -= mapRect.Minimum;
+            ////    rect.Minimum *= mapSizeInv;
+            ////    rect.Maximum *= mapSizeInv;
+            ////    rect.Minimum = new Vec2(rect.Minimum.X, 1.0f - rect.Minimum.Y);
+            ////    rect.Maximum = new Vec2(rect.Maximum.X, 1.0f - rect.Maximum.Y);
+            ////    rect.Minimum *= screenMapRect.Size;
+            ////    rect.Maximum *= screenMapRect.Size;
+            ////    rect += screenMapRect.Minimum;
 
-            //    //increase 1 pixel
-            //    rect.Maximum += new Vec2(screenPixel.X, -screenPixel.Y);
+            ////    //increase 1 pixel
+            ////    rect.Maximum += new Vec2(screenPixel.X, -screenPixel.Y);
 
-            //    ColorValue color;
+            ////    ColorValue color;
 
-            //    if (unit.Intellect == null || unit.Intellect.Faction == null)
-            //        color = new ColorValue(1, 1, 0);
-            //    else
-            //        color = new ColorValue(1, 0, 0);
+            ////    if (unit.Intellect == null || unit.Intellect.Faction == null)
+            ////        color = new ColorValue(1, 1, 0);
+            ////    else
+            ////        color = new ColorValue(1, 0, 0);
 
-            //    renderer.AddQuad(rect, color);
-            //}
+            ////    renderer.AddQuad(rect, color);
+            ////}
 
-            //Draw camera borders
-            {
-                //    Camera camera = RendererWorld.Instance.DefaultCamera;
+        //    //Draw camera borders
+        //    {
+        //        //    Camera camera = RendererWorld.Instance.DefaultCamera;
 
-                //    if (camera.Position.Z > 0)
-                //    {
+        //        //    if (camera.Position.Z > 0)
+        //        //    {
 
-                //        Plane groundPlane = new Plane(0, 0, 1, 0);
+        //        //        Plane groundPlane = new Plane(0, 0, 1, 0);
 
-                //        Vec2[] points = new Vec2[4];
+        //        //        Vec2[] points = new Vec2[4];
 
-                //        for (int n = 0; n < 4; n++)
-                //        {
-                //            Vec2 p = Vec2.Zero;
+        //        //        for (int n = 0; n < 4; n++)
+        //        //        {
+        //        //            Vec2 p = Vec2.Zero;
 
-                //            switch (n)
-                //            {
-                //                case 0: p = new Vec2(0, 0); break;
-                //                case 1: p = new Vec2(1, 0); break;
-                //                case 2: p = new Vec2(1, 1); break;
-                //                case 3: p = new Vec2(0, 1); break;
-                //            }
+        //        //            switch (n)
+        //        //            {
+        //        //                case 0: p = new Vec2(0, 0); break;
+        //        //                case 1: p = new Vec2(1, 0); break;
+        //        //                case 2: p = new Vec2(1, 1); break;
+        //        //                case 3: p = new Vec2(0, 1); break;
+        //        //            }
 
-                //            Ray ray = camera.GetCameraToViewportRay(p);
+        //        //            Ray ray = camera.GetCameraToViewportRay(p);
 
-                //            float scale;
-                //            groundPlane.RayIntersection(ray, out scale);
+        //        //            float scale;
+        //        //            groundPlane.RayIntersection(ray, out scale);
 
-                //            Vec3 pos = ray.GetPointOnRay(scale);
-                //            if (ray.Direction.Z > 0)
-                //                pos = ray.Origin + ray.Direction.GetNormalize() * 10000;
+        //        //            Vec3 pos = ray.GetPointOnRay(scale);
+        //        //            if (ray.Direction.Z > 0)
+        //        //                pos = ray.Origin + ray.Direction.GetNormalize() * 10000;
 
-                //            Vec2 point = pos.ToVec2();
+        //        //            Vec2 point = pos.ToVec2();
 
-                //            point -= mapRect.Minimum;
-                //            point *= mapSizeInv;
-                //            point = new Vec2(point.X, 1.0f - point.Y);
-                //            point *= screenMapRect.Size;
-                //            point += screenMapRect.Minimum;
+        //        //            point -= mapRect.Minimum;
+        //        //            point *= mapSizeInv;
+        //        //            point = new Vec2(point.X, 1.0f - point.Y);
+        //        //            point *= screenMapRect.Size;
+        //        //            point += screenMapRect.Minimum;
 
-                //            points[n] = point;
-                //        }
+        //        //            points[n] = point;
+        //        //        }
 
-                //        for (int n = 0; n < 4; n++)
-                //            renderer.AddLine(points[n], points[(n + 1) % 4], new ColorValue(1, 1, 1),
-                //                screenMapRect);
-                //    }
-            }
+        //        //        for (int n = 0; n < 4; n++)
+        //        //            renderer.AddLine(points[n], points[(n + 1) % 4], new ColorValue(1, 1, 1),
+        //        //                screenMapRect);
+        //        //    }
+        //    }
         }
-
+        
+        //VHFOS: to pickup item with shift + right mouse
+        bool ShiftKeyPressed = false;
         protected override bool OnKeyDown(KeyEvent e)
         {
             //If atop openly any window to not process
@@ -353,11 +533,18 @@ namespace Game
                 return true;
             }
 
+
+            //VHFOS: press tab to show inventory box
             if (e.Key == EKeys.Tab)
             {
                 if (hudControl.Controls["Inventory"].Visible)
                 {
                     hudControl.Controls["Inventory"].Visible = false;
+                    
+                    //Clear hold selection if inventory closed
+                    //Thanks SodanKerjuu for this code
+                    GetPlayerUnit().Inventory.CurrentHoldItem = string.Empty;
+                    ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png"; 
 
                     EntitySystemWorld.Instance.Simulation = true;
                     EngineApp.Instance.MouseRelativeMode = true;
@@ -369,6 +556,12 @@ namespace Game
                     EntitySystemWorld.Instance.Simulation = false;
                     EngineApp.Instance.MouseRelativeMode = false;
                 }
+            }
+
+            //VHFOS
+            if (e.Key == EKeys.Shift)
+            {
+                ShiftKeyPressed = true;
             }
 
             //GameControlsManager
@@ -406,15 +599,21 @@ namespace Game
             if (currentAttachedGuiObject != null)
                 currentAttachedGuiObject.ControlManager.DoKeyUp(e);
 
+            //VHFOS
+            if (e.Key == EKeys.Shift)
+            {
+                ShiftKeyPressed = false;
+            }
+
             //GameControlsManager
             GameControlsManager.Instance.DoKeyUp(e);
-
+            
             return base.OnKeyUp(e);
         }
 
         protected override bool OnMouseDown(EMouseButtons button)
-        {
-      
+        {                
+            //If you click out side the inventory box, and have selected an item, drop that item
             if (GetPlayerUnit().Inventory.CurrentHoldItem != String.Empty)
             {
                 Vec2i windowSize = EngineApp.Instance.VideoMode.Size;
@@ -431,8 +630,7 @@ namespace Game
 
                 if (!(ix < mx && mx < ix + iw && 
                       iy < my && my < iy + ih))
-                {
-                    
+                {                    
                     //Show item
                     GetPlayerUnit().Inventory.dropItem(GetPlayerUnit(), hudControl);                                       
 
@@ -474,6 +672,42 @@ namespace Game
             //currentAttachedGuiObject
             if (currentAttachedGuiObject != null)
                 currentAttachedGuiObject.ControlManager.DoMouseUp(button);
+
+            //Check and do item pick up action
+            if(button == EMouseButtons.Right && ShiftKeyPressed )
+            {
+                Ray lookRay = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay(
+                new Vec2(.5f, .5f));
+
+                Vec3 lookFrom = lookRay.Origin;
+                Vec3 lookDir = Vec3.Normalize(lookRay.Direction);
+
+                //VHFOS How far an item can be pick up
+                float distance = 20.0f;
+
+                Unit playerUnit = GetPlayerUnit();
+
+                RayCastResult[] piercingResult = PhysicsWorld.Instance.RayCastPiercing(
+                    new Ray(lookFrom, lookDir * distance), (int)ContactGroup.CastOnlyContact);
+
+                foreach (RayCastResult result in piercingResult)
+                {
+                    MapObject obj = MapSystemWorld.GetMapObjectByBody(result.Shape.Body);
+                    
+                    if (obj != null)
+                        if (obj.Type != null)
+                            if (obj.Type.Name.ToString().EndsWith("Item"))
+                            {
+                                Item pickItem = obj as Item;
+                                if (playerUnit.Inventory.AddItem(pickItem))
+                                {
+                                    pickItem.Take(playerUnit as Unit);
+                                    pickItem.Visible = false;
+                                    pickItem.Position = new Vec3(0.0f, 0.0f, 10000.0f);
+                                }
+                            }
+                }
+            }
 
             //GameControlsManager
             GameControlsManager.Instance.DoMouseUp(button);
@@ -846,8 +1080,8 @@ namespace Game
             base.OnRender();
 
             UpdateHUD();
+            GetCameraViewFromTarget();
             UpdateCurrentPlayerUseObjects();
-
         }
 
         void UpdateHUDControlIcon(EControl control, string iconName)
@@ -951,11 +1185,6 @@ namespace Game
                 if (turret != null)
                     weapon = turret.MainGun;
 
-                //Tank specific
-                Tank tank = playerUnit as Tank;
-                if (tank != null)
-                    weapon = tank.MainGun;
-
                 if (weapon != null)
                 {
                     weaponName = weapon.Type.FullName;
@@ -1027,7 +1256,7 @@ namespace Game
         /// <param name="renderer"></param>
         void DrawTarget(GuiRenderer renderer)
         {
-            renderer.AddText("+", new Vec2(.5f, .5f), HorizontalAlign.Center, VerticalAlign.Center);
+            renderer.AddText("o", new Vec2(.5f, .5f), HorizontalAlign.Center, VerticalAlign.Center);
 
             Ray lookRay = RendererWorld.Instance.DefaultCamera.GetCameraToViewportRay(
                 new Vec2(.5f, .5f));
@@ -1048,6 +1277,8 @@ namespace Game
                 bool ignore = false;
 
                 MapObject obj = MapSystemWorld.GetMapObjectByBody(result.Shape.Body);
+                
+                                
 
                 Dynamic dynamic = obj as Dynamic;
                 if (dynamic != null && playerUnit != null && dynamic.GetParentUnit() == GetPlayerUnit())
@@ -1060,11 +1291,15 @@ namespace Game
                 }
             }
 
-            renderer.AddText("[  ]", new Vec2(.5f, .5f), HorizontalAlign.Center, VerticalAlign.Center);
+            //renderer.AddText("[  ]", new Vec2(.5f, .5f), HorizontalAlign.Center, VerticalAlign.Center);
 
-            if (body != null)
+            if (body != null && body == null)
             {
                 MapObject obj = MapSystemWorld.GetMapObjectByBody(body);
+
+                
+                
+                
                 if (obj != null && !(obj is StaticMesh) && !(obj is GameGuiObject))
                 {
                     renderer.AddText(obj.Type.Name, new Vec2(.5f, .525f),
@@ -1075,6 +1310,9 @@ namespace Game
                     {
                         if (dynamic.Type.LifeMax != 0)
                         {
+                            renderer.AddText("XXXX", new Vec2(.5f - .04f, .55f), HorizontalAlign.Left,
+                                VerticalAlign.Center, new ColorValue(.5f, .5f, .5f, .5f));
+
                             float lifecoef = dynamic.Life / dynamic.Type.LifeMax;
 
                             renderer.AddText("IIIIIIIIII", new Vec2(.5f - .04f, .55f), HorizontalAlign.Left,
@@ -1103,56 +1341,10 @@ namespace Game
 
             }
 
-            //Tank specific
-            DrawTankGunTarget(renderer);
+            
         }
 
-        //Tank specific
-        void DrawTankGunTarget(GuiRenderer renderer)
-        {
-            Tank tank = GetPlayerUnit() as Tank;
-            if (tank == null)
-                return;
-
-            Gun gun = tank.MainGun;
-            if (gun == null)
-                return;
-
-            Vec3 gunPosition = gun.GetInterpolatedPosition();
-            Vec3 gunDirection = gun.GetInterpolatedRotation() * new Vec3(1, 0, 0);
-
-            RayCastResult[] piercingResult = PhysicsWorld.Instance.RayCastPiercing(
-                new Ray(gunPosition, gunDirection * 1000),
-                (int)ContactGroup.CastOnlyContact);
-
-            bool finded = false;
-            Vec3 pos = Vec3.Zero;
-
-            foreach (RayCastResult result in piercingResult)
-            {
-                bool ignore = false;
-
-                MapObject obj = MapSystemWorld.GetMapObjectByBody(result.Shape.Body);
-
-                Dynamic dynamic = obj as Dynamic;
-                if (dynamic != null && dynamic.GetParentUnit() == tank)
-                    ignore = true;
-
-                if (!ignore)
-                {
-                    finded = true;
-                    pos = result.Position;
-                    break;
-                }
-            }
-
-            if (!finded)
-                pos = gunPosition + gunDirection * 1000;
-
-            Vec2 screenPos = RendererWorld.Instance.DefaultCamera.ProjectToScreenCoordinates(pos);
-            renderer.AddText("+", screenPos,
-                HorizontalAlign.Center, VerticalAlign.Center, new ColorValue(0, 1, 0));
-        }
+       
 
         /// <summary>
         /// To draw some information of a player
@@ -1267,12 +1459,7 @@ namespace Game
                         return CameraType.FPS;
                 }
 
-                //Tank specific
-                if (playerUnit as Tank != null)
-                {
-                    if (cameraType == CameraType.FPS)
-                        return CameraType.TPS;
-                }
+                
             }
 
             return cameraType;
@@ -1432,13 +1619,6 @@ namespace Game
                             position = mainGun.GetInterpolatedPosition();
                             position += unit.Type.FPSCameraOffset * mainGun.GetInterpolatedRotation();
                         }
-                        else if (unit is Tank)
-                        {
-                            //Tank specific
-                            Gun mainGun = ((Tank)unit).MainGun;
-                            position = mainGun.GetInterpolatedPosition();
-                            position += unit.Type.FPSCameraOffset * mainGun.GetInterpolatedRotation();
-                        }
                         else
                         {
                             //Characters, etc
@@ -1584,12 +1764,6 @@ namespace Game
 
         bool IsPlayerUnitVehicle()
         {
-            Unit playerUnit = GetPlayerUnit();
-
-            //Tank specific
-            if (playerUnit as Tank != null)
-                return true;
-
             return false;
         }
 
