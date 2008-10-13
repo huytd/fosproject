@@ -2,47 +2,48 @@
 
 control Control
 {
-	position = Parent 0.0009765625 0
+	position = Parent 0.001953125 -0.001302083
 	horizontalAlign = Center
 	verticalAlign = Center
 	control Control
 	{
-		position = Parent 0 0.002604167
+		position = Parent -0.002929688 0.009114584
 		name = Game
+		visible = False
 		control Control
 		{
-			position = Texture 17 17.99994
+			position = Texture 629 -171
 			size = Texture 140 128
 			backTexture = Gui/HUD/PlayerUnitCirclePortrait.png
 		}
 		control Control
 		{
-			position = Texture 20 7.999939
+			position = Texture 59 -131
 			size = Texture 140 128
 			name = PlayerIcon
 		}
 		control Control
 		{
-			position = Texture 17 17.99994
+			position = Texture 211 -181
 			size = Texture 140 128
 			backTexture = Gui/HUD/PlayerUnitCircle.png
 		}
 		control Control
 		{
-			position = Texture 100 49.99994
+			position = Texture 352 -91
 			size = Texture 268 64
 			backTexture = Gui/HUD/HealthEnergyPanel.png
 		}
 		control Control
 		{
-			position = Texture 94 50.99994
+			position = Texture 288 -148
 			size = Texture 268 32
 			name = HealthBar
 			backTexture = Gui/HUD/HealthBar.png
 		}
 		control Control
 		{
-			position = Texture 94 80.99994
+			position = Texture 288 -118
 			size = Texture 268 32
 			name = EnergyBar
 			backTexture = Gui/HUD/EnergyBar.png
@@ -71,7 +72,7 @@ control Control
 		}
 		control Control
 		{
-			position = Texture 891 633
+			position = Texture 750 815
 			size = Texture 128 128
 			backTexture = Gui/HUD/WeaponsCircle.png
 		}
@@ -83,21 +84,21 @@ control Control
 		}
 		control Control
 		{
-			position = Texture 686 665
+			position = Texture 519 848
 			size = Texture 256 64
 			backTexture = Gui/HUD/ItemsPanel.png
 		}
 		control TextBox
 		{
 			font = Default 0.02
-			position = Texture 820 650
+			position = Texture 165 798
 			size = Parent 0.1015625 0.0234375
 			text = Items
 		}
 		control TextBox
 		{
 			font = Default 0.02
-			position = Texture 905 745
+			position = Texture 453 902
 			size = Parent 0.1015625 0.02343749
 			name = Weapon
 			text = Weapon
@@ -105,7 +106,7 @@ control Control
 		control TextBox
 		{
 			font = Default 0.017
-			position = Texture 930 660
+			position = Texture 478 817
 			size = Parent 0.07226563 0.02343753
 			name = WeaponMagazineCountNormal
 			text = 10/30
@@ -113,7 +114,7 @@ control Control
 		control TextBox
 		{
 			font = Default 0.017
-			position = Texture 930 690
+			position = Texture 478 847
 			size = Parent 0.07226563 0.02343747
 			name = WeaponBulletCountNormal
 			text = 50/100
@@ -121,14 +122,14 @@ control Control
 		control TextBox
 		{
 			font = Default 0.017
-			position = Texture 910 720
+			position = Texture 458 877
 			size = Parent 0.09179688 0.02343753
 			name = WeaponBulletCountAlternative
 			text = 50/100
 		}
 		control Control
 		{
-			position = Texture 810 -10
+			position = Texture 734 -211
 			size = Parent 0.2171875 0.2822917
 			anchor = Top
 			name = Minimap
@@ -138,7 +139,7 @@ control Control
 	}
 	control Control
 	{
-		position = Parent 0 0.002604167
+		position = Parent -0.00390625 0.002604167
 		name = CutScene
 		control Control
 		{
@@ -173,8 +174,9 @@ control Control
 	}
 	control Control
 	{
-		position = Texture 137 173
+		position = Screen 0.03417969 0.21875
 		size = Texture 278 481
+		anchor = Left, Top
 		sizeByBackTexture = True
 		name = Inventory
 		backTexture = Gui\Inventory\BackGround.png
@@ -183,34 +185,37 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 23 56
+			position = Texture 22 56
 			size = Texture 78 78
 			name = A1
 			backTexture = Gui\Inventory\emptyslot.png
+			colorMultiplier = 0 1 0.2313726
 		}
 		control Button
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 101 56
+			position = Texture 20 120
 			size = Texture 78 78
 			name = A2
 			backTexture = Gui\Inventory\emptyslot.png
+			colorMultiplier = 0.06666667 1 0.2705882
 		}
 		control Button
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 179 56
+			position = Texture 21 179
 			size = Texture 78 78
 			name = A3
 			backTexture = Gui\Inventory\emptyslot.png
+			colorMultiplier = 0 1 0.1647059
 		}
 		control Button
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 23 134
+			position = Texture 14 250
 			size = Texture 78 78
 			name = B1
 			backTexture = Gui\Inventory\emptyslot.png
@@ -219,7 +224,7 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 101 134
+			position = Texture 92 250
 			size = Texture 78 78
 			name = B2
 			backTexture = Gui\Inventory\emptyslot.png
@@ -228,7 +233,7 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 179 134
+			position = Texture 170 250
 			size = Texture 78 78
 			name = B3
 			backTexture = Gui\Inventory\emptyslot.png
@@ -237,7 +242,7 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 23 212
+			position = Texture 17 314
 			size = Texture 78 78
 			name = C1
 			backTexture = Gui\Inventory\emptyslot.png
@@ -246,7 +251,7 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 101 212
+			position = Texture 95 314
 			size = Texture 78 78
 			name = C2
 			backTexture = Gui\Inventory\emptyslot.png
@@ -255,7 +260,7 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 179 212
+			position = Texture 169 315.0001
 			size = Texture 78 78
 			name = C3
 			backTexture = Gui\Inventory\emptyslot.png
@@ -264,7 +269,7 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 23 290
+			position = Texture 21 373
 			size = Texture 78 78
 			name = D1
 			backTexture = Gui\Inventory\emptyslot.png
@@ -273,7 +278,7 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 101 290
+			position = Texture 96 373
 			size = Texture 78 78
 			name = D2
 			backTexture = Gui\Inventory\emptyslot.png
@@ -282,10 +287,48 @@ control Control
 		{
 			soundClick = Sounds\ButtonClick.ogg
 			active = True
-			position = Texture 179 290
+			position = Texture 170 377
 			size = Texture 78 78
 			name = D3
 			backTexture = Gui\Inventory\emptyslot.png
 		}
+		control Gui\Controls\DefaultVScrollBar.gui
+		{
+			valueRange = 0 2
+			position = Texture 242 266
+			size = Texture 20 180
+			name = InventoryVScrollBar
+		}
+		control Control
+		{
+			position = Texture 121 71
+			size = Texture 120 170
+			name = PlayerReviewBox
+			backTexture = Gui\Inventory\playerreviewbox.png
+		}
+	}
+	control Control
+	{
+		position = Screen 0.01367188 0.0078125
+		size = Texture 256 128
+		anchor = Left, Top
+		backTexture = Gui\HUD\hud-manabar.png
+	}
+	control Control
+	{
+		position = Texture 866 27
+		size = Texture 128 128
+		anchor = Top, Right
+		name = Minimap
+		backTexture = Gui\HUD\worldmap.png
+		backTextureCoord = 0 0 0.25 0.25
+	}
+	control Control
+	{
+		position = Texture 911 77
+		size = Parent 0.03125 0.04166667
+		name = Arrow
+		backTexture = Gui\HUD\arrow.png
+		colorMultiplier = 1 0 0.764706
 	}
 }
