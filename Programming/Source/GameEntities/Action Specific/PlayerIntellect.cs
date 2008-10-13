@@ -203,6 +203,8 @@ namespace GameEntities
 				if( PlayerIntellect.Instance != null && !FPSCamera )
 					needUpdate = false;
 
+            needUpdate = true;
+
             //VHFOS #000001 BEGIN
             if (isForwardPressed)
             {
@@ -242,28 +244,7 @@ namespace GameEntities
 						turret.SetMomentaryTurnToPosition( lookTo );
 				}
 
-				//Tank specific
-				Tank tank = ControlledObject as Tank;
-				if( tank != null )
-				{
-					bool set = true;
-
-					if( lookObject != null )
-					{
-						if( lookObject == tank )
-							set = false;
-
-						Dynamic lookObjectDynamic = lookObject as Dynamic;
-						if( lookObjectDynamic != null )
-						{
-							if( lookObjectDynamic.GetIntellectedRootUnit() == tank )
-								set = false;
-						}
-					}
-
-					if( set )
-						tank.SetNeedTurnToPosition( lookTo );
-				}
+				
 			}
 		}
 
@@ -400,17 +381,6 @@ namespace GameEntities
 			//update look direction
 			if( ControlledObject != null )
 				lookDirection = SphereDir.FromVector( ControlledObject.Rotation * new Vec3( 1, 0, 0 ) );
-
-			//TankGame specific
-			{
-				//set small damage for player tank
-				Tank oldTank = oldObject as Tank;
-				if( oldTank != null )
-					oldTank.ReceiveDamageCoefficient = 1;
-				Tank tank = ControlledObject as Tank;
-				if( tank != null )
-					tank.ReceiveDamageCoefficient = .1f;
-			}
 		}
 
 		public override bool IsActive()
@@ -533,17 +503,7 @@ namespace GameEntities
 				ControlledObject.Intellect = null;
 
 			mainNotActiveUnit.Position = mainNotActiveUnitRestorePosition;
-			//find free position for moving player controlled units
-			if( ControlledObject != null )
-			{
-				//Tank specific
-				if( ControlledObject is Tank )
-				{
-					mainNotActiveUnit.Position = FindFreePositionForUnit(
-						mainNotActiveUnit, ControlledObject.Position );
-				}
-			}
-
+		
 			mainNotActiveUnit.OldPosition = mainNotActiveUnit.Position;
 
 			mainNotActiveUnit.Visible = true;
