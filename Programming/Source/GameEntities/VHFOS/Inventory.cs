@@ -31,6 +31,8 @@ namespace GameEntities
                 realX = 2.0f;
             else if (x == "D")
                 realX = 3.0f;
+            else if (x == "E")
+                realX = 4.0f;
 
             float.TryParse(y, out realY);
 
@@ -51,6 +53,8 @@ namespace GameEntities
                 realX = "C";
             else if (vector.X == 3.0f)
                 realX = "D";
+            else if (vector.X == 4.0f)
+                realX = "E";
 
             otherY = (int)vector.Y;
 
@@ -140,7 +144,8 @@ namespace GameEntities
         /// </summary>
         /// <param name="battleshipPos">Old item slot name</param>
         /// <param name="otherBattleshipPos">New item slot name</param>
-        public void SwapItem(string battleshipPos, string otherBattleshipPos)
+        /// <returns>Return Item if success</returns>
+        public Item SwapItem(string battleshipPos, string otherBattleshipPos)
         {
             Vec2 location = InventoryHelpers.BattleShip2Vector(battleshipPos);
             Vec2 otherLocation = InventoryHelpers.BattleShip2Vector(otherBattleshipPos);
@@ -167,6 +172,7 @@ namespace GameEntities
             //Make selected icon to mouse
             ScreenControlManager.Instance.DefaultCursor = @"Cursors\default.png";
             currentHoldItem = String.Empty;
+            return this.inventory[otherLocation] as Item;
         }
 
         public void dropItem(Unit playerUnit, EControl hud)
@@ -178,7 +184,7 @@ namespace GameEntities
             (this.inventory[location] as Item).Visible = true;
             hud.Controls["Inventory/" + battleshipPos].BackTexture = TextureManager.Instance.Load(@"Gui\Inventory\emptyslot.png", Texture.Type.Type2D, 0);
                         
-            (this.inventory[location] as Item).Position = playerUnit.Position + new Vec3(-4.0f, -4.0f, 0f) ;
+            (this.inventory[location] as Item).Position = playerUnit.Position + new Vec3(-2.0f, -2.0f, 10f) ;
             
             this.currentHoldItem = string.Empty;
             this.inventory.Remove(location);
@@ -271,16 +277,17 @@ namespace GameEntities
             int y = 0;
 
             Vec2 pos;
-
-            for (x = 0; x < 4; x++)
-            {
+            //So hang ngang
+            for (x = 1; x < 4; x++)
+            {                
+                //So hang doc - 1
                 for (y = 0; y < 2; y++)
                 {
                     pos = new Vec2((float)x, (float)y);
 
                     if (!inventory.ContainsKey(pos))
                         return pos;
-                }
+                }               
 
                 pos = new Vec2((float)x, (float)y);
 
