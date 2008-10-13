@@ -28,6 +28,7 @@ namespace GameEntities
         }
     }
 
+
     /// <summary>
     /// Represents a item of the weapon. When the player take this item it 
     /// takes a specified weapon.
@@ -38,18 +39,25 @@ namespace GameEntities
 
         protected override bool OnTake(Unit unit)
         {
-            bool take = base.OnTake(unit);
-
-            //if( Type.WeaponType != null )
-            //{
-            //    PlayerCharacter character = unit as PlayerCharacter;
-            //    if( character != null && character.TakeWeapon( Type.WeaponType ) )
-            //        take = true;
-            //}
-            //else
-            //    Log.Warning( "WeaponItem.OnTake: Type.WeaponType == null" );
+            bool take = base.OnTake(unit);                   
 
             return unit.Inventory.AddItem(this);
+        }
+
+        public  bool OnSelect(Unit unit)
+        {
+            bool take = base.OnTake(unit);
+
+            if (Type.WeaponType != null)
+            {
+                PlayerCharacter character = unit as PlayerCharacter;
+                if (character != null && character.TakeWeapon(Type.WeaponType))
+                    take = true;
+            }
+            else
+                Log.Warning("WeaponItem.OnTake: Type.WeaponType == null");
+
+            return take;
         }
     }
 }

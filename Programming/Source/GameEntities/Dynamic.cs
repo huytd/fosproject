@@ -36,6 +36,7 @@ namespace GameEntities
 
 		[FieldSerialize]
 		string soundCollision;
+
 		[FieldSerialize]
 		float soundCollisionMinVelocity = 1.0f;
 
@@ -235,6 +236,14 @@ namespace GameEntities
 			Vec3 pos, float damage );
 		[LogicSystemBrowsable( true )]
 		public event DamageDelegate Damage;
+
+        //VHFOS
+        protected virtual void OnSetForceAnimationState(string animationName, bool loop) { }
+
+        public void SetForceAnimationState(string animationName, bool loop)
+        {
+            OnSetForceAnimationState(animationName, loop);
+        } 
 
 		protected virtual void OnDamage( MapObject prejudicial, Vec3 pos, Shape shape, float damage,
 			bool allowMoveDamageToParent )

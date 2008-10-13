@@ -482,39 +482,6 @@
         <member name="M:GameEntities.InfluenceRegion.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
         </member>
-        <member name="T:GameEntities.RTSCharacterType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSCharacter"/> entity type.
-            </summary>
-        </member>
-        <member name="T:GameEntities.RTSUnitType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSUnit"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.RTSUnit.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSCharacter.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSCharacter.OnTick">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSCharacter.OnRender(Engine.Renderer.Camera)">
-            <summary>Overridden from <see cref="M:Engine.MapSystem.MapObject.OnRender(Engine.Renderer.Camera)"/>.</summary>
-        </member>
-        <member name="T:GameEntities.RTSBuildingType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSBuilding"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.RTSBuilding.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSBuilding.OnTick">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
-        </member>
         <member name="P:GameEntities.ExampleMagicObjectType.BlinkMaterialName">
             <summary>
             Gets or sets the name of a replacing material.
@@ -688,33 +655,6 @@
         <member name="M:GameEntities.Firework.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
         </member>
-        <member name="T:GameEntities.RTSUnitAIType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSUnitAI"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.RTSUnitAI.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSUnitAI.OnDestroy">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSUnitAI.OnRelatedEntityDelete(Engine.EntitySystem.Entity)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnRelatedEntityDelete(Engine.EntitySystem.Entity)"/></summary>
-        </member>
-        <member name="M:GameEntities.RTSUnitAI.OnTick">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
-        </member>
-        <member name="T:GameEntities.RTSGridPathFindSystemType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSGridPathFindSystem"/> entity type.
-            </summary>
-        </member>
-        <member name="P:GameEntities.RTSGridPathFindSystem.Type">
-            <summary>
-            Gets the entity type.
-            </summary>
-        </member>
         <member name="T:GameEntities.PlayerType">
             <summary>
             Defines the <see cref="T:GameEntities.Player"/> entity type.
@@ -741,6 +681,7 @@
             </summary>
             <param name="battleshipPos">Old item slot name</param>
             <param name="otherBattleshipPos">New item slot name</param>
+            <returns>Return Item if success</returns>
         </member>
         <member name="M:GameEntities.Inventory.isItemExist(GameEntities.Item)">
             <summary>
@@ -771,17 +712,6 @@
             this variable will not Empty and contain selected slot name
             </summary>
         </member>
-        <member name="T:GameEntities.RTSMineType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSMine"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.RTSMine.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSMine.OnTick">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
-        </member>
         <member name="T:GameEntities.DynamicCollisionType">
             <summary>
             Defines the <see cref="T:GameEntities.DynamicCollision"/> entity type.
@@ -801,25 +731,6 @@
         </member>
         <member name="M:GameEntities.DynamicCollision.OnRender(Engine.Renderer.Camera)">
             <summary>Overridden from <see cref="M:Engine.MapSystem.MapObject.OnRender(Engine.Renderer.Camera)"/>.</summary>
-        </member>
-        <member name="T:GameEntities.TankGameUnitAIType">
-            <summary>
-            Defines the <see cref="T:GameEntities.TankGameUnitAI"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.TankGameUnitAI.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="T:GameEntities.TankType">
-            <summary>
-            Defines the <see cref="T:GameEntities.Tank"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.Tank.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.Tank.OnTick">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
         </member>
         <member name="T:GameEntities.TurretAIType">
             <summary>
@@ -890,11 +801,6 @@
         <member name="M:GameEntities.Explosion.OnTick">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnTick"/>.</summary>
         </member>
-        <member name="T:GameEntities.RTSBuildingAIType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSBuildingAI"/> entity type.
-            </summary>
-        </member>
         <member name="T:GameEntities.AircraftType">
             <summary>
             Defines the <see cref="T:GameEntities.Aircraft"/> entity type.
@@ -943,23 +849,6 @@
             Defines the <see cref="T:GameEntities.InfluenceItem"/> entity type.
             </summary>
         </member>
-        <member name="T:GameEntities.MinefieldType">
-            <summary>
-            Defines the <see cref="T:GameEntities.Minefield"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.Minefield.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.Minefield.OnDestroy">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
-        </member>
-        <member name="M:GameEntities.Minefield.OnCalculateMapBounds(Engine.MathEx.Bounds@)">
-            <summary>Overridden from <see cref="M:Engine.MapSystem.MapObject.OnCalculateMapBounds(Engine.MathEx.Bounds@)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.Minefield.OnRender(Engine.Renderer.Camera)">
-            <summary>Overridden from <see cref="M:Engine.MapSystem.MapObject.OnRender(Engine.Renderer.Camera)"/>.</summary>
-        </member>
         <member name="T:GameEntities.ItemCreatorType">
             <summary>
             Defines the <see cref="T:GameEntities.ItemCreator"/> entity type.
@@ -973,22 +862,6 @@
         </member>
         <member name="M:GameEntities.ItemCreator.OnRelatedEntityDelete(Engine.EntitySystem.Entity)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnRelatedEntityDelete(Engine.EntitySystem.Entity)"/></summary>
-        </member>
-        <member name="T:GameEntities.RTSFactionManagerType">
-            <summary>
-            Defines the <see cref="T:GameEntities.RTSFactionManager"/> entity type.
-            </summary>
-        </member>
-        <member name="M:GameEntities.RTSFactionManager.OnPostCreate(System.Boolean)">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>
-        </member>
-        <member name="M:GameEntities.RTSFactionManager.OnDestroy">
-            <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnDestroy"/>.</summary>
-        </member>
-        <member name="P:GameEntities.RTSFactionManager.Factions">
-            <summary>
-            Don't modify
-            </summary>
         </member>
         <member name="M:GameEntities.FireInfluence.OnPostCreate(System.Boolean)">
             <summary>Overridden from <see cref="M:Engine.EntitySystem.Entity.OnPostCreate(System.Boolean)"/>.</summary>

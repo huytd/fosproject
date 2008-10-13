@@ -166,9 +166,10 @@ namespace GameEntities
 		{
 			base.OnTick();
 
+            //Disable to invoid aupmatic pick item up in VHFOS game
 			//take items
-			if( Intellect != null && Intellect.AllowTakeItems )
-				TickTakeItems();
+			//if( Intellect != null && Intellect.AllowTakeItems )
+			//	TickTakeItems();
 		}
 
         
@@ -193,6 +194,7 @@ namespace GameEntities
 					if( ( item.Position - Position ).LengthSqr() > radius * radius )
 						return;
 
+                    
                     item.Take(this);
                     
 
