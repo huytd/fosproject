@@ -1,0 +1,760 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+ambientLight = 0.2 0.2 0.2
+editorCameraPosition = 86.1312 39.09196 5.395499
+editorCameraDirection = 1.49646 0.2339911
+shadowColor = 0.75 0.75 0.75
+fov = 80
+logicSystemManager = 3
+rootEditorLayer
+{
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 3
+	mapClassManager = 4
+	entity
+	{
+		type = LogicClassManager
+		uin = 4
+	}
+}
+entity
+{
+	type = HeightmapTerrain
+	uin = 5
+	classPrompt = HeightmapTerrain
+	position = 0 0 -1
+	horizontalSize = 1000
+	verticalSize = 100
+	dataDirectory = HeightmapTerrain
+	masksSize = 512
+	lodMethod = None
+	maxPixelError = 5
+	maxLODLevel = 7
+	lodOffDistance = 0
+	detailMapsDistance = 50
+	renderQueueGroup = WorldGeometry1
+	collisionMaterialName = Default
+	bottomClipHeight = -10000
+	castDynamicShadows = False
+	tileSize = 16
+	layers
+	{
+		item
+		{
+			name = layer4
+			baseMap = Maps\Vietheroes\HeightmapTerrain\Texture\DatCoTuoi.png
+			baseScale = 10
+			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = DaCoReu
+			baseMap = Maps\Vietheroes\HeightmapTerrain\Texture\DaCoReu.png
+			baseScale = 30
+			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = DaNenY
+			baseMap = Materials\Game\Terrain\RockBase.jpg
+			baseScale = 25
+			detailMap = Materials\Game\Terrain\RockDetail.jpg
+			detailScale = 2
+			projectionAxis = YAxis
+		}
+		item
+		{
+			name = DaNenX
+			baseMap = Materials\Game\Terrain\RockBase.jpg
+			baseScale = 30
+			detailMap = Materials\Game\Terrain\RockDetail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = layer6
+			baseMap = Maps\Vietheroes\HeightmapTerrain\Texture\DaTangRan.png
+			baseScale = 30
+			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
+			detailScale = 2
+		}
+		item
+		{
+			name = layer2
+			baseMap = Maps\Vietheroes\HeightmapTerrain\Texture\DaVoi.png
+			baseScale = 30
+			detailMap = Defaults\HeightmapTerrain\Layer0Detail.jpg
+			detailScale = 2
+		}
+	}
+}
+entity
+{
+	type = WaterPlane
+	uin = 6
+	classPrompt = WaterPlane
+	size = 1000 1000
+	position = 0 0 0
+	segments = 20 20
+	renderQueueGroup = Queue3
+	reflectionLevel = OnlyModels
+	physicsHeight = 0
+	deepColor = 0 0.3 0.5
+	shallowColor = 0 1 1
+}
+entity
+{
+	type = Caelum
+	uin = 7
+	classPrompt = CaelumManager
+	ObserverLatitude = 90
+	ObserverLongitude = 90
+	ManageAmbientLight = True
+	CastShadows = True
+	SpecularMultiplier = 0 0 0
+	DiffuseMultiplier = 0.9058824 1 0.4392157
+	AmbientMultiplier = 0.9450981 1 0.6862745
+	MinAmbientLight = 0.3764706 0.627451 1
+	StarFieldInclination = 13
+	CloudsCover = 0
+	IsCloudsAnimated = True
+	CloudsBlendTime = 86400
+	CloudsSpeed = 5 9
+	FogDensityMultiplier = 0.004
+	TimeScale = 10
+	StartYear = 2007
+	StartMonth = 4
+	StartDay = 9
+	StartHour = 18
+}
+entity
+{
+	type = dongcuichay
+	uin = 8
+	classPrompt = MapObject
+	position = 64.05624 37.20854 5.808812
+}
+entity
+{
+	type = Rock1
+	uin = 9
+	classPrompt = MapObject
+	position = 60.26556 44.24182 5.806962
+}
+entity
+{
+	type = Stone
+	uin = 10
+	classPrompt = MapObject
+	position = 60.68148 40.51423 5.808502
+	name = Stone_0
+}
+entity
+{
+	type = conglang
+	uin = 11
+	classPrompt = MapObject
+	position = 70.90363 65.87083 1.096056
+	scale = 2.520547 3.050934 3.132475
+}
+entity
+{
+	type = SpawnPoint
+	uin = 12
+	classPrompt = SpawnPoint
+	defaultPoint = True
+	position = 65.46176 42.03238 5.878015
+	name = SpawnPoint_0
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 13
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 66.24562 64.75609 2.564908
+}
+entity
+{
+	type = Fog
+	uin = 14
+	classPrompt = Fog
+	color = 0.6916631 0.6833117 0.7163909
+	expDensity = 0.004
+}
+entity
+{
+	type = DecorativeObjectManager
+	uin = 15
+	classPrompt = DecorativeObjectManager
+	visible = True
+	typeItems
+	{
+		item
+		{
+			type = DefaultGrass3
+			itemCount = 3193
+		}
+		item
+		{
+			type = DefaultGrass
+			itemCount = 3215
+		}
+	}
+}
+entity
+{
+	type = LightBall
+	uin = 16
+	classPrompt = Dynamic
+	position = 89.6519 118.7171 0.9863153
+	name = LightBall_0
+}
+entity
+{
+	type = VolcanoSmoke
+	uin = 17
+	classPrompt = MapObject
+	position = 74.79151 63.18151 5.935361
+	name = VolcanoSmoke_0
+}
+entity
+{
+	type = WoodBoxChip1
+	uin = 18
+	classPrompt = Dynamic
+	position = 62.76066 40.19747 5.787878
+	name = WoodBoxChip1_0
+}
+entity
+{
+	type = WoodBoxChip1
+	uin = 19
+	classPrompt = Dynamic
+	position = 63.07198 42.14221 5.707341
+	name = WoodBoxChip1_1
+}
+entity
+{
+	type = WoodBoxChip1
+	uin = 20
+	classPrompt = Dynamic
+	position = 64.56686 43.30382 5.120796
+	name = WoodBoxChip1_2
+}
+entity
+{
+	type = WoodBoxChip1
+	uin = 21
+	classPrompt = Dynamic
+	position = 64.59468 40.79223 5.086178
+	name = WoodBoxChip1_3
+}
+entity
+{
+	type = WoodBoxChip1
+	uin = 22
+	classPrompt = Dynamic
+	position = 64.67198 38.3077 5.228777
+	name = WoodBoxChip1_4
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 23
+	classPrompt = Dynamic
+	position = 64.20836 45.22886 5.310624
+	name = WoodBoxChip2_0
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 24
+	classPrompt = Dynamic
+	position = 64.48793 43.29369 5.187508
+	name = WoodBoxChip2_1
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 25
+	classPrompt = Dynamic
+	position = 65.29279 41.03707 4.865924
+	name = WoodBoxChip2_2
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 26
+	classPrompt = Dynamic
+	position = 64.1666 38.88059 5.38873
+	name = WoodBoxChip2_3
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 27
+	classPrompt = Dynamic
+	position = 62.71634 39.6701 5.787637
+	name = WoodBoxChip2_4
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 28
+	classPrompt = Dynamic
+	position = 61.4749 41.05922 5.810704
+	name = WoodBoxChip2_5
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 29
+	classPrompt = Dynamic
+	position = 57.93502 39.59827 5.647212
+	name = WoodBoxChip2_6
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 30
+	classPrompt = Dynamic
+	position = 61.85058 37.8684 5.719426
+	name = WoodBoxChip2_7
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 31
+	classPrompt = Dynamic
+	position = 64.5407 37.42122 5.212723
+	name = WoodBoxChip2_8
+}
+entity
+{
+	type = WoodBoxPiece1
+	uin = 32
+	classPrompt = Dynamic
+	position = 63.84664 42.11898 5.51702
+	name = WoodBoxPiece1_0
+}
+entity
+{
+	type = WoodBoxPiece1
+	uin = 33
+	classPrompt = Dynamic
+	position = 65.11812 39.40307 5.238739
+	name = WoodBoxPiece1_1
+}
+entity
+{
+	type = WoodBoxPiece1
+	uin = 34
+	classPrompt = Dynamic
+	position = 65.69048 38.82331 5.086833
+	name = WoodBoxPiece1_2
+}
+entity
+{
+	type = WoodBoxPiece1
+	uin = 35
+	classPrompt = Dynamic
+	position = 63.71435 35.7304 5.46523
+	name = WoodBoxPiece1_3
+}
+entity
+{
+	type = WoodBoxPiece1
+	uin = 36
+	classPrompt = Dynamic
+	position = 60.02054 37.25001 5.708664
+	name = WoodBoxPiece1_4
+}
+entity
+{
+	type = WoodBoxPiece1
+	uin = 37
+	classPrompt = Dynamic
+	position = 56.85696 39.36552 5.677118
+	name = WoodBoxPiece1_5
+}
+entity
+{
+	type = WoodBoxPiece1
+	uin = 38
+	classPrompt = Dynamic
+	position = 62.81849 43.40413 5.968122
+	name = WoodBoxPiece1_6
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 39
+	classPrompt = Dynamic
+	position = 66.28834 43.07275 5.139615
+	name = WoodBoxPiece2_0
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 40
+	classPrompt = Dynamic
+	position = 67.34752 42.29161 4.31904
+	name = WoodBoxPiece2_1
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 41
+	classPrompt = Dynamic
+	position = 27.36935 32.93717 5.157986
+	name = WoodBoxPiece2_2
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 42
+	classPrompt = Dynamic
+	position = 36.35503 29.60052 5.157687
+	name = WoodBoxPiece2_3
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 43
+	classPrompt = Dynamic
+	position = 58.36469 30.4092 5.293452
+	name = WoodBoxPiece2_4
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 44
+	classPrompt = Dynamic
+	position = 64.0684 34.36673 5.307462
+	name = WoodBoxPiece2_5
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 45
+	classPrompt = Dynamic
+	position = 64.18603 48.02267 5.413869
+	name = WoodBoxPiece2_6
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 46
+	classPrompt = Dynamic
+	position = 58.32593 72.79874 1.86351
+	name = WoodBoxPiece2_7
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 47
+	classPrompt = Dynamic
+	position = 41.45774 102.8483 1.994761
+	name = WoodBoxPiece2_8
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 48
+	classPrompt = Dynamic
+	position = 17.53572 131.8046 1.314032
+	name = WoodBoxPiece2_9
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 49
+	classPrompt = Dynamic
+	position = 43.8676 78.97399 2.363473
+	name = WoodBoxPiece2_10
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 50
+	classPrompt = Dynamic
+	position = 63.84853 56.75467 2.536677
+	name = WoodBoxPiece2_11
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 51
+	classPrompt = Dynamic
+	position = 68.50793 44.74001 3.714003
+	name = WoodBoxPiece2_12
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 52
+	classPrompt = Dynamic
+	position = 71.30621 42.56875 3.268714
+	name = WoodBoxPiece2_13
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 53
+	classPrompt = Dynamic
+	position = 84.53561 42.51743 1.934981
+	name = WoodBoxPiece2_14
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 54
+	classPrompt = Dynamic
+	position = 114.3179 60.24895 1.787682
+	name = WoodBoxPiece2_15
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 55
+	classPrompt = Dynamic
+	position = 92.70837 24.88896 2.00775
+	name = WoodBoxPiece2_16
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 56
+	classPrompt = Dynamic
+	position = 71.61844 12.3967 5.608174
+	name = WoodBoxPiece2_17
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 57
+	classPrompt = Dynamic
+	position = 54.68121 11.15562 5.165134
+	name = WoodBoxPiece2_18
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 58
+	classPrompt = Dynamic
+	position = 34.02685 17.48264 5.162034
+	name = WoodBoxPiece2_19
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 59
+	classPrompt = Dynamic
+	position = 41.32489 19.99797 5.16233
+	name = WoodBoxPiece2_20
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 60
+	classPrompt = Dynamic
+	position = 80.34735 22.25613 3.369655
+	name = WoodBoxPiece2_21
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 61
+	classPrompt = Dynamic
+	position = 72.78071 3.593819 5.864681
+	name = WoodBoxPiece2_22
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 62
+	classPrompt = Dynamic
+	position = 67.87492 -2.59253 5.663426
+	name = WoodBoxPiece2_23
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 63
+	classPrompt = Dynamic
+	position = 47.1664 1.319293 5.164553
+	name = WoodBoxPiece2_24
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 64
+	classPrompt = Dynamic
+	position = 27.65004 36.68204 5.15791
+	name = WoodBoxPiece2_25
+}
+entity
+{
+	type = WoodBoxPiece2
+	uin = 65
+	classPrompt = Dynamic
+	position = 6.352376 71.62224 4.160403
+	name = WoodBoxPiece2_26
+}
+entity
+{
+	type = trautinh
+	uin = 66
+	classPrompt = PlayerCharacter
+	contusionTimeRemaining = 0
+	position = 50.27691 36.88823 9.10779
+	weapons
+	{
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+	}
+	inventory
+	{
+	}
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 67
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 73.87637 48.27138 2.686955
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 68
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 80.22276 50.57298 1.88458
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 69
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 77.1005 48.60885 2.110075
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 70
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 88.0129 42.03592 3.431896
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 71
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 83.4109 43.66719 3.808448
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 72
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 65.02972 59.14125 3.344962
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 73
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 74.3523 44.34922 2.973096
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 74
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 80.7316 47.73263 1.924421
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 75
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 82.11842 45.67849 2.323077
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 76
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 80.0695 45.23097 2.359131
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 77
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 75.72478 41.54806 3.317043
+}
+entity
+{
+	type = SmallHealthItem
+	uin = 78
+	classPrompt = HealthItem
+	respawnTime = 10
+	position = 69.46734 60.26847 4.529474
+}
+entity
+{
+	type = ShotgunItem
+	uin = 79
+	classPrompt = WeaponItem
+	respawnTime = 10
+	position = 59.22571 33.01296 5.898356
+}
+entity
+{
+	type = FlareTest
+	uin = 80
+	classPrompt = MapObject
+	position = 63.2305 45.7769 6.00428
+	name = FlareTest_0
+}

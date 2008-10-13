@@ -1,0 +1,23 @@
+type = GameMap
+uin = 2
+classPrompt = GameMap
+ambientLight = 0.2 0.2 0.2
+editorCameraPosition = 10 0 10
+editorCameraDirection = 1.570796 -0.7853982
+shadowColor = 0.75 0.75 0.75
+fov = 80
+logicSystemManager = 3
+rootEditorLayer
+{
+}
+entity
+{
+	type = LogicSystemManager
+	uin = 3
+	mapClassManager = 4
+	entity
+	{
+		type = LogicClassManager
+		uin = 4
+	}
+}
