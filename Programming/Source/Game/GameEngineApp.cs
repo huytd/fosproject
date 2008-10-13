@@ -1082,21 +1082,7 @@ namespace Game
 
 		GameWindow CreateGameWindowByGameType( GameMap.GameTypes gameType )
 		{
-			switch( gameType )
-			{
-			case GameMap.GameTypes.Action:
-			case GameMap.GameTypes.TPSArcade:
-				return new VHFOSGameWindows();
-
-			case GameMap.GameTypes.RTS:
-				return new RTSGameWindow();
-
-			//Here it is necessary to add a your specific game mode.
-			//..
-
-			}
-
-			return null;
+            return new VHFOSGameWindows();	
 		}
 
 	}

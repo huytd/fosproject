@@ -44,11 +44,6 @@
             Defines a your project logo window.
             </summary>
         </member>
-        <member name="T:Game.GameWindow">
-            <summary>
-            Defines a base window of game.
-            </summary>
-        </member>
         <member name="T:Game.Program">
             <summary>
             Defines an input point in the application.
@@ -62,6 +57,11 @@
         <member name="T:Game.EngineLogoWindow">
             <summary>
             Defines a NeoAxis Engine Logo window.
+            </summary>
+        </member>
+        <member name="T:Game.GameWindow">
+            <summary>
+            Defines a base window of game.
             </summary>
         </member>
         <member name="T:Game.MapsWindow">
@@ -98,6 +98,18 @@
             <summary>
             Defines a game window for Viet Heroes - Fight or Surrender games.
             </summary>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.InventoryItem_Click(Engine.UISystem.EButton)">
+            <summary>
+            This method handle the click event on inventory items
+            </summary>
+            <param name="sender">The button in the inventory box</param>
+        </member>
+        <member name="M:Game.VHFOSGameWindows.ScrollBarValue_Change(Engine.UISystem.EScrollBar)">
+            <summary>
+            This function handle scroll bar value change event to control iventory item list
+            </summary>
+            <param name="sender"></param>
         </member>
         <member name="M:Game.VHFOSGameWindows.UpdateCurrentPlayerUseObjects">
             <summary>
