@@ -749,13 +749,7 @@ namespace Game
                 if (GetRealCameraType() != CameraType.Free && !IsCutSceneEnabled())
                 {
                     Vec2 mouseOffset = MousePosition;
-
-                    //zoom for Turret
-                    if (EngineApp.Instance.IsMouseButtonPressed(EMouseButtons.Right))
-                        if (GetPlayerUnit() != null && GetPlayerUnit() is Turret)
-                            if (GetRealCameraType() == CameraType.TPS)
-                                mouseOffset /= 3;
-
+                                        
                     GameControlsManager.Instance.DoMouseMoveRelative(mouseOffset);
                 }
             }
