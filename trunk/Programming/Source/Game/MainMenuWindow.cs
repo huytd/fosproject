@@ -21,8 +21,7 @@ namespace Game
 	public class MainMenuWindow : EControl
 	{
 		EControl window;
-		ETextBox versionTextBox;
-
+		
 		Map mapInstance;
 
 		///////////////////////////////////////////
@@ -163,6 +162,7 @@ namespace Game
 				camera.Fov = fov;
 				camera.Position = from;
 				camera.LookAt( to );
+                
 			}
 		}
 
