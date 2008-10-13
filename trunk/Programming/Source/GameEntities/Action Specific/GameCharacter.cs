@@ -98,6 +98,27 @@ namespace GameEntities
 			base.OnTick();
 		}
 
+
+        //const float animationsBlendTime = .1f; 
+        //protected override void OnSetForceAnimationState(string animationName, bool loop)
+        //{
+        //    base.OnSetForceAnimationState(animationName, loop);
+
+        //    if (mainMeshObject != null && mainMeshObject.MeshObject != null)
+        //    {
+        //        string numberedAnimationName = GetRandomAnimationNumber(animationName);
+        //        forceAnimationState = mainMeshObject.MeshObject.GetAnimationState(numberedAnimationName);
+
+        //        if (forceAnimationState != null)
+        //        {
+        //            mainMeshObject.ChangeCurrentAnimationState(forceAnimationState,
+        //              1, loop, animationsBlendTime);
+        //            forceAnimationState.TimePosition = 0;
+        //            forceAnimationState.Loop = loop;
+        //        }
+        //    }
+        //} 
+
 		protected override void OnUpdateAnimation( ref string animationName,
 			ref float animationVelocity, ref bool animationLoop, ref bool allowRandomAnimationNumber )
 		{

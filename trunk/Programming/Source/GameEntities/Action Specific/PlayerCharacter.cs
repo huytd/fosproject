@@ -171,7 +171,7 @@ namespace GameEntities
                 return false;
 
             if (weapons[index].exists)
-                return true;
+                SetActiveWeapon(index);    
 
             weapons[index].exists = true;
 
@@ -220,6 +220,31 @@ namespace GameEntities
             }
 
             return taked;
+        }
+
+        public bool RemoveAllWeapon()
+        {
+
+            foreach (MapObjectAttachedObject attachedObject in AttachedObjects)
+            {
+                MapObjectAttachedMapObject attachedMapObject = attachedObject as MapObjectAttachedMapObject;
+                if (attachedMapObject == null)
+                    continue;
+
+                Weapon weapon = attachedMapObject.MapObject as Weapon;
+                if (weapon == activeWeapon)
+                {
+                    Gun activeGun = activeWeapon as Gun;                    
+                    Detach(attachedMapObject);
+                    //weapon.SetShouldDelete();
+                    activeWeapon = null;
+                    activeWeaponAttachedObject = null;
+                    break;
+                }
+            }
+
+            
+            return true;
         }
 
         public bool SetActiveWeapon(int index)
