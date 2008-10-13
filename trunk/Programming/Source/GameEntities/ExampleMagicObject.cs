@@ -61,7 +61,7 @@ namespace GameEntities
 			if( blinkMeshObject != null )
 			{
 				//To change a material
-				if( blinkMeshObject.SubObjects[ 0 ].MaterialName == originalMaterialName )
+				if( blinkMeshObject.SubObjects[0].MaterialName == originalMaterialName )
 					blinkMeshObject.SetMaterialNameForAllSubObjects( Type.BlinkMaterialName );
 				else
 					blinkMeshObject.SetMaterialNameForAllSubObjects( originalMaterialName );
