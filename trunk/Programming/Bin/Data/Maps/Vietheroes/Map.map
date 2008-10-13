@@ -2,8 +2,8 @@ type = GameMap
 uin = 2
 classPrompt = GameMap
 ambientLight = 0.0627451 0.2 0.1215686
-editorCameraPosition = -43.06122 -292.5399 64.01486
-editorCameraDirection = 1.063151 -0.8423718
+editorCameraPosition = 11.68715 -200.3427 17.39777
+editorCameraDirection = 2.852807 -0.3729176
 shadowColor = 0.75 0.75 0.75
 fov = 80
 logicSystemManager = 3
@@ -154,7 +154,12 @@ entity
 		item
 		{
 			type = DefaultGrass
-			itemCount = 374
+			itemCount = 513
+		}
+		item
+		{
+			type = DefaultGrass3
+			itemCount = 139
 		}
 	}
 }
@@ -433,4 +438,298 @@ entity
 	classPrompt = WeaponItem
 	respawnTime = 10
 	position = 3 -196 11
+}
+entity
+{
+	type = conglang
+	uin = 39
+	classPrompt = MapObject
+	position = -9.346221 -184.9754 9.368827
+}
+entity
+{
+	type = dongcuichay
+	uin = 40
+	classPrompt = MapObject
+	position = -8 -191 10
+}
+entity
+{
+	type = dongcuichay
+	uin = 41
+	classPrompt = MapObject
+	position = -7.857651 -191 10.03969
+	rotation = 0 0 -0.3287829 0.9444055
+}
+entity
+{
+	type = Rock1
+	uin = 42
+	classPrompt = MapObject
+	position = -2 -187 9
+}
+entity
+{
+	type = Rock1
+	uin = 43
+	classPrompt = MapObject
+	position = -21 -187 10
+}
+entity
+{
+	type = Stone
+	uin = 44
+	classPrompt = MapObject
+	position = -3 -185 7.837896
+	name = Stone_6
+}
+entity
+{
+	type = Stone
+	uin = 45
+	classPrompt = MapObject
+	position = -25 -191 9.885533
+	rotation = 0 0 0.556228 0.8310297
+	name = Stone_7
+}
+entity
+{
+	type = Stone
+	uin = 46
+	classPrompt = MapObject
+	position = 0 -175 4
+	name = Stone_8
+}
+entity
+{
+	type = Stone
+	uin = 47
+	classPrompt = MapObject
+	position = -24 -190 9.933176
+	name = Stone_9
+}
+entity
+{
+	type = Stone
+	uin = 48
+	classPrompt = MapObject
+	position = -28 -190 9.677571
+	rotation = 0.9862803 0 0 0.1650794
+	name = Stone_10
+}
+entity
+{
+	type = Stone
+	uin = 49
+	classPrompt = MapObject
+	position = -28 -182 5.557768
+	name = Stone_11
+}
+entity
+{
+	type = Stone
+	uin = 50
+	classPrompt = MapObject
+	position = -2 -164 0
+	name = Stone_12
+}
+entity
+{
+	type = Stone
+	uin = 51
+	classPrompt = MapObject
+	position = 20 -145 0
+	name = Stone_13
+}
+entity
+{
+	type = Stone
+	uin = 52
+	classPrompt = MapObject
+	position = 65 -111 -2
+	name = Stone_14
+}
+entity
+{
+	type = Stone
+	uin = 53
+	classPrompt = MapObject
+	position = -42 -160 0
+	name = Stone_15
+}
+entity
+{
+	type = cayrom
+	uin = 54
+	classPrompt = MapObject
+	position = -14 -197 9.989743
+	scale = 2.364397 2.202188 2.012259
+}
+entity
+{
+	type = caymit2
+	uin = 55
+	classPrompt = MapObject
+	position = -9 -190 9.609721
+	name = caymit2_0
+}
+entity
+{
+	type = caymit2
+	uin = 56
+	classPrompt = MapObject
+	position = -24 -197 11
+	name = caymit2_1
+}
+entity
+{
+	type = caymit2
+	uin = 57
+	classPrompt = MapObject
+	position = -6 -199 10.57055
+	rotation = 0 0 -0.9865111 0.1636941
+	name = caymit2_2
+}
+entity
+{
+	type = caymit2
+	uin = 58
+	classPrompt = MapObject
+	position = 3 -187 9
+	name = caymit2_4
+}
+entity
+{
+	type = caymit2
+	uin = 59
+	classPrompt = MapObject
+	position = -30 -189 9.672702
+	name = caymit2_5
+}
+entity
+{
+	type = caymit2
+	uin = 60
+	classPrompt = MapObject
+	position = -15 -207 10.73562
+	rotation = 0 0 0.7371356 0.6757448
+	name = caymit2_6
+}
+entity
+{
+	type = WoodBoxChip1
+	uin = 61
+	classPrompt = Dynamic
+	position = -7.554074 -190.6454 10.021
+	name = WoodBoxChip1_0
+}
+entity
+{
+	type = WoodBoxChip2
+	uin = 62
+	classPrompt = Dynamic
+	position = -8.615299 -191.3895 10.16304
+	name = WoodBoxChip2_0
+}
+entity
+{
+	type = Signboard
+	uin = 63
+	classPrompt = GameGuiObject
+	position = -2.536095 -193.3508 10.64046
+	name = Signboard_0
+}
+entity
+{
+	type = Signboard
+	uin = 64
+	classPrompt = GameGuiObject
+	position = -18.26438 -204.6923 11.26416
+	name = Signboard_1
+}
+entity
+{
+	type = VolcanoSmoke
+	uin = 65
+	classPrompt = MapObject
+	position = -7.990304 -185.8428 10.53876
+	name = VolcanoSmoke_1
+}
+entity
+{
+	type = Rabbit
+	uin = 66
+	classPrompt = PlayerCharacter
+	contusionTimeRemaining = 0
+	position = -3.180638 -205.6419 12.2532
+	name = Rabbit_0
+	weapons
+	{
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+	}
+	inventory
+	{
+	}
+}
+entity
+{
+	type = Rabbit
+	uin = 67
+	classPrompt = PlayerCharacter
+	contusionTimeRemaining = 0
+	position = -3.885053 -199.8814 12.24363
+	name = Rabbit_1
+	weapons
+	{
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+		item
+		{
+			exists = False
+			normalBulletCount = 0
+			normalMagazineCount = 0
+			alternativeBulletCount = 0
+			alternativeMagazineCount = 0
+		}
+	}
+	inventory
+	{
+	}
 }
